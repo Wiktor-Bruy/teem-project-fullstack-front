@@ -3,18 +3,18 @@ import css from './page.module.css';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import LoginForm from '@/components/LoginForm/LoginFofm';
+import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
 
-export default function Login() {
+export default function Regisrewter() {
   return (
     <main>
       <div className={clsx(css.box, 'container')}>
         <div className={css.formBox}>
-          <LoginForm />
+          <OnboardingForm />
         </div>
         <div className={css.imageBox}>
           <Image
-            src="/image/login.png"
+            src="/image/user.png"
             alt="logih image"
             width={720}
             height={900}

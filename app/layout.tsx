@@ -8,7 +8,6 @@ import TanStackProvider from '@/components/TanstackProvider/TanstackProvider';
 const geistLato = Lato({
   weight: ['400', '700'],
   variable: '--font-lato',
-  // subsets: ['latin'],
   display: 'swap',
 });
 
@@ -20,7 +19,7 @@ const geistComfortaa = Comfortaa({
 });
 
 export const metadata: Metadata = {
-  title: 'Головна',
+  title: 'Лелека',
   description: 'Стартова сторінка',
 };
 
