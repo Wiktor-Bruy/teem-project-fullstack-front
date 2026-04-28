@@ -58,3 +58,9 @@ export async function updateUser(data: any) {
   const res = await nextServer.put('/user', data);
   return res.data;
 }
+
+//------------------------------------------------Повертає-стан-дитини
+export async function getBabyState() {
+  const res = await nextServer.get('/home/baby');
+  return res.data;
+}

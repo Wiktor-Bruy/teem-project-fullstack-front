@@ -5,6 +5,7 @@ import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar';
 import ProfileEditForm from '@/components/ProfileEditForm/ProfileEditForm';
 import { User } from '@/types/types';
 import { getMe } from '@/lib/api/clientApi';
+import styles from './profile.module.css';
 
 export default function Profile() {
   const [user, setUser] = useState<User | undefined>();
@@ -27,10 +28,9 @@ export default function Profile() {
   };
 
   return (
-    <>
-      <p>Profile</p>
+    <div className={styles.profileContainer}>
       <ProfileAvatar user={user} />
       <ProfileEditForm user={user} onUserUpdate={handleUserUpdate} />
-    </>
+    </div>
   );
 }

@@ -28,7 +28,16 @@ export async function getTasks() {}
 export async function getTerm() {}
 
 //------------------------------------------------Повертає-стан-дитини
-export async function getBabyState() {}
+export async function getBabyState() {
+  const cookieStore = await cookies();
+
+  const res = await nextServer.get('/home/baby', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return res;
+}
 
 //------------------------------------------------Повертає-стан-мами
 export async function getMomState() {}

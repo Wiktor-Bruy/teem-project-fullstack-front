@@ -44,12 +44,17 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
         )}
       </div>
 
-      <h2 className={styles.name}>{user.name}</h2>
-      <p className={styles.email}>{user.email}</p>
+      <div className={styles.infoWrapper}>
+        <div className={styles.userInfo}>
+          <h2 className={styles.name}>{user.name}</h2>
+          <p className={styles.email}>{user.email}</p>
+        </div>
 
-      <label htmlFor="avatar-input" className={styles.uploadButton}>
-        {isLoading ? 'Завантаження...' : 'Завантажити нове фото'}
-      </label>
+        <label htmlFor="avatar-input" className={styles.uploadButton}>
+          {isLoading ? 'Завантаження...' : 'Завантажити нове фото'}
+        </label>
+      </div>
+
       <input
         id="avatar-input"
         type="file"
