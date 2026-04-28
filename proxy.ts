@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { parse } from 'cookie';
-import { checkServerSession } from './lib/api/serverApi';
+import { checkSession } from '@/lib/api/serverApi';
 
-const privateRoutes = ['/profile', '/diary', '/journey'];
-const publicRoutes = ['/auth'];
+const privateRoutes = ['/profile', '/diary', '/journey', '/edit'];
+const publicRoutes = ['/login', '/register'];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -19,7 +19,7 @@ export async function proxy(request: NextRequest) {
 
   if (!accessToken) {
     if (refreshToken) {
-      const data = await checkServerSession();
+      const data = await checkSession();
       const setCookie = data.headers['set-cookie'];
 
       if (setCookie) {
@@ -60,7 +60,7 @@ export async function proxy(request: NextRequest) {
     }
 
     if (isPrivateRoute) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
@@ -78,6 +78,8 @@ export const config = {
     '/profile/:path*',
     '/diary/:path*',
     '/journey/:path*',
-    '/auth/:path*',
+    '/login/:path*',
+    '/register/:path*',
+    '/edit/:path*',
   ],
 };
