@@ -54,13 +54,6 @@ export default function Register() {
             alt="logih image"
             width={720}
             height={900}
-            style={{
-              maxWidth: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              position: 'absolute',
-              right: '0',
-            }}
           />
         </div>
       </div>
