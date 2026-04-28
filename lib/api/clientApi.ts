@@ -19,7 +19,10 @@ export async function logout() {
 }
 
 //------------------------------------------------Повертає-користувача
-export async function getMe() {}
+export async function getMe() {
+  const res = await nextServer.get('/user/me');
+  return res.data;
+}
 
 //------------------------------------------------Повертає-всі-записи-щоденника
 export async function getNotes() {}
@@ -43,7 +46,15 @@ export async function createTask() {}
 export async function updateTask() {}
 
 //------------------------------------------------Оновлює-аватар
-export async function updateAvatar() {}
+export async function updateAvatar(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await nextServer.post('/user/avatar', formData);
+  return res.data;
+}
 
 //------------------------------------------------Оновлює-дані користувача
-export async function updateUser() {}
+export async function updateUser(data: any) {
+  const res = await nextServer.put('/user', data);
+  return res.data;
+}

@@ -1,0 +1,127 @@
+.form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 2rem 0;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.input,
+.select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.inputError {
+  border-color: #dc3545;
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.errorMessage {
+  font-size: 0.85rem;
+  color: #dc3545;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submitButton,
+.resetButton {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.submitButton {
+  background-color: #667eea;
+  color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #5568d3;
+  transform: translateY(-2px);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.resetButton {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.resetButton:hover:not(:disabled) {
+  background-color: #dee2e6;
+  transform: translateY(-2px);
+}
+
+.resetButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled,
+.resetButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.container {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+}
