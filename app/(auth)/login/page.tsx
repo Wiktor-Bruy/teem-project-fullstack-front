@@ -3,7 +3,7 @@ import css from './page.module.css';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import LoginForm from '@/components/LoginForm/LoginFofm';
+import LoginForm from '@/components/LoginForm/LoginForm';
 
 export default function Login() {
   return (
@@ -15,19 +15,25 @@ export default function Login() {
         <div className={css.imageBox}>
           <Image
             src="/image/login.png"
-            alt="logih image"
+            alt="eggs"
             width={720}
             height={900}
-            // style={{
-            //   maxWidth: '100%',
-            //   height: '100%',
-            //   objectFit: 'cover',
-            //   position: 'absolute',
-            //   right: '0',
-            // }}
+            style={{
+              maxWidth: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              position: 'absolute',
+              right: '0',
+            }}
           />
         </div>
       </div>
     </main>
   );
 }
+
+// import LoginForm from "@/components/LoginForm/LoginForm";
+
+// export default function LoginPage() {
+//   return <LoginForm />;
+// }

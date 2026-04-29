@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { useId } from "react";
-import css from "./AuthNavigation.module.css";
-import { useAuthStore } from "@/lib/store/authStore";
+import css from "./LoginForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
+import { login } from '@/lib/api/clientApi';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
@@ -36,38 +35,34 @@ export default function LoginForm() {
 
 
 const loginMutation = useMutation({
-    mutationFn: async (values: LoginFormValues) => {
-      const res = await fetch('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
+  mutationFn: (values: LoginFormValues) => login(values),
+});
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Помилка логіну');
-      }
-      return data;
-    },
-  });
+  const queryClient = useQueryClient();
 
   return (
-    <main className="login-page">
-      <div className="login-left">
-        <div className="logo">Лелека</div>
+    <div className={css.loginPage}>
 
-        <h1 className="title">Вхід</h1>
+        <div className={css.logo}>
+          <svg className={css.logoIcon} width={30} height={30}>
+            <use href="/icons.svg#logo" />
+          </svg>
+            <svg className={css.logoLeleka} width={60} height={13}>
+            <use href="/icons.svg#icon-leleka" />
+          </svg>
+      </div>
+      <div className={css.center}>
         <Formik
           initialValues={initialValues}
           validationSchema={LoginFormSchema}
+
           onSubmit={(
   values: LoginFormValues,
   { setSubmitting, resetForm, setErrors }: FormikHelpers<LoginFormValues>
 ) => {
-  loginMutation.mutate(values, {
-    onSuccess: () => {
+            loginMutation.mutate(values, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['me'] });
       resetForm();
       router.push('/');
     },
@@ -81,30 +76,35 @@ const loginMutation = useMutation({
   });
 }}
     >
-          {({ isSubmitting }) => (
-            <Form>
-              <label htmlFor={`${fieldId}-email`}>Пошта</label>
-              <Field id={`${fieldId}-email`} type="email" name="email" className={css.input} />
+          {({ isSubmitting, errors, touched }) => (
+            <Form className={css.form}>
+              <h1 className={css.title}>Вхід</h1>
+              <Field
+                id={`${fieldId}-email`}
+                type="email" name="email"
+                className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
+                placeholder="Пошта" />
               <ErrorMessage name="email" className={css.error} component="span" />
-              <label htmlFor={`${fieldId}-password`}>Пароль</label>
-              <Field id={`${fieldId}-password`} type="password" name="password" className={css.input} />
+              <Field
+                id={`${fieldId}-password`}
+                type="password"
+                name="password"
+                className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
+                placeholder="Пароль" />
               <ErrorMessage name="password" className={css.error} component="span" />
               <button type="submit"
                 disabled={loginMutation.isPending || isSubmitting}
-                className="btn">
+                 className={css.btn}>
                 {loginMutation.isPending ? 'Завантаження...' : 'Увійти'}
               </button>
 
-              <p className="register">
-                Немає акаунту? <Link href='/auth/register'>Зареєструватися</Link>
+              <p className={css.register}>
+                Немає акаунту? <span><Link href='/auth/register'>Зареєструватися</Link></span>
               </p>
             </Form>
           )}
         </Formik>
-      </div>
-      <div className="login-right">
-        <Image src="/image/login.png" alt="eggs" fill />
-      </div>
-    </main>
+        </div>
+    </div>
   );
 }

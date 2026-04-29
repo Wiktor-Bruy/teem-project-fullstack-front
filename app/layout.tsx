@@ -29,13 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <TanStackProvider>
+
       <html
         lang="uk"
         className={`${geistLato.variable} ${geistComfortaa.variable}`}
-      >
-        <body>{children}</body>
-      </html>
-    </TanStackProvider>
+    >
+      <body>
+        <TanStackProvider>
+       {children}
+        </TanStackProvider>
+      </body>
+    </html>
   );
 }
