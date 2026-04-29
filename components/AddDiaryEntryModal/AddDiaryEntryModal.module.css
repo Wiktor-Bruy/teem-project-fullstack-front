@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.modal {
+  width: 90%;
+  max-width: 420px;
+
+  background: #ffffff;
+  border-radius: 16px;
+
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.closeButton {
+  margin-top: 16px;
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #f3f3f3;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.closeButton:hover {
+  background: #e7e7e7;
+}
+
+/* проста анімація появи */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
