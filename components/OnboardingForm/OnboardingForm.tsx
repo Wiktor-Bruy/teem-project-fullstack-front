@@ -12,11 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { nextServer } from '@/lib/api/api';
 import { OnboardingSchema, OnboardingFormValues } from '@/types/onboarding';
 import styles from './OnboardingForm.module.css';
-
 import Link from 'next/link';
-
-type User = any;
-type UploadAvatarResponse = any;
 
 registerLocale('uk', uk);
 
@@ -30,36 +26,46 @@ type GenderKey = keyof typeof genderMap;
 
 export const OnboardingForm: React.FC = () => {
   const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const genderMenuRef = useRef<HTMLDivElement>(null);
 
-  const [isGenderOpen, setIsGenderOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [isGenderMenuOpen, setIsGenderMenuOpen] = useState(false);
+  const [isGenderAnimating, setIsGenderAnimating] = useState(false);
+  const [isDateAnimating, setIsDateAnimating] = useState(false);
 
-  const [shakeGender, setShakeGender] = useState(false);
-  const [shakeDate, setShakeDate] = useState(false);
+  const today = new Date();
+
+  const latestDeliveryDate = new Date();
+  latestDeliveryDate.setDate(today.getDate() + 42 * 7);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleOutsideClick = (event: MouseEvent) => {
       if (
-        selectRef.current &&
-        !selectRef.current.contains(event.target as Node)
+        genderMenuRef.current &&
+        !genderMenuRef.current.contains(event.target as Node)
       ) {
-        setIsGenderOpen(false);
+        setIsGenderMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
   }, []);
 
-  const triggerShake = (field: 'gender' | 'deliveryDate') => {
+  const triggerFieldAnimation = (field: 'gender' | 'deliveryDate') => {
     if (field === 'gender') {
-      setShakeGender(true);
-      setTimeout(() => setShakeGender(false), 400);
+      setIsGenderAnimating(true);
+      setTimeout(() => setIsGenderAnimating(false), 400);
     }
+
     if (field === 'deliveryDate') {
-      setShakeDate(true);
-      setTimeout(() => setShakeDate(false), 400);
+      setIsDateAnimating(true);
+      setTimeout(() => setIsDateAnimating(false), 400);
     }
   };
 
@@ -69,16 +75,16 @@ export const OnboardingForm: React.FC = () => {
       gender: '',
       deliveryDate: null,
     },
+
     validationSchema: OnboardingSchema,
+
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (values.avatar) {
-          const fd = new FormData();
-          fd.append('avatar', values.avatar);
-          const { data } = await nextServer.patch<UploadAvatarResponse>(
-            '/users/avatar',
-            fd
-          );
+          const formData = new FormData();
+          formData.append('avatar', values.avatar);
+
+          await nextServer.patch('/users/avatar', formData);
         }
 
         const babyGender =
@@ -86,7 +92,7 @@ export const OnboardingForm: React.FC = () => {
             ? genderMap[values.gender as GenderKey]
             : undefined;
 
-        const { data } = await nextServer.patch<User>('/users/current', {
+        await nextServer.patch('/users/current', {
           ...(babyGender ? { babyGender } : {}),
           birthDate: values.deliveryDate
             ? values.deliveryDate.toISOString()
@@ -96,8 +102,7 @@ export const OnboardingForm: React.FC = () => {
         toast.success('Дані успішно збережено!');
         router.push('/');
       } catch (error) {
-        const msg = 'Сталася помилка при збереженні';
-        toast.error(msg);
+        toast.error('Сталася помилка при збереженні');
         console.error('Onboarding submit error:', error);
       } finally {
         setSubmitting(false);
@@ -105,13 +110,17 @@ export const OnboardingForm: React.FC = () => {
     },
   });
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
     if (!file) return;
 
-    if (preview) URL.revokeObjectURL(preview);
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+
     formik.setFieldValue('avatar', file);
-    setPreview(URL.createObjectURL(file));
+    setAvatarPreview(URL.createObjectURL(file));
   };
 
   return (
@@ -127,6 +136,7 @@ export const OnboardingForm: React.FC = () => {
                   <svg width="31" height="30">
                     <use href="/icons.svg#logo" />
                   </svg>
+
                   <svg width="61" height="13">
                     <use href="/icons.svg#icon-leleka" />
                   </svg>
@@ -139,30 +149,31 @@ export const OnboardingForm: React.FC = () => {
             <h1 className={styles.title}>Давайте познайомимось ближче</h1>
 
             <form
+              className={styles.form}
               onSubmit={e => {
                 e.preventDefault();
 
                 formik.handleSubmit();
 
                 if (!formik.values.gender) {
-                  triggerShake('gender');
+                  triggerFieldAnimation('gender');
                   formik.setFieldTouched('gender', true);
                 }
+
                 if (!formik.values.deliveryDate) {
-                  triggerShake('deliveryDate');
+                  triggerFieldAnimation('deliveryDate');
                   formik.setFieldTouched('deliveryDate', true);
                 }
               }}
-              className={styles.form}
             >
               <div className={styles.avatarSection}>
                 <div
                   className={styles.avatarCircle}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  {preview ? (
+                  {avatarPreview ? (
                     <Image
-                      src={preview}
+                      src={avatarPreview}
                       alt="Аватар"
                       fill
                       className={styles.image}
@@ -195,8 +206,8 @@ export const OnboardingForm: React.FC = () => {
 
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
                   className={styles.uploadBtn}
+                  onClick={() => fileInputRef.current?.click()}
                 >
                   Завантажити фото
                 </button>
@@ -206,17 +217,20 @@ export const OnboardingForm: React.FC = () => {
                 <div className={styles.inputGroup}>
                   <label className={styles.label}>Стать дитини</label>
 
-                  <div className={styles.customSelectWrapper} ref={selectRef}>
+                  <div
+                    ref={genderMenuRef}
+                    className={styles.customSelectWrapper}
+                  >
                     <div
                       className={`${styles.selectField}
-                        ${isGenderOpen ? styles.active : ''}
-                        ${
-                          formik.touched.gender && formik.errors.gender
-                            ? styles.inputInvalid
-                            : ''
-                        }
-                        ${shakeGender ? styles.shake : ''}`}
-                      onClick={() => setIsGenderOpen(!isGenderOpen)}
+                      ${isGenderMenuOpen ? styles.active : ''}
+                      ${
+                        formik.touched.gender && formik.errors.gender
+                          ? styles.inputInvalid
+                          : ''
+                      }
+                      ${isGenderAnimating ? styles.shake : ''}`}
+                      onClick={() => setIsGenderMenuOpen(!isGenderMenuOpen)}
                     >
                       <span
                         className={
@@ -235,41 +249,43 @@ export const OnboardingForm: React.FC = () => {
                       </span>
 
                       <svg
-                        className={`${styles.selectArrow} ${
-                          isGenderOpen ? styles.rotated : ''
-                        }`}
                         width="24"
                         height="14"
+                        className={`${styles.selectArrow} ${
+                          isGenderMenuOpen ? styles.rotated : ''
+                        }`}
                       >
                         <use href="/icons.svg#arrow-down" />
                       </svg>
                     </div>
 
-                    {isGenderOpen && (
+                    {isGenderMenuOpen && (
                       <div className={styles.optionsList}>
                         <div
                           className={styles.option}
                           onClick={() => {
                             formik.setFieldValue('gender', 'boy');
-                            setIsGenderOpen(false);
+                            setIsGenderMenuOpen(false);
                           }}
                         >
                           Хлопчик
                         </div>
+
                         <div
                           className={styles.option}
                           onClick={() => {
                             formik.setFieldValue('gender', 'girl');
-                            setIsGenderOpen(false);
+                            setIsGenderMenuOpen(false);
                           }}
                         >
                           Дівчинка
                         </div>
+
                         <div
                           className={styles.option}
                           onClick={() => {
                             formik.setFieldValue('gender', 'unknown');
-                            setIsGenderOpen(false);
+                            setIsGenderMenuOpen(false);
                           }}
                         >
                           Ще не знаю
@@ -292,17 +308,19 @@ export const OnboardingForm: React.FC = () => {
                       onChange={(date: Date | null) =>
                         formik.setFieldValue('deliveryDate', date)
                       }
+                      minDate={today}
+                      maxDate={latestDeliveryDate}
                       dateFormat="dd.MM.yyyy"
                       locale="uk"
                       wrapperClassName={styles.datePickerCustom}
                       className={`${styles.input}
-                        ${
-                          formik.touched.deliveryDate &&
-                          formik.errors.deliveryDate
-                            ? styles.inputInvalid
-                            : ''
-                        }
-                        ${shakeDate ? styles.shake : ''}`}
+                      ${
+                        formik.touched.deliveryDate &&
+                        formik.errors.deliveryDate
+                          ? styles.inputInvalid
+                          : ''
+                      }
+                      ${isDateAnimating ? styles.shake : ''}`}
                       placeholderText="16.07.2025"
                       autoComplete="off"
                     />
@@ -319,8 +337,8 @@ export const OnboardingForm: React.FC = () => {
 
               <button
                 type="submit"
-                className={styles.button}
                 disabled={formik.isSubmitting}
+                className={styles.button}
               >
                 {formik.isSubmitting ? 'Збереження...' : 'Зберегти'}
               </button>
