@@ -1,17 +1,21 @@
 import { NextResponse } from 'next/server';
-import { api } from '../../api';
+import { api } from '../../../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
 
-export async function POST(request: Request) {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export async function PUT(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
+    const { noteId } = await params;
     const body = await request.json();
 
-    const res = await api.post('/note', body, {
+    const res = await api.put(`/note/${noteId}`, body, {
       headers: {
         Cookie: cookieStore.toString(),
-        'Content-Type': 'application/json',
       },
     });
 

@@ -1,17 +1,20 @@
 import { NextResponse } from 'next/server';
-import { api } from '../../api';
+import { api } from '../../../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
 
-export async function POST(request: Request) {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export async function DELETE(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
-    const body = await request.json();
+    const { noteId } = await params;
 
-    const res = await api.post('/note', body, {
+    const res = await api.delete(`/note/${noteId}`, {
       headers: {
         Cookie: cookieStore.toString(),
-        'Content-Type': 'application/json',
       },
     });
 
