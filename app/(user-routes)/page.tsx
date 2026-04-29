@@ -4,6 +4,8 @@ import BabyTodayCard from '@/components/BabyTodayCard/BabyTodayCard';
 import MomTipCard from '@/components/MomTipCard/MomTipCard';
 import TasksReminderCard from '@/components/TasksReminderCard/TasksReminderCard';
 import FeelingCheckCard from '@/components/FeelingCheckCard/FeelingCheckCard';
+import Modal from '@/components/Modal/Modal';
+import AddTaskModal from '@/components/AddTaskModal/AddTaskModal';
 
 export default function Home() {
   return (
@@ -14,6 +16,9 @@ export default function Home() {
       <MomTipCard />
       <TasksReminderCard />
       <FeelingCheckCard />
+      <Modal>
+        <AddTaskModal />
+      </Modal>
     </div>
   );
 }
