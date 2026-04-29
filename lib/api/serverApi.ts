@@ -22,10 +22,30 @@ export async function getNotes() {}
 export async function getNote() {}
 
 //------------------------------------------------Повертає-всі-таски
-export async function getTasks() {}
+export async function getTasks() {
+  const cookieStore = await cookies();
+
+  const res = await nextServer.get('/task', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return res.data;
+}
 
 //-------------Повертає-терміни-(дефолт-для-незареєстрованого-коректні-для-зареєстрованого)
-export async function getTerm() {}
+export async function getTerm() {
+  const cookieStore = await cookies();
+
+  const res = await nextServer.get('/home', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return res.data;
+}
 
 //------------------------------------------------Повертає-стан-дитини
 export async function getBabyState() {}
