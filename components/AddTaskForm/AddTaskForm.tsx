@@ -1,11 +1,15 @@
 'use client';
 
 import css from './AddTaskForm.module.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import { Field, Formik, Form, ErrorMessage, FormikHelpers } from 'formik';
+import { useFormik } from 'formik';
 import { useId } from 'react';
-import * as Yup from 'yup';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { toast, Toaster } from 'react-hot-toast';
+import clsx from 'clsx';
+import DatePicker from 'react-datepicker';
 
 import type { Task } from '@/types/types';
 import { createTask } from '@/lib/api/clientApi';
@@ -16,14 +20,12 @@ interface AddTaskFormProps {
 
 const today = new Date(Date.now()).toISOString().slice(0, 10);
 
-const initValue: Task = {
-  title: '',
-  date: today,
-};
-
 export default function AddTaskForm({ onClose }: AddTaskFormProps) {
-  const task = useId();
-  const date = useId();
+  const [inputDate, setInputDate] = useState(new Date(today));
+  const id = useId();
+  const [isErrText, setIsErrText] = useState(false);
+  const [titleErr, setTitleErr] = useState('');
+  const [isDateErr, setIsDateErr] = useState(false);
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
@@ -35,52 +37,99 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       onClose();
     },
+    onError: error => {
+      toast.error(error.message);
+    },
   });
 
-  function handleSubmit(values: Task, action: FormikHelpers<Task>) {
-    createMutation.mutate(values);
-    action.resetForm();
+  function changeText(event: React.ChangeEvent) {
+    formik.handleChange(event);
+    const elem = event.target as HTMLInputElement;
+    const isBlank = elem.value === '';
+    const isMin = elem.value.length < 1;
+    const isMax = elem.value.length > 96;
+    if (isBlank || isMin || isMax) {
+      if (isBlank) setTitleErr('Це поле обов`язкове');
+      if (isMin) setTitleErr('Має мінімум 1 символ.');
+      if (isMax) setTitleErr('Максимально 96 символів.');
+      setIsErrText(true);
+    } else {
+      setIsErrText(false);
+    }
   }
 
-  const validationSchema = Yup.object().shape({
-    title: Yup.string()
-      .min(1, 'Має бути хоча б 1 символ.')
-      .max(96, 'Максимально 96 символів.')
-      .required('Це поле обов`язкове'),
-    date: Yup.date()
-      .min(today, 'Ви вказали дату, що пройшла.')
-      .required('Це поле обов`язкове'),
+  function changeDate(myDate: Date | null) {
+    let isErr;
+    if (myDate != null) {
+      setInputDate(myDate);
+      isErr = myDate < new Date(today);
+    }
+    if (isErr) {
+      setIsDateErr(true);
+    } else {
+      setIsDateErr(false);
+    }
+    const currDate = myDate?.toISOString().slice(0, 10);
+    formik.setFieldValue('date', currDate);
+  }
+
+  const formik = useFormik({
+    initialValues: { title: '', date: today },
+    onSubmit: values => {
+      if (values.title === '') {
+        setTitleErr('Це поле обов`язкове');
+        setIsErrText(true);
+        return;
+      } else if (values.title.length < 1) {
+        setTitleErr('Має бути мінімум 1 символ.');
+        setIsErrText(true);
+        return;
+      } else if (values.title.length > 96) {
+        setTitleErr('Максимально 96 символів.');
+        setIsErrText(true);
+        return;
+      } else if (new Date(values.date) < new Date(today)) {
+        setIsDateErr(true);
+        return;
+      }
+      createMutation.mutate(values);
+    },
   });
 
   return (
-    <>
-      <Formik
-        validationSchema={validationSchema}
-        initialValues={initValue}
-        onSubmit={handleSubmit}
-      >
-        <Form className={css.taskForm}>
-          <div className={css.formGroup}>
-            <label htmlFor={task}>Назва завдання</label>
-            <Field
-              className={css.input}
-              type="text"
-              name="title"
-              id={task}
-              placeholder="Прийняти вітаміни"
-            />
-            <ErrorMessage name="title" component="span" />
-          </div>
-          <div className={css.formGroup}>
-            <label htmlFor={date}>Дата</label>
-            <Field className={css.input} type="date" name="date" id={date} />
-            <ErrorMessage name="date" component="span" />
-          </div>
-          <button className={css.btn} type="submit">
-            Зберегти
-          </button>
-        </Form>
-      </Formik>
-    </>
+    <form onSubmit={formik.handleSubmit} className={css.taskForm}>
+      <Toaster position="top-right" />
+      <div className={css.formGroup}>
+        <label className={css.text} htmlFor={`title-${id}`}>
+          Назва завдання
+        </label>
+        <input
+          onChange={changeText}
+          id={`title-${id}`}
+          name="title"
+          className={clsx(css.input, isErrText && css.inputInvalid)}
+          type="text"
+          placeholder="Прийняти вітаміни"
+        />
+        {isErrText && <span className={css.errMess}>{titleErr}</span>}
+      </div>
+      <div className={css.formGroup}>
+        <label className={css.text}>Дата</label>
+        <DatePicker
+          selected={inputDate}
+          onChange={(date: Date | null) => changeDate(date)}
+          wrapperClassName={clsx(css.input, css.datepicker)}
+          className={clsx(css.datainput, isDateErr && css.inputInvalid)}
+          dateFormat="dd.MM.yyyy"
+          autoComplete="off"
+        />
+        {isDateErr && (
+          <span className={css.errMess}>Ви вказали дату, що пройшла.</span>
+        )}
+      </div>
+      <button className={css.btn} type="submit">
+        Зберегти
+      </button>
+    </form>
   );
 }
