@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Lato, Comfortaa } from 'next/font/google';
-
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 import './globals.css';
 
 import TanStackProvider from '@/components/TanstackProvider/TanstackProvider';
@@ -36,7 +36,9 @@ export default function RootLayout({
     >
       <body>
         <TanStackProvider>
-       {children}
+          <AuthProvider>
+            {children}
+            </AuthProvider>
         </TanStackProvider>
       </body>
     </html>

@@ -16,15 +16,10 @@ export default function Login() {
           <Image
             src="/image/login.png"
             alt="eggs"
-            width={720}
-            height={900}
-            style={{
-              maxWidth: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              position: 'absolute',
-              right: '0',
-            }}
+            fill
+            className={css.image}
+            sizes="(min-width: 1440px) 50vw, 0px"
+            priority
           />
         </div>
       </div>
