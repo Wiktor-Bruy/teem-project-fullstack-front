@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const cookieStore = await cookies();
     const body = await request.json();
 
-    const res = await api.post('/note', body, {
+    const res = await api.post('/notes', body, {
       headers: {
         Cookie: cookieStore.toString(),
         'Content-Type': 'application/json',
@@ -23,6 +23,9 @@ export async function POST(request: Request) {
         { status: error.status }
       );
     }
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }

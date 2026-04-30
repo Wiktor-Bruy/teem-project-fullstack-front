@@ -13,7 +13,7 @@ export async function PUT(request: Request, { params }: Props) {
     const { noteId } = await params;
     const body = await request.json();
 
-    const res = await api.put(`/note/${noteId}`, body, {
+    const res = await api.put(`/notes/${noteId}`, body, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -27,6 +27,9 @@ export async function PUT(request: Request, { params }: Props) {
         { status: error.status }
       );
     }
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
