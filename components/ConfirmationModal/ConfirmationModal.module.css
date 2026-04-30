@@ -1,0 +1,78 @@
+.confirm {
+  position: relative;
+  text-align: center;
+}
+
+.confirm-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  fill: var(--color-white);
+  stroke-width: 1px;
+  stroke: var(--color-scheme-text);
+  /* border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer; */
+}
+
+/* заголовок */
+.confirm__title {
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: #000;
+  margin-bottom: 48px;
+}
+
+/* кнопки */
+.confirm__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* базова кнопка */
+.confirm__btn {
+  height: 48px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+/* НІ (рожевувата) */
+.confirm__btn--cancel {
+  background: #e6bfc4;
+}
+
+/* ТАК (сіра) */
+.confirm__btn--confirm {
+  background: #e0e0e0;
+}
+
+/* hover */
+.confirm__btn:hover {
+  opacity: 0.9;
+}
+
+/* active */
+.confirm__btn:active {
+  transform: scale(0.98);
+}
+
+/* анімація */
+@keyframes confirm-scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

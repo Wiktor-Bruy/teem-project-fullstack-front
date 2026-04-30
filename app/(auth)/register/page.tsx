@@ -25,7 +25,7 @@ export default function Register() {
       const res = await register(formValues);
       if (res) {
         setUser(res);
-        router.push('/profile');
+        router.push('/profile/edit');
       }
     } catch (err: unknown) {
       if (isAxiosError(err)) {
