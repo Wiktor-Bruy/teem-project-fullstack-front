@@ -1,19 +1,24 @@
 export interface User {
+  _id: string;
   name: string;
-  _id?: string;
   email?: string;
-  password?: string;
-  avatar?: string;
+  gender?: BabyGender;
   dueDate?: string;
-  babyName?: string;
-  babyGender?: BabyGender;
-  createdAt?: string;
-  updatedAt?: string;
+  avatar?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type BabyGender = 'girl' | 'boy' | 'not selected';
+export type BabyGender = 'boy' | 'girl' | 'unknown';
 
-export type Emotions = 'перелік емоцій';
+export interface Emotion {
+  _id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Emotions = string[];
 
 export interface LoginRequest {
   email: string;
@@ -21,59 +26,52 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+  name: string;
   email: string;
   password: string;
-  name: string;
 }
 
 export interface UpdateUserRequest {
   name?: string;
+  gender?: BabyGender;
   dueDate?: string;
-  babyName?: string;
-  babyGender?: BabyGender;
+  email?: string;
 }
 
 export interface Note {
-  _id?: string;
-  userId?: string;
+  _id: string;
   title: string;
-  content: string;
-  emotion?: Emotions;
-  date?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  description: string;
+  emotions: Emotion[];
+  userId: string;
+
 }
 
 export interface CreateNoteRequest {
   title: string;
-  content: string;
-  emotion?: Emotions;
-  date?: string;
+  description: string;
+  emotions: string[];
 }
 
-export interface UpdateNoteRequest extends Partial<CreateNoteRequest> {}
-
-export type TaskStatus = 'pending' | 'completed' | 'in-progress';
-
-export interface Task {
-  _id?: string;
-  userId?: string;
-  title: string;
+export interface UpdateNoteRequest {
+  title?: string;
   description?: string;
-  status: TaskStatus;
-  dueDate?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  emotions?: string[];
+}
+
+export interface TaskResponse {
+  _id: string;
+  title: string;
+  date: string;
+  isDone: boolean;
+  owner: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateTaskRequest {
   title: string;
-  description?: string;
-  dueDate?: string;
-}
-
-export interface UpdateTaskRequest {
-  status: TaskStatus;
+  date: string
 }
 
 export interface BabyState {
@@ -107,6 +105,4 @@ export interface HomePrivateResponse extends HomePublicResponse {
 
 export interface AuthResponse {
   user: User;
-  accessToken?: string;
-  refreshToken?: string;
 }

@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { OnboardingForm } from '@/components/OnboardingForm/OnboardingForm';
 
-export default function Regisrewter() {
+export default function Onboarding() {
   return (
     <main>
       <div className={clsx(css.box, 'container')}>
@@ -15,16 +15,11 @@ export default function Regisrewter() {
         <div className={css.imageBox}>
           <Image
             src="/image/user.png"
-            alt="logih image"
-            width={720}
-            height={900}
-            // style={{
-            //   maxWidth: '100%',
-            //   height: '100%',
-            //   objectFit: 'cover',
-            //   position: 'absolute',
-            //   right: '0',
-            // }}
+            alt="onbording image"
+            fill
+            className={css.image}
+            sizes="(min-width: 1440px) 50vw, 0px"
+            priority
           />
         </div>
       </div>

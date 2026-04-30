@@ -7,9 +7,9 @@ import type {
   Note,
   CreateNoteRequest,
   UpdateNoteRequest,
-  Task,
+  TaskResponse,
   CreateTaskRequest,
-  UpdateTaskRequest,
+  UpdateUserRequest,
 } from '../../types/types';
 
 //------------------------------------------------Функція-логіну
@@ -26,7 +26,7 @@ export async function register(
   return res.data;
 }
 
-//------------------------------------------------Функція-рефрешу-сесії
+
 export async function checkSession(): Promise<User | null> {
   try {
     const res = await nextServer.get('/auth/session');
@@ -36,6 +36,7 @@ export async function checkSession(): Promise<User | null> {
   }
 }
 
+//------------------------------------------------Функція-рефрешу-сесії
 export async function refreshSession(): Promise<AuthResponse> {
   const res = await nextServer.post('/auth/refresh');
   return res.data;
@@ -55,18 +56,15 @@ export async function getMe(): Promise<User> {
 
 //------------------------------------------------Оновлює-дані користувача
 export async function updateUser(
-  data: Partial<User> & { password?: string }
+  data: UpdateUserRequest
 ): Promise<User> {
   const res = await nextServer.put('/user/update', data);
   return res.data;
 }
 
 //------------------------------------------------Оновлює-аватар
-export async function updateAvatar(formData: FormData): Promise<User> {
+export async function updateAvatar(formData: FormData): Promise<{url: string}> {
   const res = await nextServer.put('/user/update/avatar', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
   });
   return res.data;
 }
@@ -96,32 +94,32 @@ export async function updateNote(
   noteId: string,
   data: UpdateNoteRequest
 ): Promise<Note> {
-  const res = await nextServer.put(`/note/${noteId}`, data);
+  const res = await nextServer.patch(`/note/${noteId}`, data);
   return res.data;
 }
 
 //------------------------------------------------Видаляє-запис-щоденника
-export async function deleteNote(noteId: string): Promise<void> {
-  await nextServer.delete(`/note/${noteId}`);
+export async function deleteNote(noteId: string): Promise<Note> {
+  const res = await nextServer.delete(`/note/${noteId}`);
+  return res.data;
 }
 
 //------------------------------------------------Повертає-всі-таски
-export async function getTasks(): Promise<Task[]> {
-  const res = await nextServer.get('/task');
+export async function getTasks(): Promise<TaskResponse[]> {
+  const res = await nextServer.get('/tasks');
   return res.data;
 }
 
 //------------------------------------------------Створює-задачу
-export async function createTask(data: CreateTaskRequest): Promise<Task> {
-  const res = await nextServer.post('/task/create', data);
-  return res.data;
+export async function createTask(
+  data: CreateTaskRequest): Promise<TaskResponse> {
+  const { data: task } = await nextServer.post('/tasks/create', data);
+  return task;
 }
-
 //------------------------------------------------Оновлює-задачу
 export async function updateTask(
   taskId: string,
-  data: UpdateTaskRequest
-): Promise<Task> {
-  const res = await nextServer.patch(`/task/update/${taskId}`, data);
+): Promise<TaskResponse> {
+  const res = await nextServer.patch(`/tasks/update/${taskId}`);
   return res.data;
 }

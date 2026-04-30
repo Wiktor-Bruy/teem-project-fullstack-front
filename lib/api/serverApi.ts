@@ -3,7 +3,7 @@ import { nextServer } from './api';
 import type {
   User,
   Note,
-  Task,
+  CreateTaskRequest,
   BabyState,
   MomState,
   HomePublicResponse,
@@ -58,7 +58,7 @@ export async function getNote(noteId: string): Promise<Note> {
 }
 
 //------------------------------------------------Повертає-всі-таски
-export async function getTasks(): Promise<Task[]> {
+export async function getTasks(): Promise<CreateTaskRequest[]> {
   const cookieStore = await cookies();
   const res = await nextServer.get('/task', {
     headers: {
