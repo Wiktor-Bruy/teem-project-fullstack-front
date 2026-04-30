@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Lato, Comfortaa } from 'next/font/google';
-
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 import './globals.css';
 
 import TanStackProvider from '@/components/TanstackProvider/TanstackProvider';
@@ -31,15 +31,18 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <TanStackProvider>
+
       <html
         lang="uk"
         className={`${geistLato.variable} ${geistComfortaa.variable}`}
-      >
-        <body>
-          {children} {modal}
-        </body>
-      </html>
-    </TanStackProvider>
+    >
+      <body>
+        <TanStackProvider>
+          <AuthProvider>
+            {children}
+            </AuthProvider>
+        </TanStackProvider>
+      </body>
+    </html>
   );
 }
