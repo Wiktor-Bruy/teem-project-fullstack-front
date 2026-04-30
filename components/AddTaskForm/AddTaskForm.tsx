@@ -26,6 +26,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
   const [isErrText, setIsErrText] = useState(false);
   const [titleErr, setTitleErr] = useState('');
   const [isDateErr, setIsDateErr] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
@@ -35,10 +36,12 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      setIsFetching(false);
       onClose();
     },
     onError: error => {
       toast.error(error.message);
+      setIsFetching(false);
     },
   });
 
@@ -93,6 +96,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
         return;
       }
       createMutation.mutate(values);
+      setIsFetching(true);
     },
   });
 
@@ -127,8 +131,8 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
           <span className={css.errMess}>Ви вказали дату, що пройшла.</span>
         )}
       </div>
-      <button className={css.btn} type="submit">
-        Зберегти
+      <button className={css.btn} type="submit" disabled={isFetching}>
+        {createMutation.isPending ? 'Збереження...' : 'Зберегти'}
       </button>
     </form>
   );
