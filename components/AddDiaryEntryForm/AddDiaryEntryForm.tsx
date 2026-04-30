@@ -3,6 +3,28 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import styles from "./AddDiaryEntryForm.module.css";
 
+/* ✅ тип емоцій */
+type Emotion = {
+  _id: string;
+  title: string;
+};
+
+type Props = {
+  onSuccess: () => void;
+  initialData?: {
+    _id?: string;
+    title?: string;
+    text?: string;
+    categories?: { _id: string }[];
+  };
+};
+
+type FormValues = {
+  title: string;
+  text: string;
+  categories: string[];
+};
+
 const schema = Yup.object({
   title: Yup.string().required("Введіть заголовок"),
   text: Yup.string().required("Введіть текст"),
@@ -12,8 +34,8 @@ const schema = Yup.object({
 export default function AddDiaryEntryForm({
   onSuccess,
   initialData,
-}: any) {
-  const [emotions, setEmotions] = useState([]);
+}: Props) {
+  const [emotions, setEmotions] = useState<Emotion[]>([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -23,11 +45,11 @@ export default function AddDiaryEntryForm({
   }, []);
 
   return (
-    <Formik
+    <Formik<FormValues>
       initialValues={{
         title: initialData?.title || "",
         text: initialData?.text || "",
-        categories: initialData?.categories?.map((c: any) => c._id) || [],
+        categories: initialData?.categories?.map((c) => c._id) || [],
       }}
       validationSchema={schema}
       onSubmit={async (values) => {
@@ -45,13 +67,14 @@ export default function AddDiaryEntryForm({
     >
       {({ values, setFieldValue }) => (
         <Form className={styles.form}>
+          {/* TITLE */}
           <Field name="title" placeholder="Заголовок" />
           <ErrorMessage name="title" component="div" />
 
-          {/* chips */}
+          {/* CHIPS */}
           <div className={styles.chips}>
-            {values.categories.map((id: string) => {
-              const e = emotions.find((x: any) => x._id === id);
+            {values.categories.map((id) => {
+              const e = emotions.find((x) => x._id === id);
               if (!e) return null;
 
               return (
@@ -73,14 +96,18 @@ export default function AddDiaryEntryForm({
             })}
           </div>
 
-          {/* dropdown */}
-          <div onClick={() => setOpen(!open)} className={styles.dropdownBtn}>
+          {/* DROPDOWN BUTTON */}
+          <div
+            onClick={() => setOpen((prev) => !prev)}
+            className={styles.dropdownBtn}
+          >
             Обрати емоції
           </div>
 
+          {/* DROPDOWN */}
           {open && (
             <div className={styles.dropdown}>
-              {emotions.map((e: any) => (
+              {emotions.map((e) => (
                 <label key={e._id}>
                   <input
                     type="checkbox"
@@ -107,9 +134,11 @@ export default function AddDiaryEntryForm({
 
           <ErrorMessage name="categories" component="div" />
 
+          {/* TEXT */}
           <Field as="textarea" name="text" placeholder="Запис" />
           <ErrorMessage name="text" component="div" />
 
+          {/* SUBMIT */}
           <button type="submit">
             {initialData ? "Оновити" : "Зберегти"}
           </button>

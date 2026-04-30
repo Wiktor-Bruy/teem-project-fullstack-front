@@ -19,7 +19,7 @@ export default function AddDiaryEntryModal({ isOpen, onClose, children }: any) {
         onClick={(e) => e.stopPropagation()}
       >
         <button className={styles.close} onClick={onClose}>
-          ×
+         <img src="/public/close.svg" alt="close" />
         </button>
         {children}
       </div>
