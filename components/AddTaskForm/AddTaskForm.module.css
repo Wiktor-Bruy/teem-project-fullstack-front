@@ -97,7 +97,7 @@
     margin: 0 auto;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1440px) {
   .text {
     font-size: 16px;
   }
