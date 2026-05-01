@@ -3,16 +3,19 @@
 import css from './AddTaskModal.module.css';
 
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
+import Modal from '../Modal/Modal';
 
 interface TaskModalProps {
-  onCreate: () => void;
+  onClose: () => void;
 }
 
-export default function TaskModal({ onCreate }: TaskModalProps) {
+export default function TaskModal({ onClose }: TaskModalProps) {
   return (
-    <div className={css.box}>
-      <p className={css.title}>Нове завдання</p>
-      <AddTaskForm />
-    </div>
+    <Modal onClose={onClose}>
+      <div className={css.box}>
+        <p className={css.title}>Нове завдання</p>
+        <AddTaskForm onClose={onClose} />
+      </div>
+    </Modal>
   );
 }
