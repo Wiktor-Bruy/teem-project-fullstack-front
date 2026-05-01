@@ -1,23 +1,8 @@
 .confirm {
-  position: relative;
-  text-align: center;
+  margin: 64px 20px;
 }
 
-.confirm-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  fill: var(--color-white);
-  stroke-width: 1px;
-  stroke: var(--color-scheme-text);
-  /* border: none;
-  background: transparent;
-  font-size: 20px;
-  cursor: pointer; */
-}
-
-/* заголовок */
-.confirm__title {
+.confirmTitle {
   font-family: 'Comfortaa', sans-serif;
   font-weight: 700;
   font-size: 36px;
@@ -28,51 +13,82 @@
   margin-bottom: 48px;
 }
 
-/* кнопки */
-.confirm__actions {
+.confirmActions {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 24px;
 }
 
-/* базова кнопка */
-.confirm__btn {
-  height: 48px;
-  border-radius: 999px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.15s ease;
+.button {
+  height: 42px;
+  max-width: 268px;
+  border-radius: 100px;
+  padding: 10px 24px;
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #000;
 }
 
-/* НІ (рожевувата) */
-.confirm__btn--cancel {
-  background: #e6bfc4;
+.confirmButton {
+  border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.05);
 }
 
-/* ТАК (сіра) */
-.confirm__btn--confirm {
-  background: #e0e0e0;
+.cancelButton {
+  border-bottom: 4px solid #ffcbd3;
+  background: #ffdae0;
 }
 
-/* hover */
-.confirm__btn:hover {
-  opacity: 0.9;
+.confirmButton:hover,
+.confirmButton:focus {
+  border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+  background: #fff4f6;
 }
 
-/* active */
-.confirm__btn:active {
-  transform: scale(0.98);
+.cancelButton:hover,
+.cancelButton:focus {
+  border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
 }
 
-/* анімація */
-@keyframes confirm-scale-in {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
+.confirmButton:active {
+  background: #ffcbd3;
+}
+
+.cancelButton:active {
+  background: #b2b2b2;
+}
+
+@media screen and (min-width: 768px) {
+  .confirm {
+    margin: 64px 32px;
   }
-  to {
-    transform: scale(1);
-    opacity: 1;
+
+  .confirmActions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .button {
+    width: 268px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .confirm {
+    margin: 64px;
+  }
+
+  .confirmTitle {
+    font-size: 48px;
+  }
+
+  .button {
+    height: 46px;
+    font-size: 16px;
   }
 }

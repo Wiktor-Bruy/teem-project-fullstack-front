@@ -1,4 +1,6 @@
 import Modal from '../Modal/Modal';
+import css from './ConfirmationModal.module.css';
+import clsx from 'clsx';
 
 interface ConfirmationModalProps {
   title: string;
@@ -17,23 +19,17 @@ export default function ConfirmationModal({
 }: ConfirmationModalProps) {
   return (
     <Modal onClose={onCancel}>
-      <div className="confirm">
-        <button className="confirm-close" onClick={onCancel}>
-          <svg width="24" height="24">
-            <use href="../../public/icons.svg#close" />
-          </svg>
-        </button>
-        <h2 className="confirm-title">{title}</h2>
-        <div className="confirm-actions">
+      <div className={css.confirm}>
+        <h2 className={css.confirmTitle}>{title}</h2>
+        <div className={css.confirmActions}>
           <button
-            className="confirm-btn confirm__btn--cancel"
+            className={clsx(css.button, css.cancelButton)}
             onClick={onCancel}
           >
             {cancelButtonText}
           </button>
-
           <button
-            className="confirm-btn confirm__btn--confirm"
+            className={clsx(css.button, css.confirmButton)}
             onClick={onConfirm}
           >
             {confirmButtonText}
