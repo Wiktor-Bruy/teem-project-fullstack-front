@@ -1,22 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { api } from '@/lib/api/api';
+import { NextResponse } from 'next/server';
+import { api } from '../../api';
 import { cookies } from 'next/headers';
+import { isAxiosError } from 'axios';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const res = await api.get('/home/baby', {
+    const res = await api.get('/weeks/baby', {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
 
-    return NextResponse.json(res.data);
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    console.error('Error fetching baby state:', error);
+    if (isAxiosError(error)) {
+      return NextResponse.json(
+        { error: error.message, data: error.response?.data },
+        { status: error.status }
+      );
+    }
     return NextResponse.json(
-      { error: 'Failed to fetch baby state' },
+      { error: 'Some server error...' },
       { status: 500 }
     );
   }
