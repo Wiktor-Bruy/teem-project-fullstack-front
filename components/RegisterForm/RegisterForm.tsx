@@ -7,8 +7,11 @@ import css from "./RegisterForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { register } from '@/lib/api/clientApi';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from 'axios';
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
+import { useAuthStore } from "@/lib/store/authStore";
+import type { RegisterRequest, User } from '@/types/types'
 
 const RegisterFormSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,28 +29,23 @@ const initialValues: RegisterFormValues = {
   password: "",
 };
 
-type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 type RegisterFormValues = RegisterRequest;
 
 export default function RegisterForm() {
   const router = useRouter();
   const fieldId = useId();
+  const setUser = useAuthStore((state) => state.setUser);
 
 
-const registerMutation = useMutation<
-  AuthResponse,
-  Error,
-  RegisterRequest
->({
-  mutationFn: register,
-});
+// const registerMutation = useMutation<
+//   User,
+//   Error,
+//   RegisterRequest
+// >({
+//   mutationFn: register,
+// });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   return (
     <div className={css.page}>
@@ -65,25 +63,31 @@ const registerMutation = useMutation<
           initialValues={initialValues}
           validationSchema={RegisterFormSchema}
 
-          onSubmit={(
+          onSubmit={ async (
   values: RegisterFormValues,
   { setSubmitting, resetForm, setErrors }: FormikHelpers<RegisterFormValues>
-) => {
-            registerMutation.mutate(values, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['me'] });
-      resetForm();
-      router.push('/');
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-      setErrors({
-        password: "Користувач з такою поштою вже існує",
-      });
-    },
-    onSettled: () => setSubmitting(false),
-  });
-}}
+          ) => {
+            try {
+              const user: User = await register(values);
+
+              setUser(user); // 👈 одразу кладеш у store
+              resetForm();
+              router.push('/profile');
+
+            } catch (error: unknown) {
+  if (isAxiosError(error)) {
+    toast.error(error.response?.data?.message || 'Помилка реєстрації');
+  } else {
+    toast.error('Щось пішло не так');
+  }
+              setErrors({
+                password: "Користувач з такою поштою вже існує",
+              });
+
+            } finally {
+              setSubmitting(false);
+            }
+          }}
     >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
@@ -115,13 +119,13 @@ const registerMutation = useMutation<
               />
               <ErrorMessage name="password" className={css.error} component="span" />
               <button type="submit"
-                disabled={registerMutation.isPending || isSubmitting}
+                disabled={isSubmitting}
                  className={css.btn}>
-                {registerMutation.isPending ? 'Завантаження...' : 'Зареєструватись'}
+                {isSubmitting ? 'Завантаження...' : 'Зареєструватись'}
               </button>
 
               <p className={css.register}>
-                Вже маєте аккаунт? <span><Link href='/auth/login'>Увійти</Link></span>
+                Вже маєте аккаунт? <span><Link href='/login'>Увійти</Link></span>
               </p>
             </Form>
           )}

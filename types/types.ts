@@ -2,7 +2,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  gender: BabyGender;
+  gender?: BabyGender;
   dueDate?: string;
   avatar?: string;
   createdAt: string;

@@ -64,7 +64,7 @@ const loginMutation = useMutation({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['me'] });
       resetForm();
-      router.push('/profile');
+      router.push('/');
     },
     onError: (error: Error) => {
       toast.error(error.message);
