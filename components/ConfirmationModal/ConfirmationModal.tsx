@@ -4,12 +4,16 @@ import clsx from 'clsx';
 
 interface ConfirmationModalProps {
   title: string;
+  confirmButtonText: string;
+  cancelButtonText: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
 export default function ConfirmationModal({
   title,
+  confirmButtonText,
+  cancelButtonText,
   onConfirm,
   onCancel,
 }: ConfirmationModalProps) {
@@ -22,13 +26,13 @@ export default function ConfirmationModal({
             className={clsx(css.button, css.cancelButton)}
             onClick={onCancel}
           >
-            Ні
+            {cancelButtonText}
           </button>
           <button
             className={clsx(css.button, css.confirmButton)}
             onClick={onConfirm}
           >
-            Так
+            {confirmButtonText}
           </button>
         </div>
       </div>
