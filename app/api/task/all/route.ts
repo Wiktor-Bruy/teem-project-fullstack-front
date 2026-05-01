@@ -1,29 +1,30 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { AxiosError } from 'axios';
-import { nextServer } from '@/lib/api/api';
+import { isAxiosError } from 'axios';
+import { api } from '../../api';
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const { data } = await nextServer.get('/task', {
+    const res = await api.get('/task', {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
 
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    const err = error as AxiosError<{ message?: string }>;
-
-    return NextResponse.json(
-      {
-        message: err.response?.data?.message || 'Failed to fetch tasks',
-      },
-      {
-        status: err.response?.status || 500,
-      }
-    );
+    if (isAxiosError(error)) {
+      return NextResponse.json(
+        { error: error.message, data: error.response?.data },
+        { status: error.status }
+      );
+    } else {
+      return NextResponse.json(
+        { error: 'Some server error...' },
+        { status: 500 }
+      );
+    }
   }
 }
