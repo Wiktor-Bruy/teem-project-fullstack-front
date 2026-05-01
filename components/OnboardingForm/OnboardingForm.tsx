@@ -14,6 +14,8 @@ import { OnboardingSchema, OnboardingFormValues } from '@/types/onboarding';
 import styles from './OnboardingForm.module.css';
 import Link from 'next/link';
 
+import { updateAvatar, updateUser } from '@/lib/api/clientApi';
+
 registerLocale('uk', uk);
 
 const genderMap = {
@@ -72,7 +74,7 @@ export const OnboardingForm: React.FC = () => {
   const formik = useFormik<OnboardingFormValues>({
     initialValues: {
       avatar: null,
-      gender: '',
+      gender: 'unknown',
       deliveryDate: null,
     },
 
@@ -80,24 +82,36 @@ export const OnboardingForm: React.FC = () => {
 
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        // if (values.avatar) {
+        //   const formData = new FormData();
+        //   formData.append('avatar', values.avatar);
+
+        //   await nextServer.patch('/users/avatar', formData);
+
+        // }
+
+        // const babyGender =
+        //   values.gender && (values.gender as GenderKey) in genderMap
+        //     ? genderMap[values.gender as GenderKey]
+        //     : undefined;
+
+        // await nextServer.patch('/users/current', {
+        //   ...(babyGender ? { babyGender } : {}),
+        //   birthDate: values.deliveryDate
+        //     ? values.deliveryDate.toISOString()
+        //     : null,
+        // });
         if (values.avatar) {
-          const formData = new FormData();
-          formData.append('avatar', values.avatar);
-
-          await nextServer.patch('/users/avatar', formData);
+          await updateAvatar(values.avatar);
         }
-
-        const babyGender =
-          values.gender && (values.gender as GenderKey) in genderMap
-            ? genderMap[values.gender as GenderKey]
-            : undefined;
-
-        await nextServer.patch('/users/current', {
-          ...(babyGender ? { babyGender } : {}),
-          birthDate: values.deliveryDate
-            ? values.deliveryDate.toISOString()
-            : null,
-        });
+        if (values.deliveryDate) {
+          await updateUser({
+            gender: values.gender,
+            dueDate: values.deliveryDate,
+          });
+        } else {
+          await updateUser({ gender: values.gender });
+        }
 
         toast.success('Дані успішно збережено!');
         router.push('/');

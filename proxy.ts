@@ -6,13 +6,11 @@ import { checkSession } from '@/lib/api/serverApi';
 const privateRoutes = ['/profile', '/diary', '/journey', '/edit'];
 const publicRoutes = ['/login', '/register'];
 
-// const privateRoutes = ['/profile', '/diary', '/journey'];
-// const publicRoutes = ['/login', '/register', '/edit'];
-
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  // const accessToken = cookieStore.get('accessToken')?.value;
+  const accessToken = true;
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
