@@ -105,3 +105,9 @@ export interface HomePrivateResponse extends HomePublicResponse {
 export interface AuthResponse {
   user: User;
 }
+
+export interface Task {
+  title: string;
+  date: string;
+  isDone?: boolean;
+}
