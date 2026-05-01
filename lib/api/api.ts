@@ -1,32 +1,31 @@
 import axios from 'axios';
-import { refreshSession } from './clientApi';
-
+// import { refreshSession } from './clientApi';
 
 export const nextServer = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
   withCredentials: true,
 });
 
-nextServer.interceptors.response.use(
-  res => res,
-  async (error) => {
-    const originalRequest = error.config;
-    
-    if (originalRequest.url === '/auth/refresh') {
-      return Promise.reject(error);
-    }
+// nextServer.interceptors.response.use(
+//   res => res,
+//   async (error) => {
+//     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+//     if (originalRequest.url === '/auth/refresh') {
+//       return Promise.reject(error);
+//     }
 
-      try {
-        await refreshSession();
-        return nextServer(originalRequest);
-      } catch (e) {
-        window.location.href = '/auth/login';
-      }
-    }
+//     if (error.response?.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
 
-    return Promise.reject(error);
-  }
-);
+//       try {
+//         await refreshSession();
+//         return nextServer(originalRequest);
+//       } catch (e) {
+//         window.location.href = '/auth/login';
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );

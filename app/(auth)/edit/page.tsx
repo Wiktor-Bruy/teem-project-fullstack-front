@@ -16,10 +16,9 @@ export default function Onboarding() {
           <Image
             src="/image/user.png"
             alt="onbording image"
-            fill
             className={css.image}
-            sizes="(min-width: 1440px) 50vw, 0px"
-            priority
+            width={720}
+            height={900}
           />
         </div>
       </div>

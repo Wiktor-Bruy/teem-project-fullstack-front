@@ -3,31 +3,27 @@ import { nextServer } from './api';
 import type {
   User,
   Note,
-  CreateTaskRequest,
   BabyState,
   MomState,
   HomePublicResponse,
   HomePrivateResponse,
+  TaskResponse,
 } from '../../types/types';
 
-export async function checkSession(): Promise<User | null> {
-  try {
-    const cookieStore = await cookies();
-    const res = await nextServer.get('/auth/session', {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
-    return res.data;
-  } catch {
-    return null;
-  }
+export async function checkSession() {
+  const cookieStore = await cookies();
+  const res = await nextServer.get('/auth/refresh', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return res.data;
 }
 
 //------------------------------------------------Повертає-користувача
-export async function getMe(userId: string): Promise<User> {
+export async function getMe(): Promise<User> {
   const cookieStore = await cookies();
-  const res = await nextServer.get(`/user/${userId}`, {
+  const res = await nextServer.get<User>(`/user/me`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -38,7 +34,7 @@ export async function getMe(userId: string): Promise<User> {
 //------------------------------------------------Повертає-всі-записи-щоденника
 export async function getNotes(): Promise<Note[]> {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/note', {
+  const res = await nextServer.get<Note[]>('/note/all', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -49,7 +45,7 @@ export async function getNotes(): Promise<Note[]> {
 //------------------------------------------------Повертає-один-запис-щоденника-по-id
 export async function getNote(noteId: string): Promise<Note> {
   const cookieStore = await cookies();
-  const res = await nextServer.get(`/note/${noteId}`, {
+  const res = await nextServer.get<Note>(`/note/one/${noteId}`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -58,9 +54,9 @@ export async function getNote(noteId: string): Promise<Note> {
 }
 
 //------------------------------------------------Повертає-всі-таски
-export async function getTasks(): Promise<CreateTaskRequest[]> {
+export async function getTasks(): Promise<TaskResponse[]> {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/task', {
+  const res = await nextServer.get<TaskResponse[]>('/task/all', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -97,14 +93,14 @@ export async function getTerm(
 
 //------------------------------------------------Повертає-публічний-дашборд
 export async function getHomePublic(): Promise<HomePublicResponse> {
-  const res = await nextServer.get('/');
+  const res = await nextServer.get<HomePublicResponse>('/home/homeprivate');
   return res.data;
 }
 
 //------------------------------------------------Повертає-приватний-дашборд
 export async function getHomePrivate(): Promise<HomePrivateResponse> {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/home', {
+  const res = await nextServer.get<HomePrivateResponse>('/home/homepublic', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -115,7 +111,7 @@ export async function getHomePrivate(): Promise<HomePrivateResponse> {
 //------------------------------------------------Повертає-стан-дитини
 export async function getBabyState(): Promise<BabyState> {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/home/baby', {
+  const res = await nextServer.get<BabyState>('/home/baby', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -126,7 +122,7 @@ export async function getBabyState(): Promise<BabyState> {
 //------------------------------------------------Повертає-стан-мами
 export async function getMomState(): Promise<MomState> {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/home/mom', {
+  const res = await nextServer.get<MomState>('/home/mom', {
     headers: {
       Cookie: cookieStore.toString(),
     },

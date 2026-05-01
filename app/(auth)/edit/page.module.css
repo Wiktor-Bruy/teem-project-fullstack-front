@@ -1,11 +1,11 @@
-.formBox {
-  height: 100%;
-  min-height: 100vh;
-}
 .imageBox {
-    position: relative;
-    display: none;
-  }
+  display: none;
+}
+.formBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 @media (min-width: 1440px) {
   .box {
@@ -16,11 +16,9 @@
   }
   .imageBox {
     display: block;
-    position: relative;
     width: 50%;
-    min-height: 100vh;
   }
 }
-    .image {
-    object-fit: cover;
-  }
+.image {
+  object-fit: cover;
+}

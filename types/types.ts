@@ -1,8 +1,8 @@
 export interface User {
   _id: string;
   name: string;
-  email?: string;
-  gender?: BabyGender;
+  email: string;
+  gender: BabyGender;
   dueDate?: string;
   avatar?: string;
   createdAt: string;
@@ -14,8 +14,6 @@ export type BabyGender = 'boy' | 'girl' | 'unknown';
 export interface Emotion {
   _id: string;
   title: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export type Emotions = string[];
@@ -44,7 +42,8 @@ export interface Note {
   description: string;
   emotions: Emotion[];
   userId: string;
-
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateNoteRequest {
@@ -71,7 +70,7 @@ export interface TaskResponse {
 
 export interface CreateTaskRequest {
   title: string;
-  date: string
+  date: string;
 }
 
 export interface BabyState {
