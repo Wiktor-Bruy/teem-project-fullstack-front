@@ -3,16 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId } from "react";
-import css from "./RegisterForm.module.css";
+import css from "./LoginForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
-import { register } from '@/lib/api/clientApi';
+import { login } from '@/lib/api/clientApi';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
 
-const RegisterFormSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Обовʼязкове поле"),
+const LoginFormSchema = Yup.object().shape({
   email: Yup.string()
     .email('Некоректна пошта')
     .required("Обовʼязкове поле"),
@@ -20,37 +18,30 @@ const RegisterFormSchema = Yup.object().shape({
     .required("Обовʼязкове поле"),
 });
 
-const initialValues: RegisterFormValues = {
-  name: "",
-  email: "",
-  password: "",
+interface LoginFormValues {
+        email: string;
+        password: string;
+}
+
+const initialValues: LoginFormValues = {
+            email: "",
+            password: "",
 };
 
-type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
 
-type RegisterFormValues = RegisterRequest;
-
-export default function RegisterForm() {
+export default function LoginForm() {
   const router = useRouter();
   const fieldId = useId();
 
 
-const registerMutation = useMutation<
-  AuthResponse,
-  Error,
-  RegisterRequest
->({
-  mutationFn: register,
+const loginMutation = useMutation({
+  mutationFn: (values: LoginFormValues) => login(values),
 });
 
   const queryClient = useQueryClient();
 
   return (
-    <div className={css.page}>
+    <div className={css.loginPage}>
 
         <div className={css.logo}>
           <svg className={css.logoIcon} width={30} height={30}>
@@ -63,22 +54,22 @@ const registerMutation = useMutation<
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
-          validationSchema={RegisterFormSchema}
+          validationSchema={LoginFormSchema}
 
           onSubmit={(
-  values: RegisterFormValues,
-  { setSubmitting, resetForm, setErrors }: FormikHelpers<RegisterFormValues>
+  values: LoginFormValues,
+  { setSubmitting, resetForm, setErrors }: FormikHelpers<LoginFormValues>
 ) => {
-            registerMutation.mutate(values, {
+            loginMutation.mutate(values, {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['me'] });
       resetForm();
-      router.push('/');
+      router.push('/profile');
     },
     onError: (error: Error) => {
       toast.error(error.message);
       setErrors({
-        password: "Користувач з такою поштою вже існує",
+        password: "Невірний email або пароль",
       });
     },
     onSettled: () => setSubmitting(false),
@@ -87,41 +78,28 @@ const registerMutation = useMutation<
     >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
-              <h1 className={css.title}>Реєстрація</h1>
-              <label htmlFor={`${fieldId}-name`} className={css.label}>Імʼя*</label>
-                <Field
-                id={`${fieldId}-name`}
-                type="text" name="name"
-                className={`${css.input} ${errors.name && touched.name ? css.inputError : ''}`}
-                placeholder="Ваше імʼя" />
-              <ErrorMessage name="name" className={css.error} component="span" />
-              <label htmlFor={`${fieldId}-email`} className={css.label}>Пошта*</label>
+              <h1 className={css.title}>Вхід</h1>
               <Field
                 id={`${fieldId}-email`}
                 type="email" name="email"
                 className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
-                placeholder="hello@leleka.com"
-                autoComplete="email"
-              />
+                placeholder="Пошта" />
               <ErrorMessage name="email" className={css.error} component="span" />
-              <label htmlFor={`${fieldId}-password`} className={css.label}>Пароль*</label>
               <Field
                 id={`${fieldId}-password`}
                 type="password"
                 name="password"
                 className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
-                placeholder="********"
-                autoComplete="new-password"
-              />
+                placeholder="Пароль" />
               <ErrorMessage name="password" className={css.error} component="span" />
               <button type="submit"
-                disabled={registerMutation.isPending || isSubmitting}
+                disabled={loginMutation.isPending || isSubmitting}
                  className={css.btn}>
-                {registerMutation.isPending ? 'Завантаження...' : 'Зареєструватись'}
+                {loginMutation.isPending ? 'Завантаження...' : 'Увійти'}
               </button>
 
               <p className={css.register}>
-                Вже маєте аккаунт? <span><Link href='/auth/login'>Увійти</Link></span>
+                Немає акаунту? <span><Link href='/auth/register'>Зареєструватися</Link></span>
               </p>
             </Form>
           )}
