@@ -6,9 +6,10 @@ import { useId } from "react";
 import css from "./LoginForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { login } from '@/lib/api/clientApi';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
+import { useAuthStore } from "@/lib/store/authStore";
+import { isAxiosError } from 'axios';
 
 const LoginFormSchema = Yup.object().shape({
   email: Yup.string()
@@ -19,30 +20,22 @@ const LoginFormSchema = Yup.object().shape({
 });
 
 interface LoginFormValues {
-        email: string;
-        password: string;
+  email: string;
+  password: string;
 }
 
 const initialValues: LoginFormValues = {
-            email: "",
-            password: "",
+  email: "",
+  password: "",
 };
-
 
 export default function LoginForm() {
   const router = useRouter();
   const fieldId = useId();
-
-
-const loginMutation = useMutation({
-  mutationFn: (values: LoginFormValues) => login(values),
-});
-
-  const queryClient = useQueryClient();
+  const setUser = useAuthStore((state) => state.setUser);
 
   return (
     <div className={css.loginPage}>
-
         <div className={css.logo}>
           <svg className={css.logoIcon} width={30} height={30}>
             <use href="/icons.svg#logo" />
@@ -56,50 +49,62 @@ const loginMutation = useMutation({
           initialValues={initialValues}
           validationSchema={LoginFormSchema}
 
-          onSubmit={(
+          onSubmit={ async (
   values: LoginFormValues,
   { setSubmitting, resetForm, setErrors }: FormikHelpers<LoginFormValues>
 ) => {
-            loginMutation.mutate(values, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['me'] });
-      resetForm();
-      router.push('/');
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-      setErrors({
-        password: "Невірний email або пароль",
-      });
-    },
-    onSettled: () => setSubmitting(false),
-  });
-}}
+          try {
+              const user = await login(values);
+              setUser(user);
+              resetForm();
+              router.push('/');
+          } catch (error: unknown) {
+            if (isAxiosError(error)) {
+              toast.error(error.response?.data?.message || "Помилка входу");
+            } else {
+              toast.error('Щось пішло не так');
+            }
+              setErrors({
+                password: "Невірний email або пароль",
+              });
+
+            } finally {
+              setSubmitting(false);
+            }
+          }}
     >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
               <h1 className={css.title}>Вхід</h1>
+              <div className={css.fieldWrapper}>
               <Field
                 id={`${fieldId}-email`}
                 type="email" name="email"
                 className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
-                placeholder="Пошта" />
-              <ErrorMessage name="email" className={css.error} component="span" />
+                  placeholder="Пошта" />
+                <ErrorMessage name="email" className={css.error} component="span" />
+                </div>
+              <div className={css.fieldWrapper}>
               <Field
                 id={`${fieldId}-password`}
                 type="password"
                 name="password"
                 className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
                 placeholder="Пароль" />
-              <ErrorMessage name="password" className={css.error} component="span" />
+                <ErrorMessage name="password" className={css.error} component="span" />
+                </div>
               <button type="submit"
-                disabled={loginMutation.isPending || isSubmitting}
+                disabled={isSubmitting}
                  className={css.btn}>
-                {loginMutation.isPending ? 'Завантаження...' : 'Увійти'}
+                {isSubmitting ? 'Завантаження...' : 'Увійти'}
               </button>
 
               <p className={css.register}>
-                Немає акаунту? <span><Link href='/auth/register'>Зареєструватися</Link></span>
+                Немає акаунту?{" "}
+                <span>
+                  <Link href='/auth/register'>Зареєструватися
+                  </Link>
+                </span>
               </p>
             </Form>
           )}

@@ -6,7 +6,6 @@ import { useId } from "react";
 import css from "./RegisterForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { register } from '@/lib/api/clientApi';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from 'axios';
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
@@ -36,17 +35,6 @@ export default function RegisterForm() {
   const fieldId = useId();
   const setUser = useAuthStore((state) => state.setUser);
 
-
-// const registerMutation = useMutation<
-//   User,
-//   Error,
-//   RegisterRequest
-// >({
-//   mutationFn: register,
-// });
-
-  // const queryClient = useQueryClient();
-
   return (
     <div className={css.page}>
 
@@ -70,7 +58,7 @@ export default function RegisterForm() {
             try {
               const user: User = await register(values);
 
-              setUser(user); // 👈 одразу кладеш у store
+              setUser(user);
               resetForm();
               router.push('/profile');
 
@@ -92,14 +80,18 @@ export default function RegisterForm() {
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
               <h1 className={css.title}>Реєстрація</h1>
+
               <label htmlFor={`${fieldId}-name`} className={css.label}>Імʼя*</label>
+                <div className={css.fieldWrapper}>
                 <Field
                 id={`${fieldId}-name`}
                 type="text" name="name"
                 className={`${css.input} ${errors.name && touched.name ? css.inputError : ''}`}
                 placeholder="Ваше імʼя" />
               <ErrorMessage name="name" className={css.error} component="span" />
+              </div>
               <label htmlFor={`${fieldId}-email`} className={css.label}>Пошта*</label>
+              <div className={css.fieldWrapper}>
               <Field
                 id={`${fieldId}-email`}
                 type="email" name="email"
@@ -107,8 +99,10 @@ export default function RegisterForm() {
                 placeholder="hello@leleka.com"
                 autoComplete="email"
               />
-              <ErrorMessage name="email" className={css.error} component="span" />
+                <ErrorMessage name="email" className={css.error} component="span" />
+                </div>
               <label htmlFor={`${fieldId}-password`} className={css.label}>Пароль*</label>
+              <div className={css.fieldWrapper}>
               <Field
                 id={`${fieldId}-password`}
                 type="password"
@@ -117,7 +111,8 @@ export default function RegisterForm() {
                 placeholder="********"
                 autoComplete="new-password"
               />
-              <ErrorMessage name="password" className={css.error} component="span" />
+                <ErrorMessage name="password" className={css.error} component="span" />
+                </div>
               <button type="submit"
                 disabled={isSubmitting}
                  className={css.btn}>
