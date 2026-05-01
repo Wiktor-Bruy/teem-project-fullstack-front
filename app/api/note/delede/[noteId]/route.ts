@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
+import { api } from '../../../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
-import { api } from '../../api';
 
-export async function GET() {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export async function DELETE(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
+    const { noteId } = await params;
 
-    const res = await api.get('/task', {
+    const res = await api.delete(`/notes/${noteId}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -17,14 +22,13 @@ export async function GET() {
   } catch (error) {
     if (isAxiosError(error)) {
       return NextResponse.json(
-        { error: error.message, data: error.response?.data },
+        { error: error.message, response: error.response?.data },
         { status: error.status }
       );
-    } else {
-      return NextResponse.json(
-        { error: 'Some server error...' },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
