@@ -51,13 +51,13 @@ export async function getNote(noteId: string): Promise<Note> {
     throw error;
   }
 }
-//------------------------------------------------Повертає-всі-таски
+//--------------------------------------------Повертає-всі-таски
 export async function getTasks() {}
 
 //-------------Повертає-терміни-(дефолт-для-незареєстрованого-коректні-для-зареєстрованого)
 export async function getTerm() {}
 
-//------------------------------------------------Повертає-стан-дитини
+//-------------------------------------------Повертає-стан-дитини
 export async function getBabyState(): Promise<BabyState> {
   try {
     const res = await nextServer.get<BabyState>('/home/baby');
@@ -67,6 +67,9 @@ export async function getBabyState(): Promise<BabyState> {
     throw error;
   }
 }
+
+
+
 
 //------------------------------------------------Повертає-стан-мами
 export async function getMomState() {}

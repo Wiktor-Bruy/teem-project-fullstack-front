@@ -1,5 +1,29 @@
 import { nextServer } from './api';
 
+export interface BabyState {
+  _id: string;
+  analogy: boolean;
+  weekNumber: number;
+  babySize: number;
+  babyWeight: number;
+  image: string;
+  babyActivity: string;
+  babyDevelopment: string;
+  interestingFact: string;
+  momDailyTips: string[];
+}
+
+//--------------------------------------------Повертає-стан-малюка
+export async function getBabyState(): Promise<BabyState> {
+  try {
+    const res = await nextServer.get<BabyState>('/home/baby');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching baby state:', error);
+    throw error;
+  }
+}
+
 //------------------------------------------------Функція-логіну
 export async function login() {}
 
