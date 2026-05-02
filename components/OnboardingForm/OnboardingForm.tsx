@@ -9,7 +9,7 @@ import { uk } from 'date-fns/locale/uk';
 import { toast, Toaster } from 'react-hot-toast';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { nextServer } from '@/lib/api/api';
+// import { nextServer } from '@/lib/api/api';
 import { OnboardingSchema, OnboardingFormValues } from '@/types/onboarding';
 import styles from './OnboardingForm.module.css';
 import Link from 'next/link';
@@ -18,15 +18,15 @@ import { updateAvatar, updateUser } from '@/lib/api/clientApi';
 
 registerLocale('uk', uk);
 
-const genderMap = {
-  boy: 'Хлопчик',
-  girl: 'Дівчинка',
-  unknown: 'Ще не знаю',
-} as const;
+// const genderMap = {
+//   boy: 'Хлопчик',
+//   girl: 'Дівчинка',
+//   unknown: 'Ще не знаю',
+// } as const;
 
-type GenderKey = keyof typeof genderMap;
+// type GenderKey = keyof typeof genderMap;
 
-export const OnboardingForm: React.FC = () => {
+export default function OnboardingForm() {
   const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -107,7 +107,7 @@ export const OnboardingForm: React.FC = () => {
         if (values.deliveryDate) {
           await updateUser({
             gender: values.gender,
-            dueDate: values.deliveryDate,
+            dueDate: values.deliveryDate.toISOString().slice(0, 10),
           });
         } else {
           await updateUser({ gender: values.gender });
@@ -138,7 +138,7 @@ export const OnboardingForm: React.FC = () => {
   };
 
   return (
-    <section className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <Toaster position="top-right" />
 
       <div className={styles.containerRegister}>
@@ -174,10 +174,10 @@ export const OnboardingForm: React.FC = () => {
                   formik.setFieldTouched('gender', true);
                 }
 
-                if (!formik.values.deliveryDate) {
-                  triggerFieldAnimation('deliveryDate');
-                  formik.setFieldTouched('deliveryDate', true);
-                }
+                // if (!formik.values.deliveryDate) {
+                //   triggerFieldAnimation('deliveryDate');
+                //   formik.setFieldTouched('deliveryDate', true);
+                // }
               }}
             >
               <div className={styles.avatarSection}>
@@ -362,6 +362,6 @@ export const OnboardingForm: React.FC = () => {
 
         <div className={styles.background}></div>
       </div>
-    </section>
+    </div>
   );
-};
+}

@@ -8,7 +8,7 @@ export async function PUT(req: NextRequest) {
     const cookieStore = await cookies();
     const formData = await req.formData();
 
-    const response = await api.post('/users/avatar', formData, {
+    const response = await api.put('/users/avatar', formData, {
       headers: {
         Cookie: cookieStore.toString(),
       },
