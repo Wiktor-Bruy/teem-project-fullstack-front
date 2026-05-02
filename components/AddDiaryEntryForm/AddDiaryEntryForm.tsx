@@ -3,7 +3,6 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import styles from "./AddDiaryEntryForm.module.css";
 
-/* ✅ тип емоцій */
 type Emotion = {
   _id: string;
   title: string;
@@ -49,7 +48,8 @@ export default function AddDiaryEntryForm({
       initialValues={{
         title: initialData?.title || "",
         text: initialData?.text || "",
-        categories: initialData?.categories?.map((c) => c._id) || [],
+        categories:
+          initialData?.categories?.map((c) => c._id) || [],
       }}
       validationSchema={schema}
       onSubmit={async (values) => {
@@ -68,10 +68,14 @@ export default function AddDiaryEntryForm({
       {({ values, setFieldValue }) => (
         <Form className={styles.form}>
           {/* TITLE */}
-          <Field name="title" placeholder="Заголовок" />
-          <ErrorMessage name="title" component="div" />
+          <label className={styles.label}>Заголовок</label>
+          <Field name="title" className={styles.input} />
+          <ErrorMessage name="title" component="div" className={styles.error} />
 
-          {/* CHIPS */}
+          {/* CATEGORIES */}
+          <label className={styles.label}>Категорії</label>
+
+          {/* chips */}
           <div className={styles.chips}>
             {values.categories.map((id) => {
               const e = emotions.find((x) => x._id === id);
@@ -96,19 +100,21 @@ export default function AddDiaryEntryForm({
             })}
           </div>
 
-          {/* DROPDOWN BUTTON */}
+          {/* dropdown */}
           <div
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((prev) => !prev);
+            }}
             className={styles.dropdownBtn}
           >
             Обрати емоції
           </div>
 
-          {/* DROPDOWN */}
           {open && (
             <div className={styles.dropdown}>
               {emotions.map((e) => (
-                <label key={e._id}>
+                <label key={e._id} className={styles.dropdownLabel}>
                   <input
                     type="checkbox"
                     checked={values.categories.includes(e._id)}
@@ -116,7 +122,9 @@ export default function AddDiaryEntryForm({
                       if (values.categories.includes(e._id)) {
                         setFieldValue(
                           "categories",
-                          values.categories.filter((c) => c !== e._id)
+                          values.categories.filter(
+                            (c) => c !== e._id
+                          )
                         );
                       } else {
                         setFieldValue("categories", [
@@ -132,14 +140,14 @@ export default function AddDiaryEntryForm({
             </div>
           )}
 
-          <ErrorMessage name="categories" component="div" />
+          <ErrorMessage name="categories" component="div" className={styles.error} />
 
           {/* TEXT */}
-          <Field as="textarea" name="text" placeholder="Запис" />
-          <ErrorMessage name="text" component="div" />
+          <label className={styles.label}>Запис</label>
+          <Field as="textarea" name="text" className={styles.textarea} />
+          <ErrorMessage name="text" component="div" className={styles.error} />
 
-          {/* SUBMIT */}
-          <button type="submit">
+          <button type="submit" className={styles.submit}>
             {initialData ? "Оновити" : "Зберегти"}
           </button>
         </Form>
