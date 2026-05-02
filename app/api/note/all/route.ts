@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const res = await api.get('/note', {
+    const res = await api.get('/notes', {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -18,7 +18,7 @@ export async function GET() {
     if (isAxiosError(error)) {
       return NextResponse.json(
         { error: error.message, data: error.response?.data },
-        { status: error.status || 500 }
+        { status: error.status }
       );
     }
     return NextResponse.json(
