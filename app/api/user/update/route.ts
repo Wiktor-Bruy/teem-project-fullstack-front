@@ -14,20 +14,18 @@ function logErrorResponse(error: unknown, label = 'Error'): void {
 
 export async function PUT(req: NextRequest) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const body = await req.json();
 
-    const apiRes = await api.put('/user/update', body, {
+    const apiRes = await api.put('/users', body, {
       headers: {
         Cookie: cookieStore.toString(),
       },
-      withCredentials: true,
     });
 
     return NextResponse.json(apiRes.data, {
       status: apiRes.status,
     });
-
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data, 'Axios Error');
