@@ -15,16 +15,22 @@ export default function AddDiaryEntryModal({
   onSuccess,
   initialData,
 }: Props) {
- 
+
   useEffect(() => {
     const esc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     document.addEventListener("keydown", esc);
     return () => document.removeEventListener("keydown", esc);
   }, [onClose]);
 
   if (!isOpen) return null;
+
+  const handleSuccess = () => {
+    onSuccess();
+    onClose();
+  };
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -32,29 +38,23 @@ export default function AddDiaryEntryModal({
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* header */}
         <div className={styles.header}>
           <h2>
             {initialData ? "Редагувати запис" : "Новий запис"}
           </h2>
 
           <button className={styles.close} onClick={onClose}>
-            <svg width="18" height="18" viewBox="0 0 24 24">
-              <path
-                d="M6 6L18 18M6 18L18 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
+            ✕
           </button>
         </div>
 
-        {/* form */}
-        <AddDiaryEntryForm
-          initialData={initialData}
-          onSuccess={onSuccess}
-        />
+        { }
+        <div className={styles.content}>
+          <AddDiaryEntryForm
+            initialData={initialData}
+            onSuccess={handleSuccess}
+          />
+        </div>
       </div>
     </div>
   );
