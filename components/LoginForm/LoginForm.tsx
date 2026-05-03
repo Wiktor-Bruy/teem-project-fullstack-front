@@ -3,36 +3,37 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
-import css from './RegisterForm.module.css';
+import css from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
-import { register } from '@/lib/api/clientApi';
-import { isAxiosError } from 'axios';
+import { login, getMe } from '@/lib/api/clientApi';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/lib/store/authStore';
-import type { RegisterRequest, User } from '@/types/types';
+import { isAxiosError } from 'axios';
+import { type LoginRequest as LoginFormValues } from '@/types/types';
 
-const RegisterFormSchema = Yup.object().shape({
-  name: Yup.string().required('Обовʼязкове поле'),
+const LoginFormSchema = Yup.object().shape({
   email: Yup.string().email('Некоректна пошта').required('Обовʼязкове поле'),
   password: Yup.string().required('Обовʼязкове поле'),
 });
 
-const initialValues: RegisterFormValues = {
-  name: '',
+// interface LoginFormValues {
+//   email: string;
+//   password: string;
+// }
+
+const initialValues: LoginFormValues = {
   email: '',
   password: '',
 };
 
-type RegisterFormValues = RegisterRequest;
-
-export default function RegisterForm() {
+export default function LoginForm() {
   const router = useRouter();
   const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
 
   return (
-    <div className={css.page}>
+    <div className={css.loginPage}>
       <div className={css.logo}>
         <svg className={css.logoIcon} width={30} height={30}>
           <use href="/icons.svg#logo" />
@@ -44,31 +45,32 @@ export default function RegisterForm() {
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
-          validationSchema={RegisterFormSchema}
+          validationSchema={LoginFormSchema}
           onSubmit={async (
-            values: RegisterFormValues,
+            values: LoginFormValues,
             {
               setSubmitting,
               resetForm,
               setErrors,
-            }: FormikHelpers<RegisterFormValues>
+            }: FormikHelpers<LoginFormValues>
           ) => {
             try {
-              const user: User = await register(values);
-
-              setUser(user);
-              resetForm();
-              router.push('/edit');
+              const data = { email: values.email, password: values.password };
+              const res = await login(data);
+              if (res) {
+                const user = await getMe();
+                setUser(user);
+                router.push('/');
+                resetForm();
+              }
             } catch (error: unknown) {
               if (isAxiosError(error)) {
-                toast.error(
-                  error.response?.data?.message || 'Помилка реєстрації'
-                );
+                toast.error(error.response?.data?.message || 'Помилка входу');
               } else {
                 toast.error('Щось пішло не так');
               }
               setErrors({
-                password: 'Користувач з такою поштою вже існує',
+                password: 'Невірний email або пароль',
               });
             } finally {
               setSubmitting(false);
@@ -77,36 +79,14 @@ export default function RegisterForm() {
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
-              <h1 className={css.title}>Реєстрація</h1>
-
-              <label htmlFor={`${fieldId}-name`} className={css.label}>
-                Імʼя*
-              </label>
-              <div className={css.fieldWrapper}>
-                <Field
-                  id={`${fieldId}-name`}
-                  type="text"
-                  name="name"
-                  className={`${css.input} ${errors.name && touched.name ? css.inputError : ''}`}
-                  placeholder="Ваше імʼя"
-                />
-                <ErrorMessage
-                  name="name"
-                  className={css.error}
-                  component="span"
-                />
-              </div>
-              <label htmlFor={`${fieldId}-email`} className={css.label}>
-                Пошта*
-              </label>
+              <h1 className={css.title}>Вхід</h1>
               <div className={css.fieldWrapper}>
                 <Field
                   id={`${fieldId}-email`}
                   type="email"
                   name="email"
                   className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
-                  placeholder="hello@leleka.com"
-                  autoComplete="email"
+                  placeholder="Пошта"
                 />
                 <ErrorMessage
                   name="email"
@@ -114,17 +94,13 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
-              <label htmlFor={`${fieldId}-password`} className={css.label}>
-                Пароль*
-              </label>
               <div className={css.fieldWrapper}>
                 <Field
                   id={`${fieldId}-password`}
                   type="password"
                   name="password"
                   className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
-                  placeholder="********"
-                  autoComplete="new-password"
+                  placeholder="Пароль"
                 />
                 <ErrorMessage
                   name="password"
@@ -133,13 +109,13 @@ export default function RegisterForm() {
                 />
               </div>
               <button type="submit" disabled={isSubmitting} className={css.btn}>
-                {isSubmitting ? 'Завантаження...' : 'Зареєструватись'}
+                {isSubmitting ? 'Завантаження...' : 'Увійти'}
               </button>
 
               <p className={css.register}>
-                Вже маєте аккаунт?{' '}
+                Немає акаунту?{' '}
                 <span>
-                  <Link href="/login">Увійти</Link>
+                  <Link href="/auth/register">Зареєструватися</Link>
                 </span>
               </p>
             </Form>

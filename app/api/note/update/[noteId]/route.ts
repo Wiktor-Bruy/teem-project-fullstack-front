@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
-import { api } from '../../api';
+import { api } from '../../../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
 
-export async function GET() {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export async function PUT(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
+    const { noteId } = await params;
+    const body = await request.json();
 
-    const res = await api.get('/notes', {
+    const res = await api.put(`/notes/${noteId}`, body, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -17,7 +23,7 @@ export async function GET() {
   } catch (error) {
     if (isAxiosError(error)) {
       return NextResponse.json(
-        { error: error.message, data: error.response?.data },
+        { error: error.message, response: error.response?.data },
         { status: error.status }
       );
     }
