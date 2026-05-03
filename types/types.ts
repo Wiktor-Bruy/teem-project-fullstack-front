@@ -75,7 +75,7 @@ export interface CreateTaskRequest {
 
 export interface BabyState {
   _id?: string;
-  week: number;
+  weekNumber: number;
   daysLeft: number;
   weight?: string;
   size?: string;

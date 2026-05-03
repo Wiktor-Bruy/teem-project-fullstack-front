@@ -186,7 +186,7 @@
     margin-top: 24px;
   }
   .tipsHeader,
-  .cardTitel {
+  .cardTitle {
     font-family: var(--font-comfortaa);
     font-weight: 700;
     font-size: 18px;
@@ -216,7 +216,7 @@
     display: flex;
     gap: 8px;
   }
-  .tipTitel {
+  .tipTitle {
     font-weight: 700;
   }
   .taskItem {

@@ -1,44 +1,38 @@
-
 'use client';
 
-import { getBabyState } from '@/lib/api/clientApi';
 import css from './WeekSelector.module.css';
 import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
 
-export default function WeekSelector() {
+interface Props {
+  currentWeek: number;
+  onWeekChange: (week: number) => void;
+}
+
+export default function WeekSelector({ currentWeek, onWeekChange }: Props) {
   const router = useRouter();
   const allWeeks = Array.from({ length: 39 }, (_, i) => i + 1);
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['babyStateWeek'],
-    queryFn: getBabyState,
-  });
-
-  const currentWeek = data?.week || 1;
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <section className={css.sectionWeeks}>
       <div className={css.weeksScrollContainer}>
-        {allWeeks.map((babyStateWeek) => {
-          const isActive = babyStateWeek <= currentWeek;
-          const isCurrent = babyStateWeek === currentWeek;
+        {allWeeks.map((week) => {
+          const isActive = week <= currentWeek;
+          const isCurrent = week === currentWeek;
 
           return (
             <button
-              key={babyStateWeek}
+              key={week}
               disabled={!isActive}
               onClick={() => {
                 if (!isActive) return;
-                router.push(`/journey/${babyStateWeek}`);
+                onWeekChange(week);
+                router.push(`/journey/${week}`);
               }}
               className={`${css.buttonWeek} ${isCurrent ? css.buttonWeekActive : ''} ${
                 !isActive ? css.buttonWeekDisabled : ''
               }`}
             >
-              <p className={css.weekNumber}>{babyStateWeek}</p>
+              <p className={css.weekNumber}>{week}</p>
               <p className={css.weekName}>Тиждень</p>
             </button>
           );
