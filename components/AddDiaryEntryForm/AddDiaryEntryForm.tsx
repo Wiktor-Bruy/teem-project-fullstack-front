@@ -1,3 +1,5 @@
+"use client";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -14,7 +16,7 @@ type Props = {
     _id?: string;
     title?: string;
     text?: string;
-    categories?: { _id: string }[];
+    categories?: { _id: string }[] | string[];
   };
 };
 
@@ -38,10 +40,14 @@ export default function AddDiaryEntryForm({
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
-        const res = await fetch("/api/emotions");
+        const res = await fetch("/api/emotions", {
+          credentials: "include",
+        });
+
         const data = await res.json();
 
         const normalized =
@@ -62,10 +68,10 @@ export default function AddDiaryEntryForm({
   }, []);
 
   const emotionsMap = useMemo(() => {
-    if (!Array.isArray(emotions)) return {};
     return Object.fromEntries(emotions.map((e) => [e._id, e]));
   }, [emotions]);
 
+ 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (!dropdownRef.current?.contains(e.target as Node)) {
@@ -77,12 +83,20 @@ export default function AddDiaryEntryForm({
     return () => document.removeEventListener("click", handleClick);
   }, []);
 
+
+  const initialCategories = Array.isArray(initialData?.categories)
+    ? typeof initialData.categories[0] === "string"
+      ? initialData.categories
+      : initialData.categories.map((c: any) => c._id)
+    : [];
+
   return (
     <Formik<FormValues>
+      enableReinitialize
       initialValues={{
         title: initialData?.title || "",
         text: initialData?.text || "",
-        categories: initialData?.categories?.map((c) => c._id) || [],
+        categories: initialCategories,
       }}
       validationSchema={schema}
       onSubmit={async (values, { setSubmitting }) => {
@@ -99,6 +113,8 @@ export default function AddDiaryEntryForm({
           if (res.ok) {
             onSuccess();
           }
+        } catch (e) {
+          console.error(e);
         } finally {
           setSubmitting(false);
         }
@@ -106,12 +122,13 @@ export default function AddDiaryEntryForm({
     >
       {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.form}>
-          <label className={styles.label}>Заголовок</label>
+          <label>Заголовок</label>
           <Field name="title" className={styles.input} />
           <ErrorMessage name="title" component="div" className={styles.error} />
 
-          <label className={styles.label}>Категорії</label>
+          <label>Категорії</label>
 
+          {/* chips */}
           <div className={styles.chips}>
             {values.categories.map((id) => {
               const e = emotionsMap[id];
@@ -129,17 +146,17 @@ export default function AddDiaryEntryForm({
                       )
                     }
                   >
-                    <img src="/icons/close.svg" alt="close" />
+                    ✕
                   </button>
                 </span>
               );
             })}
           </div>
 
-          <div ref={dropdownRef} className={styles.dropdownWrapper}>
+          {/* dropdown */}
+          <div ref={dropdownRef}>
             <button
               type="button"
-              className={styles.dropdownBtn}
               onClick={(e) => {
                 e.stopPropagation();
                 setOpen((prev) => !prev);
@@ -149,13 +166,12 @@ export default function AddDiaryEntryForm({
             </button>
 
             {open && (
-              <div
-                className={styles.dropdown}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {Array.isArray(emotions) &&
+              <div className={styles.dropdown}>
+                {emotions.length === 0 ? (
+                  <p>Завантаження...</p>
+                ) : (
                   emotions.map((e) => (
-                    <label key={e._id} className={styles.dropdownLabel}>
+                    <label key={e._id}>
                       <input
                         type="checkbox"
                         checked={values.categories.includes(e._id)}
@@ -175,7 +191,8 @@ export default function AddDiaryEntryForm({
                       />
                       {e.title}
                     </label>
-                  ))}
+                  ))
+                )}
               </div>
             )}
           </div>
@@ -186,15 +203,11 @@ export default function AddDiaryEntryForm({
             className={styles.error}
           />
 
-          <label className={styles.label}>Запис</label>
+          <label>Запис</label>
           <Field as="textarea" name="text" className={styles.textarea} />
           <ErrorMessage name="text" component="div" className={styles.error} />
 
-          <button
-            type="submit"
-            className={styles.submit}
-            disabled={isSubmitting}
-          >
+          <button type="submit" disabled={isSubmitting}>
             {initialData ? "Оновити" : "Зберегти"}
           </button>
         </Form>

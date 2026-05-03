@@ -1,36 +1,30 @@
 'use client';
-import { useQuery } from "@tanstack/react-query";
-import { getMe } from "@/lib/api/clientApi";
-import { useAuthStore } from "@/lib/store/authStore";
-import Loading from '@/app/loading';
-
+import { getMe, refreshSession } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
+import { useEffect } from 'react';
 
 interface AuthStoreProps {
   children: React.ReactNode;
 }
 
 export default function AuthProvider({ children }: AuthStoreProps) {
-  const setUser = useAuthStore((state) => state.setUser);
-  const clearUser = useAuthStore((state) => state.clearIsAuthenticated)
+  const setUser = useAuthStore(state => state.setUser);
+  const clearUser = useAuthStore(state => state.clearIsAuthenticated);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['me'],
-    queryFn: getMe,
-    retry: false
-  });
-
-   if (data) {
-    setUser(data);
-   }
-
-  if (isError) {
-    clearUser();
-  }
-
-  if (isLoading) {
-    return <Loading/>
-  }
+  useEffect(() => {
+    async function autorisation() {
+      const isLogin = await refreshSession();
+      if (isLogin) {
+        const user = await getMe();
+        if (user) {
+          setUser(user);
+        }
+      } else {
+        clearUser();
+      }
+    }
+    autorisation();
+  }, [clearUser, setUser]);
 
   return children;
 }
-

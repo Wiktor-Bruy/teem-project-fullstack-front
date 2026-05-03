@@ -1,9 +1,11 @@
+'use client';
+
 import css from './page.module.css';
 
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import { OnboardingForm } from '@/components/OnboardingForm/OnboardingForm';
+import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
 
 export default function Onboarding() {
   return (

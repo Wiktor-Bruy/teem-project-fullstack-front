@@ -37,7 +37,7 @@ export async function logout() {
 
 //------------------------------------------------Повертає-користувача
 export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>('/user/me');
+  const res = await nextServer.get<User>('/users/me');
   return res.data;
 }
 
@@ -50,7 +50,7 @@ export async function updateUser(data: UpdateUserRequest): Promise<User> {
 //------------------------------------------------Оновлює-аватар
 export async function updateAvatar(file: File): Promise<{ url: string }> {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('avatar', file);
   const res = await nextServer.put<{ url: string }>('/user/avatar', formData);
   return res.data;
 }
