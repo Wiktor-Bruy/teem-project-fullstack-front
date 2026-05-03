@@ -6,7 +6,7 @@ import { isAxiosError } from 'axios';
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const res = await api.get('/home/mom', {
+    const res = await api.get('/weeks/mom', {
       headers: {
         Cookie: cookieStore.toString(),
       },
