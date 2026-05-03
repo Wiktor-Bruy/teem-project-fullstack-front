@@ -101,8 +101,15 @@ export async function createTask(
   const res = await nextServer.post<TaskResponse>('/tasks/create', data);
   return res.data;
 }
+
 //------------------------------------------------Оновлює-задачу
 export async function updateTask(taskId: string): Promise<TaskResponse> {
   const res = await nextServer.patch<TaskResponse>(`/tasks/update/${taskId}`);
   return res.data;
 }
+
+//------------------------------------------------Публічний-дашборд
+//------------------------------------------------Приватний-дащборд
+//------------------------------------------------Стан-мами
+//------------------------------------------------Стан-дитини
+//------------------------------------------------Емоції

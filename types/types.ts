@@ -16,7 +16,7 @@ export interface Emotion {
   title: string;
 }
 
-export type Emotions = string[];
+export type Emotions = Emotion[];
 
 export interface LoginRequest {
   email: string;
@@ -40,7 +40,7 @@ export interface Note {
   _id: string;
   title: string;
   description: string;
-  emotions: Emotion[];
+  emotions: Emotions;
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -75,31 +75,45 @@ export interface CreateTaskRequest {
 
 export interface BabyState {
   _id?: string;
-  week: number;
-  daysLeft: number;
-  weight?: string;
-  size?: string;
-  description?: string;
-  advice?: string;
+  analogy: string;
+  weekNumber: number;
+  babySize: number;
+  babyWeight: number;
+  image: string;
+  babyActivity: string;
+  babyDevelopment: string;
+  interestingFact: string;
+  momDailyTips: string;
+}
+
+interface comfortTipsType {
+  category: string;
+  tip: string;
 }
 
 export interface MomState {
   _id?: string;
-  week: number;
-  feeling?: Emotions;
-  note?: string;
+  weekNumber: number;
+  feelings: {
+    states: string[];
+    sensationDescr: string;
+  };
+  comfortTips: comfortTipsType[];
 }
 
-export interface HomePublicResponse {
-  week: number;
+interface homeBaby {
+  babySize: number;
+  babyWeight: number;
+  image: string;
+  babyActivity: string;
+  babyDevelopment: string;
+  momDailyTips: string;
+}
+
+export interface HomeResponse {
+  currentWeek: number;
   daysLeft: number;
-  babyState?: BabyState;
-  momTip?: string;
-}
-
-export interface HomePrivateResponse extends HomePublicResponse {
-  babyState?: BabyState;
-  momState?: MomState;
+  babyState: homeBaby;
 }
 
 export interface AuthResponse {

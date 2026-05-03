@@ -5,8 +5,7 @@ import type {
   Note,
   BabyState,
   MomState,
-  HomePublicResponse,
-  HomePrivateResponse,
+  HomeResponse,
   TaskResponse,
 } from '../../types/types';
 
@@ -65,42 +64,42 @@ export async function getTasks(): Promise<TaskResponse[]> {
 }
 
 //-------------Повертає-терміни-(дефолт-для-незареєстрованого-коректні-для-зареєстрованого)
-export async function getTerm(
-  isLoggedIn: boolean = false
-): Promise<{ week: number; daysLeft: number }> {
-  try {
-    const cookieStore = await cookies();
-    if (isLoggedIn) {
-      const res = await nextServer.get('/home', {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      });
-      return {
-        week: res.data.week,
-        daysLeft: res.data.daysLeft,
-      };
-    }
-    const res = await nextServer.get('/');
-    return {
-      week: res.data.week,
-      daysLeft: res.data.daysLeft,
-    };
-  } catch {
-    return { week: 0, daysLeft: 0 };
-  }
-}
+// export async function getTerm(
+//   isLoggedIn: boolean = false
+// ): Promise<{ week: number; daysLeft: number }> {
+//   try {
+//     const cookieStore = await cookies();
+//     if (isLoggedIn) {
+//       const res = await nextServer.get('/home', {
+//         headers: {
+//           Cookie: cookieStore.toString(),
+//         },
+//       });
+//       return {
+//         week: res.data.week,
+//         daysLeft: res.data.daysLeft,
+//       };
+//     }
+//     const res = await nextServer.get('/');
+//     return {
+//       week: res.data.week,
+//       daysLeft: res.data.daysLeft,
+//     };
+//   } catch {
+//     return { week: 0, daysLeft: 0 };
+//   }
+// }
 
 //------------------------------------------------Повертає-публічний-дашборд
-export async function getHomePublic(): Promise<HomePublicResponse> {
-  const res = await nextServer.get<HomePublicResponse>('/home/homeprivate');
+export async function getHomePublic(): Promise<HomeResponse> {
+  const res = await nextServer.get<HomeResponse>('/home/homeprivate');
   return res.data;
 }
 
 //------------------------------------------------Повертає-приватний-дашборд
-export async function getHomePrivate(): Promise<HomePrivateResponse> {
+export async function getHomePrivate(): Promise<HomeResponse> {
   const cookieStore = await cookies();
-  const res = await nextServer.get<HomePrivateResponse>('/home/homepublic', {
+  const res = await nextServer.get<HomeResponse>('/home/homepublic', {
     headers: {
       Cookie: cookieStore.toString(),
     },
