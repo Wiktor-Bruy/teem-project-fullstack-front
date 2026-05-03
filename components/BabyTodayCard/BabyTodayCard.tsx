@@ -18,8 +18,6 @@ export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAd
          <Image 
         src={imageUrl} 
         alt="Зображення малюка" 
-        width={257}
-        height={194}
         className={styles.babyImage}
       />
         <ul className={styles.babycard__list}>
@@ -34,7 +32,7 @@ export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAd
           </li>
         </ul>
       </div>
-      <div className={styles.bodyAdvice}>
+      <div className={styles.body_Advice}>
         <p className={styles.babycard__advice}>{bodyAdvice}</p>
       </div>
     </section>
