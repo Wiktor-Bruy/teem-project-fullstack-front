@@ -49,12 +49,8 @@ export default function AddDiaryEntryForm({
 
       const data = await res.json();
 
-      const normalized = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.data)
-         ? data.data
-        : [];
-
+      const normalized = data?.emotions || [];
+     
         setEmotions(normalized);
       } catch (err) {
         console.error(err);

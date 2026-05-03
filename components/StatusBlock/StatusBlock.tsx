@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import styles from "./StatusBlock.module.css";
 
+interface BabyResponse {
+  weekNumber?: number;
+  currentWeek?: number;
+  daysLeft?: number;
+}
+
 interface BabyData {
   currentWeek: number;
   daysLeft: number;
@@ -22,11 +28,16 @@ export default function StatusBlock() {
 
         if (!res.ok) throw new Error("Failed to load data");
 
-        const result = await res.json();
+        const result: BabyResponse = await res.json();
 
         setData({
-          currentWeek: result.currentWeek ?? result.data?.currentWeek ?? 0,
-          daysLeft: result.daysLeft ?? result.data?.daysLeft ?? 0,
+          currentWeek:
+            result.currentWeek ??
+            result.weekNumber ?? 
+            0,
+          daysLeft:
+            result.daysLeft ?? 
+            0,
         });
       } catch (err: any) {
         setError(err.message || "Error");
@@ -52,7 +63,9 @@ export default function StatusBlock() {
 
       <div className={styles.card}>
         <p className={styles.label}>Днів до зустрічі</p>
-        <p className={styles.value}>~{data.daysLeft}</p>
+        <p className={styles.value}>
+          {data.daysLeft ? `~${data.daysLeft}` : "—"}
+        </p>
       </div>
     </div>
   );
