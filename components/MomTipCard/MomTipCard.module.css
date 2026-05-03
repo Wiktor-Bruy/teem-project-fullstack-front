@@ -1,26 +1,29 @@
-.card {
+:root {
+    --second-family: var(--font-comfortaa), sans-serif;
+    ----mom-tip-card-bg: #FFF4F6;
+}
+
+  .card {
   width: 100%;
   padding: 24px;
   border-radius: 32px;
-  background-color: var(--mom-tip-card-bg);
+  background-color: #FFF4F6;
   overflow-y: auto;
 }
 
 .title {
   margin-bottom: 16px;
-
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
-
   color: #161616;
+  font-family: Comfortaa, sans-serif;
 }
 
 .text {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
-
   color: #161616;
 }
 

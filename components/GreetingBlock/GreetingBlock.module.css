@@ -1,3 +1,7 @@
+:root {
+  --second-family: var(--font-comfortaa), sans-serif;
+}
+
 .wrapper {
   width: 100%;
 }
@@ -6,7 +10,7 @@
   font-size: 24px;
   font-weight: 500;
   line-height: 1.4;
-
+  font-family: var(--second-family);
   color: #2f2f2f;
 }
 
