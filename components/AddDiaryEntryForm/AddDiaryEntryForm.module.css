@@ -10,7 +10,6 @@
   color: #444;
 }
 
-/* INPUTS */
 .input,
 .textarea {
   width: 100%;
@@ -38,13 +37,13 @@
   resize: none;
 }
 
-/* ERROR */
+
 .error {
   font-size: 12px;
   color: #e74c3c;
 }
 
-/* CHIPS */
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -73,15 +72,14 @@
   color: #c2185b;
 }
 
-/* DROPDOWN */
 .dropdown {
   margin-top: 8px;
 
   background: #fff;
-  border: 1px solid #eee;
+
   border-radius: 14px;
 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+
 
   max-height: 180px;
   overflow-y: auto;
@@ -93,7 +91,6 @@
   gap: 8px;
 }
 
-/* dropdown item */
 .dropdown label {
   display: flex;
   align-items: center;
@@ -105,24 +102,24 @@
   cursor: pointer;
   font-size: 14px;
 
-  transition: 0.2s;
 }
 
-.dropdown label:hover {
-  background: #f7f7f7;
-}
 
-/* BUTTON */
-.button {
+
+.btn {
   margin-top: 10px;
+  
+  display: block;
+  margin: 0 auto;
 
+  width: 286px;
   padding: 12px;
   border-radius: 999px;
 
   border: none;
-  background: linear-gradient(135deg, #ffb3c1, #ff8fab);
+  background: #ffcbd3;
 
-  color: white;
+  color: 000000;
   font-size: 14px;
   font-weight: 500;
 

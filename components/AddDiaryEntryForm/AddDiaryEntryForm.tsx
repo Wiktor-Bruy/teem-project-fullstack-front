@@ -2,7 +2,9 @@
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Select from "react-select";
+import toast from "react-hot-toast";
 import styles from "./AddDiaryEntryForm.module.css";
 
 type Emotion = {
@@ -37,29 +39,25 @@ export default function AddDiaryEntryForm({
   initialData,
 }: Props) {
   const [emotions, setEmotions] = useState<Emotion[]>([]);
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-
 
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
-        const res = await fetch("/api/emotions", {
+        const res = await fetch("api/emotions", {
           credentials: "include",
         });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        const normalized =
-          Array.isArray(data)
-            ? data
-            : Array.isArray(data?.data)
-            ? data.data
-            : [];
+      const normalized = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.data)
+         ? data.data
+        : [];
 
         setEmotions(normalized);
       } catch (err) {
-        console.error("Failed to fetch emotions:", err);
+        console.error(err);
         setEmotions([]);
       }
     };
@@ -67,22 +65,12 @@ export default function AddDiaryEntryForm({
     fetchEmotions();
   }, []);
 
-  const emotionsMap = useMemo(() => {
-    return Object.fromEntries(emotions.map((e) => [e._id, e]));
+  const emotionOptions = useMemo(() => {
+    return emotions.map((e) => ({
+      value: e._id,
+      label: e.title,
+    }));
   }, [emotions]);
-
- 
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
-
 
   const initialCategories = Array.isArray(initialData?.categories)
     ? typeof initialData.categories[0] === "string"
@@ -103,18 +91,24 @@ export default function AddDiaryEntryForm({
         try {
           const res = await fetch("/api/diary", {
             method: initialData ? "PATCH" : "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               ...values,
               id: initialData?._id,
             }),
           });
 
-          if (res.ok) {
-            onSuccess();
+          if (!res.ok) {
+            throw new Error("Request failed");
           }
+
+          toast.success(initialData ? "Оновлено" : "Створено");
+
+          onSuccess();
         } catch (e) {
-          console.error(e);
+          toast.error("Помилка при збереженні запису");
         } finally {
           setSubmitting(false);
         }
@@ -122,80 +116,32 @@ export default function AddDiaryEntryForm({
     >
       {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.form}>
+          {}
           <label>Заголовок</label>
-          <Field name="title" className={styles.input} />
+          <Field
+            name="title"
+            placeholder="Введіть заголовок"
+            className={styles.input}
+          />
           <ErrorMessage name="title" component="div" className={styles.error} />
 
+          {}
           <label>Категорії</label>
 
-          {/* chips */}
-          <div className={styles.chips}>
-            {values.categories.map((id) => {
-              const e = emotionsMap[id];
-              if (!e) return null;
-
-              return (
-                <span key={id} className={styles.chip}>
-                  {e.title}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFieldValue(
-                        "categories",
-                        values.categories.filter((c) => c !== id)
-                      )
-                    }
-                  >
-                    ✕
-                  </button>
-                </span>
-              );
-            })}
-          </div>
-
-          {/* dropdown */}
-          <div ref={dropdownRef}>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpen((prev) => !prev);
-              }}
-            >
-              Обрати емоції
-            </button>
-
-            {open && (
-              <div className={styles.dropdown}>
-                {emotions.length === 0 ? (
-                  <p>Завантаження...</p>
-                ) : (
-                  emotions.map((e) => (
-                    <label key={e._id}>
-                      <input
-                        type="checkbox"
-                        checked={values.categories.includes(e._id)}
-                        onChange={() => {
-                          if (values.categories.includes(e._id)) {
-                            setFieldValue(
-                              "categories",
-                              values.categories.filter((c) => c !== e._id)
-                            );
-                          } else {
-                            setFieldValue("categories", [
-                              ...values.categories,
-                              e._id,
-                            ]);
-                          }
-                        }}
-                      />
-                      {e.title}
-                    </label>
-                  ))
-                )}
-              </div>
+          <Select
+            isMulti
+            options={emotionOptions}
+            value={emotionOptions.filter((o) =>
+              values.categories.includes(o.value)
             )}
-          </div>
+            onChange={(selected) => {
+              setFieldValue(
+                "categories",
+                selected ? selected.map((s) => s.value) : []
+              );
+            }}
+            placeholder="Оберіть емоції"
+          />
 
           <ErrorMessage
             name="categories"
@@ -203,12 +149,19 @@ export default function AddDiaryEntryForm({
             className={styles.error}
           />
 
+          {}
           <label>Запис</label>
-          <Field as="textarea" name="text" className={styles.textarea} />
+          <Field
+            as="textarea"
+            name="text"
+            placeholder="Як ви себе відчуваєте?"
+            className={styles.textarea}
+          />
           <ErrorMessage name="text" component="div" className={styles.error} />
 
-          <button type="submit" disabled={isSubmitting}>
-            {initialData ? "Оновити" : "Зберегти"}
+          {}
+          <button type="submit" disabled={isSubmitting} className={styles.btn}>
+            {isSubmitting ? "Збереження..." : initialData ? "Оновити" : "Зберегти"}
           </button>
         </Form>
       )}

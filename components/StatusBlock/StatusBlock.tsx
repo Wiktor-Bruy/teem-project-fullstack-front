@@ -3,44 +3,51 @@
 import { useEffect, useState } from "react";
 import styles from "./StatusBlock.module.css";
 
-interface WeekData {
-  week: number;
+interface BabyData {
+  currentWeek: number;
   daysLeft: number;
 }
 
-const StatusBlock = () => {
-  const [data, setData] = useState<WeekData | null>(null);
+export default function StatusBlock() {
+  const [data, setData] = useState<BabyData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchWeeks = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/weeks");
+        const res = await fetch("/api/home/baby", {
+          credentials: "include",
+        });
 
-        if (!res.ok) throw new Error("Failed to fetch");
+        if (!res.ok) throw new Error("Failed to load data");
 
         const result = await res.json();
-        setData(result);
+
+        setData({
+          currentWeek: result.currentWeek ?? result.data?.currentWeek ?? 0,
+          daysLeft: result.daysLeft ?? result.data?.daysLeft ?? 0,
+        });
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message || "Error");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWeeks();
+    fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  
+  if (loading) return <p>Завантаження...</p>;
+  if (error) return <p>Помилка: {error}</p>;
   if (!data) return null;
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
         <p className={styles.label}>Тиждень</p>
-        <p className={styles.value}>{data.week}</p>
+        <p className={styles.value}>{data.currentWeek}</p>
       </div>
 
       <div className={styles.card}>
@@ -49,6 +56,4 @@ const StatusBlock = () => {
       </div>
     </div>
   );
-};
-
-export default StatusBlock;
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import styles from "./AddDiaryEntryModal.module.css";
 import AddDiaryEntryForm from "../AddDiaryEntryForm/AddDiaryEntryForm";
@@ -15,14 +17,13 @@ export default function AddDiaryEntryModal({
   onSuccess,
   initialData,
 }: Props) {
-
   useEffect(() => {
-    const esc = (e: KeyboardEvent) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
 
-    document.addEventListener("keydown", esc);
-    return () => document.removeEventListener("keydown", esc);
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
   if (!isOpen) return null;
@@ -34,21 +35,17 @@ export default function AddDiaryEntryModal({
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        {}
         <div className={styles.header}>
-          <h2>
-            {initialData ? "Редагувати запис" : "Новий запис"}
-          </h2>
+          <h2>{initialData ? "Редагувати запис" : "Новий запис"}</h2>
 
           <button className={styles.close} onClick={onClose}>
             ✕
           </button>
         </div>
 
-        { }
+        {}
         <div className={styles.content}>
           <AddDiaryEntryForm
             initialData={initialData}
