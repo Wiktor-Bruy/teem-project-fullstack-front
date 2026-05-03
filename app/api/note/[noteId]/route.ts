@@ -3,10 +3,15 @@ import { api } from '../../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
 
-export async function GET() {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export async function GET(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
-    const res = await api.get('/weeks/mom', {
+    const { noteId } = await params;
+    const res = await api.get(`/notes/${noteId}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
