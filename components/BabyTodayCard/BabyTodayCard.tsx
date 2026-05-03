@@ -17,7 +17,7 @@ export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAd
       <div id="BabyState" className={styles.babycard__listitem}>
          <Image 
         src={imageUrl} 
-        alt="Зображення малюка" 
+        alt="Зображення малюка"
         className={styles.babyImage}
       />
         <ul className={styles.babycard__list}>
