@@ -23,7 +23,7 @@ export async function checkSession() {
 //------------------------------------------------Повертає-користувача
 export async function getMe(): Promise<User> {
   const cookieStore = await cookies();
-  const res = await nextServer.get<User>(`/users/me`, {
+  const res = await nextServer.get<User>(`/user/me`, {
     headers: {
       Cookie: cookieStore.toString(),
     },

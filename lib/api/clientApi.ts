@@ -37,7 +37,7 @@ export async function logout() {
 
 //------------------------------------------------Повертає-користувача
 export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>('/users/me');
+  const res = await nextServer.get<User>('/user/me');
   return res.data;
 }
 
