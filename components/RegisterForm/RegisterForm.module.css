@@ -1,3 +1,22 @@
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-scheme-text: #000000;
+  --color-scheme-border: rgba(0, 0, 0, 0.15);
+
+  --color-scheme-foreground: #f2f2f2;
+  --color-scheme-foreground-alt: #f2f2f2;
+  --color-scheme-accent: #ffcbd3;
+  --color-scheme-red: #C60000;
+
+  --font-family: var(--font-lato), sans-serif;
+  --second-family: var(--font-comfortaa), sans-serif;
+}
+
 .page {
     position: relative;
     min-height: 100vh;
@@ -48,6 +67,12 @@
   font-family: Comfortaa;
 }
 
+.fieldWrapper {
+  position: relative;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
 .label {
   text-align: left;
   font-size: 16px;
@@ -55,47 +80,52 @@
 }
 
 .input {
+  width: 100%;
   height: 40px;
+  padding: 8px 16px;
   border-radius: 12px;
   border: 2px;
   background-color: rgba(0, 0, 0, 0.05);
   text-align: left;
   font-size: 16px;
   outline: none;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .input::placeholder {
   text-align: left;
   border: 1px solid transparent;
   color: rgba(0, 0, 0, 0.6);
-  padding: 8px 16px;
   font-size: 16px;
   outline: none;
   transition: 0.2s;
 }
 
 .inputError {
-  border: 1px solid #C60000;
+  border: 1px solid var(--color-scheme-red);
 }
 
 .inputError::placeholder {
-  color: #C60000;
+  color: var(--color-scheme-red);
 }
 
 .error {
-  color: #C60000;
+  position: absolute;
+  min-height: 16px;
+  left: 0;
+  bottom: -18px;
+  color: var(--color-scheme-red);
   text-align: left;
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 8px;
+   min-height: 16px;
   margin-bottom: 16px;
+  font-family: inherit;
 }
 
-/* Кнопка */
 .btn {
   width: 100%;
-  /* max-width: 320px; */
-  padding: 10px 24px;
+  padding: 10px 16px;
   border-radius: 100px;
   background-color: #FFDAE0;
   color: #000000;
@@ -106,8 +136,7 @@
   margin-bottom: 24px;
   border: none;
   box-shadow:
-    0 4px 4px rgba(0, 0, 0, 0.25); /* drop shadow */
-    /* 0 0 0 4px #ffCBD3            */
+    0 4px 4px rgba(0, 0, 0, 0.25);
   cursor:pointer;
 }
 
