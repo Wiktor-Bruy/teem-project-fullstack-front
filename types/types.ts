@@ -121,7 +121,11 @@ export interface AuthResponse {
 }
 
 export interface Task {
+  _id: string;
   title: string;
   date: string;
   isDone?: boolean;
+  owner: string;
+  createdAt: string;
+  updatedAt: string;
 }
