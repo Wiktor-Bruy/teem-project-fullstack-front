@@ -28,7 +28,7 @@ export default function AuthProvider({ children }: AuthStoreProps) {
   }
 
   if (isLoading) {
-    return <Loading/>
+    return children;
   }
 
   return children;

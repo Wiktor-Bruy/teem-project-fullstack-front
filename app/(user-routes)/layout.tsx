@@ -2,8 +2,6 @@ import css from './layout.module.css';
 
 import clsx from 'clsx';
 
-import AuthProvider from '@/components/AuthProvider/AuthProvider';
-
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import Header from '@/components/Header/Header';
@@ -14,17 +12,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <main>
-        <div className={clsx(css.box, 'container')}>
-          <Sidebar />
-          <div>
-            <Header />
-            <Breadcrumbs />
-            <div>{children}</div>
-          </div>
+    <main>
+      <div className={clsx(css.box, 'container')}>
+        <Sidebar />
+        <div>
+          <Header />
+          <Breadcrumbs />
+          <div>{children}</div>
         </div>
-      </main>
-    </AuthProvider>
+      </div>
+    </main>
   );
 }

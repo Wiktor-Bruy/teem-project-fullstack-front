@@ -1,3 +1,8 @@
-export default function UserBar() {
-  return <p>UserBar</p>;
+// Должно быть так:
+export default function UserBar() { 
+  return (
+    <div>...</div>
+  )
 }
+
+
