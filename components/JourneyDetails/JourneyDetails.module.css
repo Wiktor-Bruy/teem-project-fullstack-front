@@ -1,0 +1,285 @@
+@media (min-width: 320px) {
+  .tabsNav {
+    border: none;
+    background: #fff4f6;
+    border-radius: 100px;
+    padding: 4px;
+    width: 335px;
+    height: 50px;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .motherBodyContent,
+  .babyContent {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    background: none;
+    border: none;
+    border-radius: 100px;
+    padding: 10px 24px;
+    width: 151px;
+    height: 42px;
+  }
+  .babyContent:active,
+  .motherBodyContent:active {
+    background: #ffdae0;
+    font-weight: 500;
+    line-height: 160%;
+  }
+  .babyContent {
+    width: 163px;
+  }
+  .babyInformation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 16px auto;
+    padding: 24px;
+    background: #fff4f6;
+    width: 335px;
+    border-radius: 32px;
+  }
+  .interestingWeekFact {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 12px;
+    width: 287px;
+    background: #ffdae0;
+  }
+  .titleFact {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 150%;
+  }
+  .babyPhotoSize {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    width: 287px;
+    overflow: hidden;
+  }
+  .sizePhotoDescription,
+  .descriptionFact,
+  .babySizeInformation {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+  }
+  .sizePhotoDescription {
+    margin-top: 16px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    align-self: flex-start;
+  }
+  .babySizeInformation {
+    margin-top: 32px;
+  }
+  .journeyInfo {
+    margin: 32px 20px 20px 20px;
+  }
+  .factHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iconStar {
+    flex-shrink: 0;
+  }
+}
+@media (min-width: 768px) {
+  .tabsNav {
+    width: 704px;
+    display: inline-flex;
+  }
+  .motherBodyContent,
+  .babyContent {
+    font-weight: 500;
+    line-height: 160%;
+    width: 348px;
+  }
+  .babyInformation {
+    width: 704px;
+  }
+  .interestingWeekFact {
+    width: 656px;
+  }
+  .babyPhotoSize {
+    width: 656px;
+  }
+  .journeyInfo {
+    margin: 32px 32px 20px 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .tabsNav {
+    width: 572px;
+    height: 54px;
+    padding: 4px;
+  }
+  .motherBodyContent,
+  .babyContent {
+    font-weight: 400;
+    line-height: 150%;
+    width: 295px;
+    height: 46px;
+  }
+  .babyInformation {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 1064px;
+    height: 467px;
+    margin: 16px auto;
+    padding: 24px;
+  }
+  .sizePhotoDescription {
+    order: 1;
+  }
+  .babyPhotoSize {
+    order: 1;
+    width: 461px;
+    height: 379px;
+  }
+  .interestingWeekFact,
+  .babySizeInformation {
+    order: 2;
+    width: 523px;
+    height: 280px;
+    margin-top: 0;
+    align-items: start;
+  }
+  .interestingWeekFact {
+    height: 104px;
+    margin-top: 16px;
+  }
+  .journeyInfo {
+    margin: 32px 32px 24px 32px;
+  }
+} /* mama section */
+@media (min-width: 320px) {
+  .motherInformation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 16px auto;
+    width: fit-content;
+  }
+  .motherTasksCard,
+  .motherTipsCard,
+  .motherFeelingCard {
+    background: #fff4f6;
+    border-radius: 32px;
+    width: 311px;
+    padding: 24px;
+  }
+  .motherTasksCard,
+  .motherTipsCard {
+    margin-top: 24px;
+  }
+  .tipsHeader,
+  .cardTitel {
+    font-family: var(--font-comfortaa);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0.01em;
+  }
+  .tags {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+  }
+  .tag {
+    border-radius: 100px;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .feelingDescription {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  .tipItems {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+  }
+  .tipItem {
+    display: flex;
+    gap: 8px;
+  }
+  .tipTitel {
+    font-weight: 700;
+  }
+  .taskItem {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tasksHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .taskContent {
+    display: flex;
+    gap: 8px;
+  }
+  .taskList {
+    margin-top: 16px;
+  }
+  .taskDate {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .addTaskBtn {
+    cursor: pointer;
+  }
+}
+@media (min-width: 768px) {
+  .motherInformation {
+    align-items: center;
+  }
+  .motherFeelingsTips,
+  .motherTasksCard {
+    width: 704px;
+  }
+  .motherFeelingCard,
+  .motherTipsCard,
+  .motherTasksCard {
+    width: 704px;
+  }
+}
+@media (min-width: 1024px) {
+  .motherInformation {
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .motherFeelingsTips {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 650px;
+  }
+  .motherFeelingCard {
+    width: 650px;
+  }
+  .motherTipsCard {
+    width: 650px;
+    margin-top: 0;
+  }
+  .motherTasksCard {
+    width: 390px;
+    margin-top: 0;
+  }
+}

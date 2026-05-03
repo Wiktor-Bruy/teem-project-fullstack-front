@@ -81,13 +81,22 @@ export interface BabyState {
   size?: string;
   description?: string;
   advice?: string;
+  image?: string;
+  analogy?: string;
+  babyDevelopment?: string;
+  interestingFact?: string;
 }
 
+interface ComfortTip {
+  category: string;
+  tip: string;
+}
 export interface MomState {
   _id?: string;
   week: number;
-  feeling?: Emotions;
   note?: string;
+  comfortTips: ComfortTip[];
+  feelings: { states: Emotion[]; sensationDescr: string };
 }
 
 export interface HomePublicResponse {

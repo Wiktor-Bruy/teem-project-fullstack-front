@@ -9,7 +9,28 @@ import type {
   TaskResponse,
   CreateTaskRequest,
   UpdateUserRequest,
+  BabyState,
+  MomState,
 } from '../../types/types';
+
+export async function getBabyState(): Promise<BabyState> {
+  try {
+    const res = await nextServer.get<BabyState>('/home/baby');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching baby state:', error);
+    throw error;
+  }
+}
+export async function getMomState(): Promise<MomState> {
+  try {
+    const res = await nextServer.get<MomState>('/home/mom');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching mom state:', error);
+    throw error;
+  }
+}
 
 //------------------------------------------------Функція-логіну
 export async function login(credentials: LoginRequest): Promise<User> {
