@@ -10,37 +10,14 @@ import type {
   TaskResponse,
 } from '../../types/types';
 
-export interface BabyState {
-  _id: string;
-  analogy: boolean;
-  weekNumber: number;
-  babySize: number;
-  babyWeight: number;
-  image: string;
-  babyActivity: string;
-  babyDevelopment: string;
-  interestingFact: string;
-  momDailyTips: string[];
-}
-
-export interface Note {
-  _id: string;
-  title: string;
-  description: string;
-  emotions: string[];
-  userId: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export async function checkSession() {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/auth/refresh', {
+  const res = await nextServer.post('/auth/refresh', {
     headers: {
       Cookie: cookieStore.toString(),
     },
   });
-  return res.data;
+  return res;
 }
 
 //------------------------------------------------Повертає-користувача
@@ -67,18 +44,6 @@ export async function getNotes(): Promise<Note[]> {
 
 //------------------------------------------------Повертає-один-запис-щоденника-по-id
 export async function getNote(noteId: string): Promise<Note> {
-<<<<<<< Kazarina-tasks-11-13-52-53
-  try {
-    const res = await nextServer.get<Note>(`/note/${noteId}`);
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching note:', error);
-    throw error;
-  }
-}
-//--------------------------------------------Повертає-всі-таски
-export async function getTasks() {}
-=======
   const cookieStore = await cookies();
   const res = await nextServer.get<Note>(`/note/one/${noteId}`, {
     headers: {
@@ -98,7 +63,6 @@ export async function getTasks(): Promise<TaskResponse[]> {
   });
   return res.data;
 }
->>>>>>> main
 
 //-------------Повертає-терміни-(дефолт-для-незареєстрованого-коректні-для-зареєстрованого)
 export async function getTerm(
@@ -144,21 +108,6 @@ export async function getHomePrivate(): Promise<HomePrivateResponse> {
   return res.data;
 }
 
-<<<<<<< Kazarina-tasks-11-13-52-53
-//-------------------------------------------Повертає-стан-дитини
-export async function getBabyState(): Promise<BabyState> {
-  try {
-    const res = await nextServer.get<BabyState>('/home/baby');
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching baby state:', error);
-    throw error;
-  }
-}
-
-
-
-=======
 //------------------------------------------------Повертає-стан-дитини
 export async function getBabyState(): Promise<BabyState> {
   const cookieStore = await cookies();
@@ -169,7 +118,6 @@ export async function getBabyState(): Promise<BabyState> {
   });
   return res.data;
 }
->>>>>>> main
 
 //------------------------------------------------Повертає-стан-мами
 export async function getMomState(): Promise<MomState> {

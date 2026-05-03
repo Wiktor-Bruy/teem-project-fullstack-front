@@ -11,30 +11,6 @@ import type {
   UpdateUserRequest,
 } from '../../types/types';
 
-export interface BabyState {
-  _id: string;
-  analogy: boolean;
-  weekNumber: number;
-  babySize: number;
-  babyWeight: number;
-  image: string;
-  babyActivity: string;
-  babyDevelopment: string;
-  interestingFact: string;
-  momDailyTips: string[];
-}
-
-//--------------------------------------------Повертає-стан-малюка
-export async function getBabyState(): Promise<BabyState> {
-  try {
-    const res = await nextServer.get<BabyState>('/home/baby');
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching baby state:', error);
-    throw error;
-  }
-}
-
 //------------------------------------------------Функція-логіну
 export async function login(credentials: LoginRequest): Promise<User> {
   const res = await nextServer.post<User>('/auth/login', credentials);
@@ -74,7 +50,7 @@ export async function updateUser(data: UpdateUserRequest): Promise<User> {
 //------------------------------------------------Оновлює-аватар
 export async function updateAvatar(file: File): Promise<{ url: string }> {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('avatar', file);
   const res = await nextServer.put<{ url: string }>('/user/avatar', formData);
   return res.data;
 }
