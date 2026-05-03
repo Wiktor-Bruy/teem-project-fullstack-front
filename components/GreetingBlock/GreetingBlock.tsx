@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import styles from './GreetingBlock.module.css';
+import { useEffect, useState } from 'react';
 
 type Props = {
   name?: string;
