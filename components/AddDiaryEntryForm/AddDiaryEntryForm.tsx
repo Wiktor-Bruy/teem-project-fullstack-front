@@ -126,6 +126,7 @@ export default function AddDiaryEntryForm({
 
           <Select
             isMulti
+            className={styles.input}
             options={emotionOptions}
             value={emotionOptions.filter((o) =>
               values.categories.includes(o.value)
