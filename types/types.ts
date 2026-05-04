@@ -53,9 +53,9 @@ export interface CreateNoteRequest {
 }
 
 export interface UpdateNoteRequest {
-  title?: string;
-  description?: string;
-  emotions?: string[];
+  title: string;
+  description: string;
+  emotions: string[];
 }
 
 export interface TaskResponse {

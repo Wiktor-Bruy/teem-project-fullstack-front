@@ -92,14 +92,14 @@ export async function getTasks(): Promise<TaskResponse[]> {
 
 //------------------------------------------------Повертає-публічний-дашборд
 export async function getHomePublic(): Promise<HomeResponse> {
-  const res = await nextServer.get<HomeResponse>('/home/homeprivate');
+  const res = await nextServer.get<HomeResponse>('/home/homepublic');
   return res.data;
 }
 
 //------------------------------------------------Повертає-приватний-дашборд
 export async function getHomePrivate(): Promise<HomeResponse> {
   const cookieStore = await cookies();
-  const res = await nextServer.get<HomeResponse>('/home/homepublic', {
+  const res = await nextServer.get<HomeResponse>('/home/homeprivate', {
     headers: {
       Cookie: cookieStore.toString(),
     },
