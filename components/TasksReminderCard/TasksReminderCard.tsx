@@ -1,69 +1,130 @@
 'use client';
-import { Task } from '@/types/types';
 import css from './TasksReminderCard.module.css';
 import { useRouter } from 'next/navigation';
-export type { Task }  from '@/types/types';
+import type { Task } from '@/types/types';
+import AddTaskModal from "@/components/AddTaskModal/AddTaskModal";
+import { updateTask, getTasks } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 
-type TasksReminderCardProps = {
-  tasks: Task[];
-  isAuthenticated: boolean;
-  onToggleTask: (id: string) => void;
-  onOpenModal: () => void;
-}
-
-export default function TasksReminderCard({
-  tasks,
-  isAuthenticated,
-  onToggleTask,
-  onOpenModal,
-}: TasksReminderCardProps) {
-
+export default function TasksReminderCard() {
   const router = useRouter();
-    const handleAddClick = () => {
+  const queryClient = useQueryClient();
+
+  const user = useAuthStore((s) => s.user);
+  const isAuthenticated = !!user;
+
+  const tasksQueryKey = ['tasks', user?._id];
+
+    const { data: tasks = [] } = useQuery<Task[]>({
+    queryKey: tasksQueryKey,
+    queryFn: getTasks,
+    enabled: !!user,
+    });
+
+   const mutation = useMutation({
+    mutationFn: (taskId: string) => updateTask(taskId),
+
+    onMutate: async (taskId) => {
+      await queryClient.cancelQueries({ queryKey: tasksQueryKey });
+
+      const previousTasks =
+        queryClient.getQueryData<Task[]>(tasksQueryKey);
+
+      queryClient.setQueryData<Task[]>(tasksQueryKey, (old = []) =>
+        old.map((task) =>
+          task._id === taskId
+            ? { ...task, isDone: !task.isDone }
+            : task
+        )
+      );
+
+      return { previousTasks };
+    },
+
+    onError: (_err, _taskId, context) => {
+      if (context?.previousTasks) {
+        queryClient.setQueryData(tasksQueryKey, context.previousTasks);
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: tasksQueryKey });
+    },
+  });
+
+  const handleToggleTask = (id: string) => {
+    mutation.mutate(id);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddClick = () => {
     if (isAuthenticated) {
-      onOpenModal();
+      setIsModalOpen(true);
     } else {
       router.push('/register');
     }
-    };
+  };
 
-  return (
-<section className={css.card}>
-    <div className={css.header}>
-      <h2 className={css.title}>Важливі завдання</h2>
-      <button className={css.addBtn} onClick={handleAddClick}>
-        +
-      </button>
-    </div>
-    {tasks?.length === 0 ? (
-      <p className={css.placeholder}>
-        У вас ще немає активних завдань
-      </p>
-    ) : (
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (<>
+    <section className={css.card}>
+      <div className={css.header}>
+        <h2 className={css.title}>Важливі завдання</h2>
+        <button className={css.addBtn} onClick={handleAddClick}>
+          <svg className={css.addBtn} width={24} height={24}>
+            <use href="/icons.svg#plus" />
+          </svg>
+        </button>
+      </div>
+      {tasks?.length === 0 ? (
+        <div className={css.emptyState}>
+          <p className={css.emptyText}>
+            Наразі немає жодних завдань
+          </p>
+          <p className={css.emptyTextSeconde}>
+            Створіть мершій нове завдання!
+          </p>
+          <button className={css.createBtn} onClick={handleAddClick}>
+            Створити завдання
+          </button>
+        </div>
+      ) : (
         <ul className={css.list}>
           {tasks.map((task) => (
-          <li key={task._id} className={css.item}>
-            <label className={css.label}>
+            <li key={task._id} className={css.item}>
+              <label className={css.label}>
                 <input
                   type="checkbox"
                   checked={task.isDone}
-                  onChange={() =>
-                    onToggleTask(task._id)
-                  }
+                  onChange={() => handleToggleTask(task._id)}
+                  className={css.hiddenCheckbox}
                 />
-                <span className={task.isDone ? css.completed : ''}>
-                  {task.date && (
-                    <span className={css.date}>
-                      {task.date}
-                    </span>
-                  )}
-                  {task.title}
+                <span className={css.customCheckbox}>
+                  <svg width={12} height={12}>
+                    <use href="/icons.svg#checkbox" />
+                  </svg>
                 </span>
-            </label>
-          </li>
+                <span>
+                  {task.date && (
+                    <span className={css.date}>{task.date}</span>
+                  )}
+                  <span className={task.isDone ? css.completed : ''}>{task.title}</span>
+                </span>
+              </label>
+            </li>
           ))}
-      </ul>
-    )}
+        </ul>
+      )}
     </section>
-  )
+    {isModalOpen && (
+        <AddTaskModal onClose={handleCloseModal} />
+      )}
+  </>
+  );
 }
