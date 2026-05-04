@@ -1,0 +1,70 @@
+.sidebar {
+  position: relative;
+  width: 312px;
+  height: 100%;
+  background: #fff;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.nav {
+  padding: 16px;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  color: #000;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.navLink:hover {
+  background: #fff4f6;
+}
+
+.active {
+  background: #ffdae0;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  /* border: 1 px solid rgba(0, 0, 0, 0.15); */
+}
+.footer::before {
+  display: block;
+  content: '';
+  width: 280px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
