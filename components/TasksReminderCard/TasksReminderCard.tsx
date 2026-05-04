@@ -7,7 +7,7 @@ export type { Task }  from '@/types/types';
 type TasksReminderCardProps = {
   tasks: Task[];
   isAuthenticated: boolean;
-  onToggleTask: (id: string, isDone: boolean) => void;
+  onToggleTask: (id: string) => void;
   onOpenModal: () => void;
 }
 
@@ -48,7 +48,7 @@ export default function TasksReminderCard({
                   type="checkbox"
                   checked={task.isDone}
                   onChange={() =>
-                    onToggleTask(task._id, !task.isDone)
+                    onToggleTask(task._id)
                   }
                 />
                 <span className={task.isDone ? css.completed : ''}>

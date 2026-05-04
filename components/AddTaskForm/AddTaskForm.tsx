@@ -10,8 +10,7 @@ import { useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import DatePicker from 'react-datepicker';
-
-import type { Task } from '@/types/types';
+import type { CreateTaskRequest, TaskResponse } from "@/types/types";
 import { createTask } from '@/lib/api/clientApi';
 
 interface AddTaskFormProps {
@@ -29,8 +28,8 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
   const [isFetching, setIsFetching] = useState(false);
   const queryClient = useQueryClient();
 
-  const createMutation = useMutation({
-    mutationFn: async (data: Task) => {
+  const createMutation = useMutation<TaskResponse, Error, CreateTaskRequest>({
+    mutationFn: async (data: CreateTaskRequest) => {
       const res = await createTask(data);
       return res;
     },
@@ -76,7 +75,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
     formik.setFieldValue('date', currDate);
   }
 
-  const formik = useFormik({
+  const formik = useFormik<CreateTaskRequest>({
     initialValues: { title: '', date: today },
     onSubmit: values => {
       if (values.title === '') {
