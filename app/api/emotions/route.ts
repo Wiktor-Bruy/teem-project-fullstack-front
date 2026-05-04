@@ -24,5 +24,6 @@ export async function GET() {
       { error: 'Some server error...' },
       { status: 500 }
     );
+    
   }
 }
