@@ -3,19 +3,29 @@
 import css from './Header.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
+import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
-import Modal from '../Modal/Modal';
 import Sidebar from '../Sidebar/Sidebar';
 
 export default function Header() {
   const [isModalNavigationOpen, setIsModalNavigationOpen] = useState(false);
+  const path = usePathname();
+
+  useEffect(() => {
+    setTimeout(() => setIsModalNavigationOpen(false));
+  }, [path]);
 
   const openModalNavigation = () => {
     setIsModalNavigationOpen(true);
   };
 
-  const closeModalNavigation = () => {
-    setIsModalNavigationOpen(false);
+  const closeModalNavigation = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      setIsModalNavigationOpen(false);
+    }
+    return;
   };
 
   return (
@@ -44,9 +54,9 @@ export default function Header() {
       </header>
 
       {isModalNavigationOpen && (
-        <Modal onClose={closeModalNavigation}>
+        <div className={clsx(css.overlay)} onClick={closeModalNavigation}>
           <Sidebar />
-        </Modal>
+        </div>
       )}
     </>
   );

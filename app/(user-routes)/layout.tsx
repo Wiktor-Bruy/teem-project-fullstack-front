@@ -14,7 +14,9 @@ export default function RootLayout({
   return (
     <main>
       <div className={clsx(css.box, 'container')}>
-        <Sidebar />
+        <div className={css.sidebar}>
+          <Sidebar />
+        </div>
         <div>
           <Header />
           <Breadcrumbs />

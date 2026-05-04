@@ -4,16 +4,57 @@ import UserBar from '../UserBar/UserBar';
 import AuthBar from '../AuthBar/AuthBar';
 
 import css from './Sidebar.module.css';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function SideBar() {
-  const { user } = useAuthStore();
-  const isAuth = Boolean(user);
+  // const  user  = useAuthStore(state => state.user);
+  const [myDay, setMyday] = useState(false);
+  const [journey, setJourney] = useState(false);
+  const [diary, setDiary] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const path = usePathname();
+
+  const isAuth = useAuthStore(state => state.isAuthenticated);
+
+  useEffect(() => {
+    if (path === '/') {
+      setTimeout(() => {
+        setMyday(true);
+        setJourney(false);
+        setDiary(false);
+        setProfile(false);
+      }, 0);
+    } else if (path.startsWith('/journey')) {
+      setTimeout(() => {
+        setMyday(false);
+        setJourney(true);
+        setDiary(false);
+        setProfile(false);
+      }, 0);
+    } else if (path.startsWith('/diary')) {
+      setTimeout(() => {
+        setMyday(false);
+        setJourney(false);
+        setDiary(true);
+        setProfile(false);
+      }, 0);
+    } else if (path.startsWith('/profile')) {
+      setTimeout(() => {
+        setMyday(false);
+        setJourney(false);
+        setDiary(false);
+        setProfile(true);
+      }, 0);
+    }
+  }, [path]);
 
   return (
-    <aside className={css.sidebar}>
-      <div className={css.inner}>
+    <div className={css.sidebar}>
+      <div className={clsx(css.inner)}>
         <Link href="/" className={css.logoWrap}>
           <svg width="32" height="32">
             <use href="/icons.svg#logo" />
@@ -24,7 +65,7 @@ export default function SideBar() {
         <nav className={css.nav}>
           <ul className={css.navList}>
             <li>
-              <Link href="/" className={`${css.navLink} ${css.active}`}>
+              <Link href="/" className={clsx(css.navLink, myDay && css.active)}>
                 <svg width="24" height="24">
                   <use href="/icons.svg#me-day" />
                 </svg>
@@ -33,7 +74,10 @@ export default function SideBar() {
             </li>
 
             <li>
-              <Link href="/journey/1" className={css.navLink}>
+              <Link
+                href="/journey/1"
+                className={clsx(css.navLink, journey && css.active)}
+              >
                 <svg width="24" height="24">
                   <use href="/icons.svg#journey" />
                 </svg>
@@ -42,7 +86,10 @@ export default function SideBar() {
             </li>
 
             <li>
-              <Link href="/diary" className={css.navLink}>
+              <Link
+                href="/diary"
+                className={clsx(css.navLink, diary && css.active)}
+              >
                 <svg width="24" height="24">
                   <use href="/icons.svg#diary" />
                 </svg>
@@ -51,7 +98,10 @@ export default function SideBar() {
             </li>
 
             <li>
-              <Link href="/profile" className={css.navLink}>
+              <Link
+                href="/profile"
+                className={clsx(css.navLink, profile && css.active)}
+              >
                 <svg width="24" height="24">
                   <use href="/icons.svg#profile" />
                 </svg>
@@ -60,11 +110,9 @@ export default function SideBar() {
             </li>
           </ul>
         </nav>
-
-        <div className={css.divider} />
-
-        <div className={css.footer}>{isAuth ? <UserBar /> : <AuthBar />}</div>
       </div>
-    </aside>
+
+      <div className={css.footer}>{isAuth ? <UserBar /> : <AuthBar />}</div>
+    </div>
   );
 }
