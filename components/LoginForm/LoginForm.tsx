@@ -27,12 +27,10 @@ const initialValues: LoginFormValues = {
   password: '',
 };
 
-
 export default function LoginForm() {
   const router = useRouter();
   const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
- 
 
   return (
     <div className={css.loginPage}>
