@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useId } from 'react';
 import css from './RegisterForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import { register } from '@/lib/api/clientApi';
@@ -28,7 +27,6 @@ type RegisterFormValues = RegisterRequest;
 
 export default function RegisterForm() {
   const router = useRouter();
-  const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
 
   return (
@@ -53,23 +51,30 @@ export default function RegisterForm() {
               setErrors,
             }: FormikHelpers<RegisterFormValues>
           ) => {
+            console.log('Form submitted with values:', values);
             try {
+              console.log('Calling register function...');
               const user: User = await register(values);
+              console.log('Registration successful:', user);
 
               setUser(user);
               resetForm();
               router.push('/edit');
             } catch (error: unknown) {
+              console.error('Registration error:', error);
               if (isAxiosError(error)) {
-                toast.error(
-                  error.response?.data?.message || 'Помилка реєстрації'
-                );
+                const errorMessage = error.response?.data?.message || 'Помилка реєстрації';
+                console.error('Axios error:', errorMessage);
+                toast.error(errorMessage);
+
+                if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('існує')) {
+                  setErrors({
+                    email: errorMessage,
+                  });
+                }
               } else {
                 toast.error('Щось пішло не так');
               }
-              setErrors({
-                password: 'Користувач з такою поштою вже існує',
-              });
             } finally {
               setSubmitting(false);
             }
@@ -79,12 +84,12 @@ export default function RegisterForm() {
             <Form className={css.form}>
               <h1 className={css.title}>Реєстрація</h1>
 
-              <label htmlFor={`${fieldId}-name`} className={css.label}>
+              <label htmlFor={`register-name`} className={css.label}>
                 Імʼя*
               </label>
               <div className={css.fieldWrapper}>
                 <Field
-                  id={`${fieldId}-name`}
+                  id={`register-name`}
                   type="text"
                   name="name"
                   className={`${css.input} ${errors.name && touched.name ? css.inputError : ''}`}
@@ -96,12 +101,12 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
-              <label htmlFor={`${fieldId}-email`} className={css.label}>
+              <label htmlFor={`register-email`} className={css.label}>
                 Пошта*
               </label>
               <div className={css.fieldWrapper}>
                 <Field
-                  id={`${fieldId}-email`}
+                  id={`register-email`}
                   type="email"
                   name="email"
                   className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
@@ -114,12 +119,12 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
-              <label htmlFor={`${fieldId}-password`} className={css.label}>
+              <label htmlFor={`register-password`} className={css.label}>
                 Пароль*
               </label>
               <div className={css.fieldWrapper}>
                 <Field
-                  id={`${fieldId}-password`}
+                  id={`register-password`}
                   type="password"
                   name="password"
                   className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}

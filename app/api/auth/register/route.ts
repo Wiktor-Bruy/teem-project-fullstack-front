@@ -37,12 +37,12 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (isAxiosError(error)) {
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { message: error.response?.data?.message || error.message },
+        { status: error.response?.status || 500 }
       );
     }
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { message: 'Internal Server Error' },
       { status: 500 }
     );
   }
