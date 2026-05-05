@@ -1,7 +1,8 @@
 'use client';
 import { getMe, refreshSession } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 
 interface AuthStoreProps {
   children: React.ReactNode;
@@ -10,21 +11,30 @@ interface AuthStoreProps {
 export default function AuthProvider({ children }: AuthStoreProps) {
   const setUser = useAuthStore(state => state.setUser);
   const clearUser = useAuthStore(state => state.clearIsAuthenticated);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  useEffect(() => {
-    async function autorisation() {
-      const isLogin = await refreshSession();
-      if (isLogin) {
-        const user = await getMe();
-        if (user) {
-          setUser(user);
-        }
+useEffect(() => {
+  const autorisation = async () => {
+    try {
+      await refreshSession();
+      const user = await getMe();
+
+      if (user) {
+        setUser(user);
       } else {
         clearUser();
       }
+    } catch {
+      clearUser();
+    } finally {
+      setIsAuthLoading(false);
     }
-    autorisation();
-  }, [clearUser, setUser]);
+  };
+
+  autorisation();
+}, []);
+
+if (isAuthLoading) return null;
 
   return children;
 }

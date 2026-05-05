@@ -15,13 +15,13 @@ export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAd
     <section className={styles.babycard}>
       <p className={styles.titleBaby}>Малюк сьогодні</p>
       <div id="BabyState" className={styles.babycard__listitem}>
-         <Image 
-        src={imageUrl} 
-        alt="Зображення малюка" 
+         {/* <Image
+        src={imageUrl}
+        alt="Зображення малюка"
         width={257}
         height={194}
         className={styles.babyImage}
-      />
+      /> */}
         <ul className={styles.babycard__list}>
           <li>
             <p className={styles.babycard__datalabel}>Розмір: <span>{size}</span></p>
