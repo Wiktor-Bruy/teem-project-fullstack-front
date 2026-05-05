@@ -1,5 +1,4 @@
 import { nextServer } from './api';
-import { AxiosError } from 'axios';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -13,25 +12,6 @@ import type {
   BabyState,
   MomState,
 } from '../../types/types';
-
-export async function getBabyState(week?: number): Promise<BabyState> {
-  try {
-    const res = await nextServer.get<BabyState>(`/home/baby${week ? `?week=${week}` : ''}`);
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching baby state:', error);
-    throw error;
-  }
-}
-export async function getMomState(week?: number): Promise<MomState> {
-  try {
-    const res = await nextServer.get<MomState>(`/home/mom${week ? `?week=${week}` : ''}`);
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching mom state:', error);
-    throw error;
-  }
-}
 
 //------------------------------------------------Функція-логіну
 export async function login(credentials: LoginRequest): Promise<User> {
@@ -60,18 +40,8 @@ export async function logout() {
 //------------------------------------------------Повертає-користувача
 
 export async function getMe(): Promise<User | null> {
-  try {
-    const res = await nextServer.get<User>('/user/me');
-    return res.data;
-  } catch (error) {
-    if (
-      error instanceof AxiosError &&
-      error.response?.status === 401
-    ) {
-      return null;
-    }
-    throw error;
-  }
+  const res = await nextServer.get<User>('/user/me');
+  return res.data;
 }
 
 //------------------------------------------------Оновлює-дані користувача
@@ -154,14 +124,18 @@ export async function homePrivate() {
 }
 
 //------------------------------------------------Стан-мами
-export async function momState() {
-  const res = await nextServer.get('/home/mom');
+export async function getMomState(week?: number): Promise<MomState> {
+  const res = await nextServer.get<MomState>(
+    `/home/mom${week ? `?week=${week}` : ''}`
+  );
   return res.data;
 }
 
 //------------------------------------------------Стан-дитини
-export async function babyState() {
-  const res = await nextServer.get('/home/baby');
+export async function getBabyState(week?: number): Promise<BabyState> {
+  const res = await nextServer.get<BabyState>(
+    `/home/baby${week ? `?week=${week}` : ''}`
+  );
   return res.data;
 }
 
