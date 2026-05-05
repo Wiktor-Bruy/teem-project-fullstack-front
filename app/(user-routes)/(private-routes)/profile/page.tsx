@@ -1,36 +1,23 @@
-'use client';
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from '@tanstack/react-query';
 
-import { useEffect, useState } from 'react';
-import ProfileAvatar from '@/components/ProfileAvatar/ProfileAvatar';
-import ProfileEditForm from '@/components/ProfileEditForm/ProfileEditForm';
-import { User } from '@/types/types';
-import { getMe } from '@/lib/api/clientApi';
-import styles from './profile.module.css';
+import { getMe } from '@/lib/api/serverApi';
+import ProfileClient from './Profile.client';
 
-export default function Profile() {
-  const [user, setUser] = useState<User | undefined>();
+export default async function Profile() {
+  const queryClient = new QueryClient();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const data = await getMe();
-        setUser(data);
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  const handleUserUpdate = (updatedUser: User) => {
-    setUser(updatedUser);
-  };
+  await queryClient.prefetchQuery({
+    queryKey: ['user'],
+    queryFn: () => getMe(),
+  });
 
   return (
-    <div className={styles.profileContainer}>
-      <ProfileAvatar user={user} />
-      <ProfileEditForm user={user} onUserUpdate={handleUserUpdate} />
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProfileClient />
+    </HydrationBoundary>
   );
 }

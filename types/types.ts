@@ -4,7 +4,7 @@ export interface User {
   email: string;
   gender?: BabyGender;
   dueDate?: string;
-  avatar?: string;
+  avatar: string;
   createdAt: string;
   updatedAt: string;
 }
