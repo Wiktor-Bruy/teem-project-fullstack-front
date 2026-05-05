@@ -1,0 +1,102 @@
+.card {
+    border-radius: 32px;
+    padding: 24px;
+    width: 100%;
+    max-width: 100%;
+    background: #fff4f6;
+}
+
+.title {
+    font-family: "Comfortaa", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: 0.01em;
+    color: #000;
+}
+
+.subtitle {
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    color: #000;
+    padding-top: 8px;
+}
+
+.text {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+    overflow-wrap: break-word;
+}
+
+.button {
+    border-bottom: 4px solid #ffcbd3;
+        border-radius: 100px;
+        width: 225px;
+        height: 42px;
+    background: #ffdae0;
+    margin-top: 20px;
+}
+
+
+@media (min-width: 375px) {
+    .card {
+        padding: 24px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+    }
+
+    .text {
+        font-size: 15px;
+    }
+
+    .button {
+        width: 220px;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .card {
+        width: auto;
+        padding: 32px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .text {
+        font-size: 14px;
+    }
+
+    .button {
+        width: 240px;
+        height: 46px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .card {
+        width: 420px;
+        padding: 32px;
+    }
+
+    .button {
+        width: 250px;
+    }
+}

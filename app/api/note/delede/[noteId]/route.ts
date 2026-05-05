@@ -9,6 +9,7 @@ type Props = {
 
 export async function DELETE(request: Request, { params }: Props) {
   try {
+    console.log('start route');
     const cookieStore = await cookies();
     const { noteId } = await params;
 
