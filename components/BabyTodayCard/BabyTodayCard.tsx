@@ -8,20 +8,24 @@ export default async function BabyTodayCard() {
   return (
     <section className={styles.babycard}>
       <p className={styles.titleBaby}>Малюк сьогодні</p>
-
-      <div className={styles.babycardlistitem}>
-        <Image
-          src={data.image}
-          alt="Зображення малюка"
-          width={257}
-          height={194}
-          className={styles.babyImage}
-        />
-
-        <ul className={styles.babycardlist}>
-          <li>Розмір: {data.babySize}</li>
-          <li>Вага: {data.babyWeight}</li>
-          <li>Активність: {data.babyActivity}</li>
+      <div id="BabyState" className={styles.babycard__listitem}>
+         {/* <Image
+        src={imageUrl}
+        alt="Зображення малюка"
+        width={257}
+        height={194}
+        className={styles.babyImage}
+      /> */}
+        <ul className={styles.babycard__list}>
+          <li>
+            <p className={styles.babycard__datalabel}>Розмір: <span>{size}</span></p>
+          </li>
+          <li>
+            <p className={styles.babycard__datalabel}>Вага: <span>{weight}</span></p>
+          </li>
+          <li>
+            <p className={styles.babycard__datalabel}>Активність: <span>{activity}</span></p>
+          </li>
         </ul>
       </div>
 

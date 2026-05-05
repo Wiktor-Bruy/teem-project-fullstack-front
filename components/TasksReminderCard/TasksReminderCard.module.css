@@ -1,0 +1,156 @@
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-scheme-text: #000000;
+  --color-scheme-border: rgba(0, 0, 0, 0.15);
+
+  --color-scheme-foreground: #f2f2f2;
+  --color-scheme-foreground-alt: #f2f2f2;
+  --color-background: #fff4f6;
+
+  --font-family: var(--font-lato), sans-serif;
+  --second-family: var(--font-comfortaa), sans-serif;
+}
+
+.card {
+  gap: 8px;
+  background: var(--color-background);
+  border-radius:32px;
+  padding: 24px;
+
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-family: var(--second-family);
+  font-weight: 700;
+  color: var(--color-scheme-text);
+}
+
+.addBtn {
+  border: none;
+  cursor: pointer;
+  fill: #000000;
+  background-color: inherit;
+}
+
+.list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px;
+}
+
+.item {
+  display: flex;
+  padding: 0px;
+}
+
+.label {
+  display: flex;
+  gap: 8px;
+  cursor: pointer;
+  align-items: flex-end;
+}
+
+.date {
+  display: block;
+  font-size: 12px;
+  color: var(--color-scheme-text);
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-size: 16px;
+  color: #000000;
+}
+
+.hiddenCheckbox {
+  display: none;
+}
+
+.customCheckbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0000000d;
+  padding: 0;
+}
+
+.customCheckbox svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  fill: white;
+}
+.hiddenCheckbox:checked + .customCheckbox {
+  background-color: black;
+  border: none;
+}
+
+.hiddenCheckbox:checked + .customCheckbox svg {
+  opacity: 1; /* 👈 показує галочку */
+}
+
+.emptyState {
+  margin-top: 16px;
+}
+
+.emptyTitle {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.emptyText {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.emptyTextSeconde {
+font-size: 14px;
+margin-bottom: 16px;
+}
+
+.createBtn {
+  padding: 10px 24px;
+  border-radius: 100px;
+  background-color: #FFCBD3;
+  color: var(--color-scheme-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+  border: none;
+  box-shadow: 0 4px 4px rgba(255, 203, 211, 0.25);
+  cursor:pointer;
+  font-family: inherit;
+}
+
+.createBtn :hover {
+  background: #FFFFFF;
+}
+
+.createBtn:active {
+  background-color: #FFFFFF;
+}
+

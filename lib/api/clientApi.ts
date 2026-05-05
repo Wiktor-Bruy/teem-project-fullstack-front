@@ -1,4 +1,5 @@
 import { nextServer } from './api';
+import { AxiosError } from 'axios';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -57,9 +58,20 @@ export async function logout() {
 }
 
 //------------------------------------------------Повертає-користувача
-export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>('/user/me');
-  return res.data;
+
+export async function getMe(): Promise<User | null> {
+  try {
+    const res = await nextServer.get<User>('/user/me');
+    return res.data;
+  } catch (error) {
+    if (
+      error instanceof AxiosError &&
+      error.response?.status === 401
+    ) {
+      return null;
+    }
+    throw error;
+  }
 }
 
 //------------------------------------------------Оновлює-дані користувача

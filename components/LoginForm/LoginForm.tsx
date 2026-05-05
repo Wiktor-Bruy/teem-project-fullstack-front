@@ -17,11 +17,6 @@ const LoginFormSchema = Yup.object().shape({
   password: Yup.string().required('Обовʼязкове поле'),
 });
 
-// interface LoginFormValues {
-//   email: string;
-//   password: string;
-// }
-
 const initialValues: LoginFormValues = {
   email: '',
   password: '',
