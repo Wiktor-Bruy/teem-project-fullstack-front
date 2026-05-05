@@ -1,5 +1,15 @@
+.sidebar {
+  display: none;
+}
+
 @media (min-width: 1440px) {
   .box {
+    min-height: 100%;
     display: flex;
+    overflow-x: hidden;
+  }
+  .sidebar {
+    display: block;
+    height: 900px;
   }
 }

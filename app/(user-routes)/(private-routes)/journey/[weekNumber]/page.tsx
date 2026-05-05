@@ -1,21 +1,43 @@
+'use client';
+
 import GreetingBlock from '@/components/GreetingBlock/GreetingBlock';
 import WeekSelector from '@/components/WeekSelector/WeekSelector';
 import JourneyDetails from '@/components/JourneyDetails/JourneyDetails';
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
+import { useQuery } from '@tanstack/react-query';
+import { getBabyState, getMomState } from '@/lib/api/clientApi';
+import { useParams } from 'next/navigation';
 
-interface Props {
-  params: Promise<{ weekNumber: string }>;
-}
+export default function Journey() {
+  const params = useParams();
+const selectedWeekFromRoute = Number(params?.weekNumber);
+  const selectedWeek = Number.isFinite(selectedWeekFromRoute) && selectedWeekFromRoute > 0
+    ? selectedWeekFromRoute
+    : undefined;
 
-export default async function Journey({ params }: Props) {
-  const { weekNumber } = await params;
+  const { data: babyData, isLoading: isBabyLoading, isError : isBabyError } = useQuery({
+    queryKey: ['babyState', selectedWeek],
+    queryFn: () => getBabyState(selectedWeek),
+  });
+
+  const { data: momData, isLoading: isMomLoading, isError : isMomError } = useQuery({
+    queryKey: ['momState', selectedWeek],
+    queryFn: () => getMomState(selectedWeek),
+  });
+
+  const isLoading = isBabyLoading || isMomLoading;
+  if (isLoading || !babyData) return <div>Завантаження...</div>;
+const isError = isBabyError || isMomError;
+if (isError) return <div>Помилка</div>;
 
   return (
     <>
-      <Breadcrumbs lastLabel={`Тиждень ${weekNumber}`} />
       <GreetingBlock />
-      <WeekSelector />
-      <JourneyDetails />
+      <WeekSelector
+        selectedWeek={selectedWeek?? babyData.weekNumber}
+        currentWeek={babyData.weekNumber}
+        onWeekChange={(week) =>  console.log(week)}
+      />
+      <JourneyDetails babyData={babyData} momData={momData} />
     </>
   );
 }
