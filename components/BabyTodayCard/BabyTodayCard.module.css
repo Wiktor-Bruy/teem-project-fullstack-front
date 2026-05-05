@@ -1,0 +1,227 @@
+ @media (max-width: 374px) {
+            .babycard {
+                padding: 20px;
+                background: #fff4f6;
+                border-radius: 32px;
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+                    overflow: hidden;
+            }
+    
+            .titleBaby {
+                font-family: "Comfortaa", sans-serif;
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 140%;
+                letter-spacing: 0.01em;
+                color: #000;
+            }
+    
+            .babyImage {
+                height: auto;
+                width: 100%;
+                padding-top: 16px;
+            }
+    
+            .babycard__list {
+                font-family: "Lato", sans-serif;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+                list-style-type: none;
+                padding-top: 29px;
+                padding-left: 0;
+                min-width: 0;
+            }
+                        .babycard__datalabel {
+                            word-break: break-word;
+                            overflow-wrap: break-word;
+                        }
+
+                        .babyImage {
+                            flex-shrink: 0;
+                        }
+    
+            .babycard__datalabel {
+                font-family: "Lato", sans-serif;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+            }
+    
+            .babycard__advice {
+                font-family: "Lato", sans-serif;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+                padding-top: 24px;
+            }
+        }
+    
+        /* Планшети (375px - 767px) */
+        @media (min-width: 375px) and (max-width: 767px) {
+            .babycard {
+                padding: 20px;
+                background: #fff4f6;
+                border-radius: 32px;
+                width: 100%;
+                height: auto;
+            }
+    
+            .titleBaby {
+                font-family: "Comfortaa", sans-serif;
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 140%;
+                letter-spacing: 0.01em;
+                color: #000;
+            }
+            .babycard__listitem {
+                display: flex;
+            }
+    
+            .babyImage {
+                height: auto;
+                width: 100%;
+                padding-top: 16px;
+            }
+    
+            .babycard__list {
+                font-family: "Lato", sans-serif;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+                list-style-type: none;
+                padding-top: 29px;
+                padding-left: 0;
+            }
+    
+            .babycard__datalabel {
+                font-family: "Lato", sans-serif;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+            }
+    
+            .babycard__advice {
+                font-family: "Lato", sans-serif;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 150%;
+                color: #000;
+                padding-top: 24px;
+            }
+        }
+    
+        /* Десктопи (768px - 1439px) */
+        @media (min-width: 768px) and (max-width: 1439px) {
+            .babycard {
+                padding: 48px 20px;
+                background: #fff4f6;
+                border-radius: 32px;
+                width: 704px;
+                height: auto;
+            }
+    
+            .titleBaby {
+                font-family: "Comfortaa", sans-serif;
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 140%;
+                letter-spacing: 0.01em;
+                color: #000;
+            }
+
+                         .babycard__listitem {
+                             display: flex;
+                         }
+    
+            .babyImage {
+                height: auto;
+                width: 100%;
+                padding-top: 16px;
+            }
+    
+            .babycard__list {
+                font-family: "Lato", sans-serif;
+                font-size: 16px;
+                line-height: 150%;
+                color: #000;
+                list-style-type: none;
+                padding-top: 29px;
+                padding-left: 16px;
+            }
+    
+            .babycard__datalabel {
+                font-family: "Lato", sans-serif;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 150%;
+                color: #000;
+            }
+    
+            .babycard__advice {
+                font-family: "Lato", sans-serif;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 150%;
+                color: #000;
+                padding-top: 24px;
+            }
+        }
+    
+        /* Десктопи (1440px і більше) */
+        @media (min-width: 1440px) {
+            .babycard {
+                padding: 64px;
+                background: #fff4f6;
+                border-radius: 32px;
+                width: 642px;
+                height: 421px;
+            }
+    
+            .titleBaby {
+                font-family: "Comfortaa", sans-serif;
+                font-weight: 700;
+                font-size: 28px;
+                line-height: 140%;
+                letter-spacing: 0.01em;
+                color: #000;
+            }
+    
+            .babyImage {
+                height: 100%;
+                width: 100%;
+                padding-top: 16px;
+            }
+    
+            .babycard__list {
+                font-family: "Lato", sans-serif;
+                line-height: 150%;
+                color: #000;
+                list-style-type: none;
+                padding-top: 29px;
+                padding-left: 16px;
+            }
+    
+            .babycard__datalabel {
+                font-family: "Lato", sans-serif;
+                font-weight: 700;
+                line-height: 150%;
+                color: #000;
+                padding-right: 5px;
+            }
+    
+            .babycard__advice {
+                font-family: "Lato", sans-serif;
+                font-weight: 400;
+                font-size: 28px;
+                line-height: 150%;
+                color: #000;
+                padding-top: 24px;
+            }
+        }

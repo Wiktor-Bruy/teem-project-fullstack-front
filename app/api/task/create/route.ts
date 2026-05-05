@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const cookieStore = await cookies();
     const body = await req.json();
 
-    const res = await api.post('/task/create', body, {
+    const res = await api.post('/tasks', body, {
       headers: {
         Cookie: cookieStore.toString(),
       },
