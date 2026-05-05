@@ -26,9 +26,3 @@ export default function Login() {
     </main>
   );
 }
-
-// import LoginForm from "@/components/LoginForm/LoginForm";
-
-// export default function LoginPage() {
-//   return <LoginForm />;
-// }

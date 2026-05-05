@@ -37,7 +37,7 @@ export async function logout() {
 
 //------------------------------------------------Повертає-користувача
 export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>('/users/me');
+  const res = await nextServer.get<User>('/user/me');
   return res.data;
 }
 
@@ -50,7 +50,7 @@ export async function updateUser(data: UpdateUserRequest): Promise<User> {
 //------------------------------------------------Оновлює-аватар
 export async function updateAvatar(file: File): Promise<{ url: string }> {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('avatar', file);
   const res = await nextServer.put<{ url: string }>('/user/avatar', formData);
   return res.data;
 }
@@ -84,13 +84,13 @@ export async function updateNote(
 
 //------------------------------------------------Видаляє-запис-щоденника
 export async function deleteNote(noteId: string): Promise<Note> {
-  const res = await nextServer.delete<Note>(`/note/delete/${noteId}`);
+  const res = await nextServer.delete<Note>(`/note/delede/${noteId}`);
   return res.data;
 }
 
 //------------------------------------------------Повертає-всі-таски
 export async function getTasks(): Promise<TaskResponse[]> {
-  const res = await nextServer.get<TaskResponse[]>('/tasks/all');
+  const res = await nextServer.get<TaskResponse[]>('/task/all');
   return res.data;
 }
 
@@ -98,11 +98,42 @@ export async function getTasks(): Promise<TaskResponse[]> {
 export async function createTask(
   data: CreateTaskRequest
 ): Promise<TaskResponse> {
-  const res = await nextServer.post<TaskResponse>('/tasks/create', data);
+  const res = await nextServer.post<TaskResponse>('/task/create', data);
   return res.data;
 }
+
 //------------------------------------------------Оновлює-задачу
 export async function updateTask(taskId: string): Promise<TaskResponse> {
-  const res = await nextServer.patch<TaskResponse>(`/tasks/update/${taskId}`);
+  const res = await nextServer.patch<TaskResponse>(`/task/update/${taskId}`);
+  return res.data;
+}
+
+//------------------------------------------------Публічний-дашборд
+export async function homePublic() {
+  const res = await nextServer.get('/home/homepublic');
+  return res.data;
+}
+
+//------------------------------------------------Приватний-дащборд
+export async function homePrivate() {
+  const res = await nextServer.get('/home/homeprivate');
+  return res.data;
+}
+
+//------------------------------------------------Стан-мами
+export async function momState() {
+  const res = await nextServer.get('/home/mom');
+  return res.data;
+}
+
+//------------------------------------------------Стан-дитини
+export async function babyState() {
+  const res = await nextServer.get('/home/baby');
+  return res.data;
+}
+
+//------------------------------------------------Емоції
+export async function getEmotions() {
+  const res = await nextServer.get('/emotions');
   return res.data;
 }

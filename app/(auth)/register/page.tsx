@@ -17,12 +17,12 @@ export default function Register() {
             src="/image/register.png"
             alt="eggs"
             fill
-            className={css.image}
-            sizes="(min-width: 1440px) 50vw, 0px"
-            priority
+          className={css.image}
+          sizes="(min-width: 1440px) 50vw, 0px"
+          priority
           />
-        </div>
-      </div>
+          </div>
+          </div>
     </main>
   );
 }
