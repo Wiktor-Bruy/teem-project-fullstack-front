@@ -1,16 +1,10 @@
-import React from 'react';
 import styles from './BabyTodayCard.module.css';
 import Image from 'next/image';
+import { getBabyState } from '../../lib/api/serverApi';
 
-interface BabyTodayCardProps {
-  size: string;
-  weight: string;
-  activity: string;
-  imageUrl: string;
-  bodyAdvice: string;
-}
+export default async function BabyTodayCard() {
+  const data = await getBabyState();
 
-export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAdvice }: BabyTodayCardProps) {
   return (
     <section className={styles.babycard}>
       <p className={styles.titleBaby}>Малюк сьогодні</p>
@@ -34,8 +28,9 @@ export default function BabyTodayCard({ size, weight, activity, imageUrl, bodyAd
           </li>
         </ul>
       </div>
+
       <div className={styles.bodyAdvice}>
-        <p className={styles.babycard__advice}>{bodyAdvice}</p>
+        <p>{data.babyDevelopment}</p>
       </div>
     </section>
   );
