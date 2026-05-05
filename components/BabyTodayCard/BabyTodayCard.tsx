@@ -9,24 +9,24 @@ export default async function BabyTodayCard() {
     <section className={styles.babycard}>
       <p className={styles.titleBaby}>Малюк сьогодні</p>
 
-      <div className={styles.babycard__listitem}>
+      <div className={styles.babycardlistitem}>
         <Image
-          src={data.imageUrl}
+          src={data.image}
           alt="Зображення малюка"
           width={257}
           height={194}
           className={styles.babyImage}
         />
 
-        <ul className={styles.babycard__list}>
-          <li>Розмір: {data.size}</li>
-          <li>Вага: {data.weight}</li>
-          <li>Активність: {data.activity}</li>
+        <ul className={styles.babycardlist}>
+          <li>Розмір: {data.babySize}</li>
+          <li>Вага: {data.babyWeight}</li>
+          <li>Активність: {data.babyActivity}</li>
         </ul>
       </div>
 
       <div className={styles.bodyAdvice}>
-        <p>{data.bodyAdvice}</p>
+        <p>{data.babyDevelopment}</p>
       </div>
     </section>
   );
