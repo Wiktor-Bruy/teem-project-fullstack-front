@@ -1,80 +1,15 @@
-.layoutWrapper {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #fff;
+.sidebar {
+  display: none;
 }
 
-.sidebarSide {
-  width: 280px;
-  min-width: 280px;
-  flex-shrink: 0;
-  border-right: 1px solid #f0f0f0;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  background-color: #fff;
-  overflow: hidden;
-}
-
-.sidebarContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.menuSection {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.bottomBars {
-  margin-top: auto; 
-  width: 100%;
-}
-
-.mainContent {
-  flex: 1; 
-  display: flex;
-  flex-direction: column;
-  min-width: 0; 
-}
-
-.pageContainer {
-  padding: 24px 40px;
-}
-
-.childrenBox {
-  margin-top: 30px;
-}
-
-/* ===== TABLET ===== */
-@media (max-width: 1024px) {
-  .sidebarSide {
-    width: 240px;
-    min-width: 240px;
+@media (min-width: 1440px) {
+  .box {
+    min-height: 100%;
+    display: flex;
+    overflow-x: hidden;
   }
-}
-
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  .layoutWrapper {
-    flex-direction: column; 
-  }
-  .sidebarSide {
-    width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-    border-right: none;
-    border-top: 1px solid #eee;
-  }
-  .sidebarContainer {
-    flex-direction: row; 
-  }
-  .mainContent {
-    margin-bottom: 80px; 
+  .sidebar {
+    display: block;
+    height: 900px;
   }
 }

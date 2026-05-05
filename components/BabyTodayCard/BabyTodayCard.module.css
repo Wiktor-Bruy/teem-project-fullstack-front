@@ -1,0 +1,134 @@
+.babycard {
+    padding: 20px;
+    background: #fff4f6;
+    border-radius: 32px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.titleBaby {
+    font-family: "Comfortaa", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: 0.01em;
+    color: #000;
+}
+
+.babycard__listitem {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.babyImage {
+    width: 100%;
+    height: auto;
+    padding-top: 16px;
+    flex-shrink: 0;
+}
+
+.babycard__list {
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+    list-style: none;
+    padding-top: 16px;
+    padding-left: 0;
+
+    min-width: 0;
+}
+
+.babycard__datalabel {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.babycard__advice {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000;
+    padding-top: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* 🔹 TABLET (375px+) */
+@media (min-width: 375px) {
+    .titleBaby {
+        font-size: 20px;
+    }
+}
+
+
+/* 🔹 TABLET LARGE (768px+) */
+@media (min-width: 768px) {
+    .babycard {
+        padding: 32px 20px;
+        width: auto;
+        max-width: 704px;
+    }
+
+    .titleBaby {
+        font-size: 20px;
+    }
+
+    .babycard__listitem {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .babyImage {
+            width: auto;
+            height: auto;
+            padding-top: 16px;
+            flex-shrink: 0;
+        }
+
+    .babycard__list {
+        font-size: 14px;
+        padding-left: 16px;
+    }
+
+    .babycard__datalabel {
+        font-size: 16px;
+    }
+
+    .babycard__advice {
+        font-size: 16px;
+    }
+}
+
+
+@media (min-width: 1440px) {
+    .babycard {
+        padding: 48px;
+        max-width: 642px;
+        border-radius: 32px;
+        width: 642px;
+        height: 421px;
+    }
+
+    .titleBaby {
+        font-size: 24px;
+    }
+
+    .babycard__advice {
+        font-size: 18px;
+    }
+
+    .babycard__list {
+        font-size: 16px;
+    }
+}

@@ -1,22 +1,7 @@
 .profileContainer {
   display: flex;
   flex-direction: column;
+  gap: 32px;
   width: 100%;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-@media (min-width: 768px) {
-  .profileContainer {
-    border-radius: 12px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .profileContainer {
-    max-width: 650px;
-    margin: 0 auto;
-  }
 }

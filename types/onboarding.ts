@@ -8,6 +8,7 @@ export interface OnboardingFormValues {
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
+today.setDate(today.getDate() + 9);
 
 const maxDeliveryDate = new Date();
 maxDeliveryDate.setDate(maxDeliveryDate.getDate() + 42 * 7);
@@ -22,8 +23,7 @@ export const OnboardingSchema = Yup.object().shape({
 
   deliveryDate: Yup.date()
     .nullable()
-    // .required('Вкажіть дату пологів')
     .typeError('Оберіть коректну дату')
-    .min(today, 'Дата не може бути в минулому')
+    .min(today, 'Дата не може бути ближче ніж через тиждень')
     .max(maxDeliveryDate, 'Дата не може бути пізніше ніж через 42 тижні'),
 });
