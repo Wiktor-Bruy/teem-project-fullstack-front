@@ -4,7 +4,7 @@ export interface User {
   email: string;
   gender?: BabyGender;
   dueDate?: string;
-  avatar?: string;
+  avatar: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -75,30 +75,28 @@ export interface CreateTaskRequest {
 
 export interface BabyState {
   _id?: string;
-  analogy: string;
   weekNumber: number;
-  babySize: number;
-  babyWeight: number;
-  image: string;
-  babyActivity: string;
-  babyDevelopment: string;
-  interestingFact: string;
-  momDailyTips: string;
+  daysLeft: number;
+  weight?: string;
+  size?: string;
+  description?: string;
+  advice?: string;
+  image?: string;
+  analogy?: string;
+  babyDevelopment?: string;
+  interestingFact?: string;
 }
 
-interface comfortTipsType {
+interface ComfortTip {
   category: string;
   tip: string;
 }
-
 export interface MomState {
   _id?: string;
-  weekNumber: number;
-  feelings: {
-    states: string[];
-    sensationDescr: string;
-  };
-  comfortTips: comfortTipsType[];
+  week: number;
+  note?: string;
+  comfortTips: ComfortTip[];
+feelings: { states: string[]; sensationDescr: string };
 }
 
 interface homeBaby {

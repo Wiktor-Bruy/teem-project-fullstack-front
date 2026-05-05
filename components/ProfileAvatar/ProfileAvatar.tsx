@@ -1,68 +1,89 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { useState, useRef } from 'react';
+import Image from 'next/image';
 import styles from './ProfileAvatar.module.css';
-import { User } from '@/types/types';
+
 import { updateAvatar } from '@/lib/api/clientApi';
+import { toast, Toaster } from 'react-hot-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface ProfileAvatarProps {
-  user?: User;
+  avatar: string;
+  name: string;
+  email: string;
 }
 
-export default function ProfileAvatar({ user }: ProfileAvatarProps) {
-  const [avatar, setAvatar] = useState<string | undefined>(user?.avatar);
-  const [isLoading, setIsLoading] = useState(false);
+export default function ProfileAvatar({
+  avatar,
+  name,
+  email,
+}: ProfileAvatarProps) {
+  const [avatarPreview, setAvatarPreview] = useState(avatar);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
-  const handleAvatarUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const createMutation = useMutation({
+    mutationFn: async (data: File) => {
+      const res = await updateAvatar(data);
+      setAvatarPreview(res.url);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      toast.success('Аватар успішно оновлено');
+    },
+    onError: () => {
+      toast.error('Сталась помилка при завантаженні аватара');
+    },
+  });
+
+  async function handleAvatarChange(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const file = event.target.files?.[0];
+
     if (!file) return;
 
-    setIsLoading(true);
-    try {
-      const data = await updateAvatar(file);
-      setAvatar(data.avatar);
-    } catch (error) {
-      console.error('Failed to upload avatar:', error);
-    } finally {
-      setIsLoading(false);
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
     }
-  };
-
-  if (!user) {
-    return <div className={styles.container}>Завантаження...</div>;
+    setAvatarPreview(URL.createObjectURL(file));
+    createMutation.mutate(file);
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.avatarWrapper}>
-        {avatar ? (
-          <img src={avatar} alt={user.name} className={styles.avatar} />
-        ) : (
-          <div className={styles.avatarPlaceholder}>
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-        )}
+    <div className={styles.avatarSection}>
+      <Toaster position="top-right" />
+      <div
+        className={styles.avatarCircle}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <Image
+          src={avatarPreview}
+          alt="Аватар"
+          width={140}
+          height={140}
+          className={styles.image}
+        />
       </div>
-
-      <div className={styles.infoWrapper}>
-        <div className={styles.userInfo}>
-          <h2 className={styles.name}>{user.name}</h2>
-          <p className={styles.email}>{user.email}</p>
-        </div>
-
-        <label htmlFor="avatar-input" className={styles.uploadButton}>
-          {isLoading ? 'Завантаження...' : 'Завантажити нове фото'}
-        </label>
-      </div>
-
       <input
-        id="avatar-input"
         type="file"
+        ref={fileInputRef}
+        hidden
         accept="image/*"
-        onChange={handleAvatarUpload}
-        disabled={isLoading}
-        className={styles.hiddenInput}
+        onChange={handleAvatarChange}
       />
+      <div className={styles.btnBox}>
+        <p className={styles.name}>{name}</p>
+        <p className={styles.email}>{email}</p>
+        <button
+          type="button"
+          className={styles.uploadBtn}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          Завантажити нове фото
+        </button>
+      </div>
     </div>
   );
 }
