@@ -1,192 +1,255 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast, Toaster } from 'react-hot-toast';
+import { useFormik } from 'formik';
+import { clsx } from 'clsx';
+import { useId } from 'react';
+import DatePicker from 'react-datepicker';
+
+import { useState } from 'react';
 import styles from './ProfileEditForm.module.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import { User, BabyGender } from '@/types/types';
 import { updateUser } from '@/lib/api/clientApi';
 
 interface ProfileEditFormProps {
-  user?: User;
-  onUserUpdate?: (user: User) => void;
+  user: User;
 }
 
-interface FormErrors {
-  name?: string;
-  email?: string;
+interface UpdateUser {
+  name: string;
+  gender?: BabyGender;
+  dueDate?: string;
+  email: string;
 }
 
-export default function ProfileEditForm({ user, onUserUpdate }: ProfileEditFormProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    babyGender: 'not selected' as BabyGender,
-    plannedDeliveryDate: '',
+export default function ProfileEditForm({ user }: ProfileEditFormProps) {
+  const oldUser = user;
+  const [isDateErr, setIsdateErr] = useState(false);
+  const [submitBtn, setSubmitBtn] = useState(true);
+  const [nameErr, setNameErr] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const queryClient = useQueryClient();
+  const id = useId();
+  const today = new Date();
+  today.setDate(today.getDate() + 9);
+  const maxDueDate = new Date();
+  maxDueDate.setDate(maxDueDate.getDate() + 40 * 7);
+
+  const createMutation = useMutation({
+    mutationFn: async (data: UpdateUser) => {
+      const res = await updateUser(data);
+      setSubmitBtn(true);
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      toast.success('Дані оновлено');
+    },
+    onError: () => {
+      toast.error('Сталась помилка при збереженні даних');
+      setSubmitBtn(false);
+      handleReset();
+    },
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      name: user.name,
+      email: user.email,
+      gender: user.gender || 'unknown',
+      dueDate: user.dueDate != undefined ? new Date(user.dueDate) : null,
+    },
+    onSubmit: values => {
+      const data: UpdateUser = {
+        name: values.name,
+        email: values.email,
+        gender: values.gender,
+      };
+      if (values.dueDate) {
+        const currDate = values.dueDate.toISOString().slice(0, 10);
+        data.dueDate = currDate;
+      }
+      if (data.name.length < 1 || data.name.length > 32) {
+        setNameErr(true);
+        return;
+      } else {
+        setNameErr(false);
+      }
+      if (!data.email.includes('@')) {
+        setEmailError(true);
+        return;
+      } else {
+        setEmailError(false);
+      }
+      if (isDateErr) {
+        return;
+      }
+      createMutation.mutate(data);
+    },
+  });
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        babyGender: user.babyGender || 'not selected',
-        plannedDeliveryDate: user.plannedDeliveryDate || '',
-      });
-    }
-  }, [user]);
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Ім'я не може бути порожнім";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email не може бути порожнім';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Введіть коректний email';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
-    }
-  };
-
-  const handleReset = () => {
-    if (user) {
-      setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        babyGender: user.babyGender || 'not selected',
-        plannedDeliveryDate: user.plannedDeliveryDate || '',
-      });
-      setErrors({});
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
+  function validDate(date: Date | null) {
+    if (!date) {
       return;
     }
-
-    setIsLoading(true);
-    try {
-      const updatedUser = await updateUser(formData);
-      onUserUpdate?.(updatedUser);
-    } catch (error) {
-      console.error('Failed to update user:', error);
-      setErrors({ name: 'Помилка при збереженні даних' });
-    } finally {
-      setIsLoading(false);
+    if (date < today || date > maxDueDate) {
+      setIsdateErr(true);
+      return false;
+    } else {
+      setIsdateErr(false);
+      return true;
     }
-  };
+  }
 
-  if (!user) {
-    return <div className={styles.container}>Завантаження...</div>;
+  function handleReset() {
+    const oldDate =
+      oldUser.dueDate != undefined ? new Date(oldUser.dueDate) : null;
+    formik.setFieldValue('name', oldUser.name);
+    formik.setFieldValue('email', oldUser.email);
+    formik.setFieldValue('dueDate', oldDate);
+    formik.setFieldValue('gender', oldUser.gender);
+    setSubmitBtn(true);
+    setIsdateErr(false);
+    setNameErr(false);
+    setEmailError(false);
+  }
+
+  function handleChangeName(event: React.ChangeEvent) {
+    const elem = event.target as HTMLInputElement;
+    const size = elem.value.length;
+    if (size < 1 || size > 32) {
+      setNameErr(true);
+    } else {
+      setNameErr(false);
+    }
+  }
+
+  function handleChangeEmail(event: React.ChangeEvent) {
+    const elem = event.target as HTMLInputElement;
+    const isValid = elem.value.includes('@');
+    if (!isValid) {
+      setEmailError(true);
+    } else {
+      setEmailError(false);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <h2 className={styles.title}>Редагування профілю</h2>
+    <form onSubmit={formik.handleSubmit} className={styles.formBox}>
+      <Toaster position="top-right" />
 
-      <div className={styles.formGroup}>
-        <label htmlFor="name" className={styles.label}>
-          Ім'я
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-          placeholder="Введіть ім'я"
-        />
-        {errors.name && <span className={styles.errorMessage}>{errors.name}</span>}
-      </div>
+      <div className={styles.inputGroup}>
+        <div className={styles.formGroup}>
+          <label htmlFor={`${id}-name`} className={styles.label}>
+            Ім`я
+          </label>
+          <input
+            type="text"
+            id={`${id}-name`}
+            name="name"
+            value={formik.values.name}
+            onChange={data => {
+              formik.handleChange(data);
+              setSubmitBtn(false);
+              handleChangeName(data);
+            }}
+            className={clsx(styles.input, nameErr && styles.inputError)}
+            placeholder="Введіть ім'я"
+          />
+          {nameErr && (
+            <span className={styles.errorMessage}>
+              Має бути від 1 до 32 символів
+            </span>
+          )}
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="email" className={styles.label}>
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-          placeholder="Введіть email"
-        />
-        {errors.email && <span className={styles.errorMessage}>{errors.email}</span>}
-      </div>
+        <div className={styles.formGroup}>
+          <label htmlFor={`${id}-email`} className={styles.label}>
+            Email
+          </label>
+          <input
+            type="email"
+            id={`${id}-email`}
+            name="email"
+            value={formik.values.email}
+            onChange={data => {
+              formik.handleChange(data);
+              setSubmitBtn(false);
+              handleChangeEmail(data);
+            }}
+            className={`${styles.input} ${emailError ? styles.inputError : ''}`}
+            placeholder="Введіть email"
+          />
+          {emailError && (
+            <span className={styles.errorMessage}>Некоректний емейл</span>
+          )}
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="babyGender" className={styles.label}>
-          Стать дитини
-        </label>
-        <select
-          id="babyGender"
-          name="babyGender"
-          value={formData.babyGender}
-          onChange={handleChange}
-          className={styles.select}
-        >
-          <option value="not selected">Не вибрано</option>
-          <option value="girl">Дівчинка</option>
-          <option value="boy">Хлопчик</option>
-        </select>
-      </div>
+        <div className={styles.formGroup}>
+          <label htmlFor={`${id}-gender`} className={styles.label}>
+            Стать дитини
+          </label>
+          <select
+            id={`${id}-gender`}
+            name="gender"
+            value={formik.values.gender}
+            onChange={data => {
+              formik.handleChange(data);
+              setSubmitBtn(false);
+            }}
+            className={clsx(styles.input)}
+          >
+            <option className={styles.select} value="unknown">
+              Не вибрано
+            </option>
+            <option className={styles.select} value="girl">
+              Дівчинка
+            </option>
+            <option className={styles.select} value="boy">
+              Хлопчик
+            </option>
+          </select>
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="plannedDeliveryDate" className={styles.label}>
-          Планова дата пологів
-        </label>
-        <input
-          type="date"
-          id="plannedDeliveryDate"
-          name="plannedDeliveryDate"
-          value={formData.plannedDeliveryDate}
-          onChange={handleChange}
-          className={styles.input}
-        />
+        <div className={clsx(styles.formGroup, styles.dataBox)}>
+          <label className={styles.label}>Планова дата пологів</label>
+          <DatePicker
+            selected={formik.values.dueDate}
+            onChange={(date: Date | null) => {
+              const isValid = validDate(date);
+              setSubmitBtn(false);
+              if (isValid) {
+                formik.setFieldValue('dueDate', date);
+              }
+            }}
+            wrapperClassName={clsx(styles.input, styles.datepicker)}
+            className={clsx(styles.datainput, isDateErr && styles.inputError)}
+            dateFormat="dd.MM.yyyy"
+            autoComplete="off"
+          />
+          {isDateErr && (
+            <span className={styles.errorMessage}>Некоректна дата</span>
+          )}
+        </div>
       </div>
 
       <div className={styles.buttonGroup}>
         <button
           type="button"
           onClick={handleReset}
-          className={styles.resetButton}
-          disabled={isLoading}
+          className={clsx(styles.btn, styles.btnReset)}
+          disabled={createMutation.isPending}
         >
           Відмінити зміни
         </button>
         <button
           type="submit"
-          className={styles.submitButton}
-          disabled={isLoading}
+          className={clsx(styles.btn, styles.btnSave)}
+          disabled={submitBtn}
         >
-          {isLoading ? 'Збереження...' : 'Зберегти зміни'}
+          {createMutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
         </button>
       </div>
     </form>
