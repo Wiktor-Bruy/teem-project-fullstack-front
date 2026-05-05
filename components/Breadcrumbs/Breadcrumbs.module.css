@@ -1,0 +1,42 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+ font-family: "Lato", sans-serif;
+font-weight: 400;
+font-size: 14px;
+line-height: 1.6;
+text-align: center;
+color: #000;
+border-bottom: 1px solid transparent;
+}
+
+.link:hover,
+.link:focus {
+  border-bottom-color: #000;
+}
+
+.svg {
+  display: block;
+  fill: #000;
+  stroke-width: 1px;
+  stroke: #000;
+  margin: 0 8px;
+}
+
+.current {
+  font-family: "Lato", sans-serif;
+font-weight: 400;
+font-size: 14px;
+line-height: 1.6;
+text-align: center;
+color: #7f7f7f;
+}
