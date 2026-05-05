@@ -1,5 +1,7 @@
 @media (min-width: 1440px) {
   .box {
     display: flex;
+    overflow-x: hidden;
   }
+  
 }

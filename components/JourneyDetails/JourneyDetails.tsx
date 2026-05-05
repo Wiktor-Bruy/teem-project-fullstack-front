@@ -17,15 +17,6 @@ export default function JourneyDetails( { babyData, momData }: Props){
 
   return (
     <>
-      <section className={css.sectionWeeks}>
-        <div className={css.weeksScrollConteiner}>
-          <button className={css.buttonWeek}>
-            <p className={css.weekNumber}>{babyData.weekNumber}</p>
-            <p className={css.weekName}>Тиждень</p>
-          </button>
-        </div>
-      </section>
-
       <section className={css.journeyInfo}>
         <div className={css.tab}>
           <div className={css.tabsNav}>
@@ -59,6 +50,7 @@ export default function JourneyDetails( { babyData, momData }: Props){
             {babyData.analogy ? (
               <p className={css.sizePhotoDescription}>{babyData.analogy}</p>
             ) : null}
+              <div className={css.babyRightColumn}>
             {babyData.babyDevelopment ? (
               <p className={css.babySizeInformation}>{babyData.babyDevelopment}</p>
             ) : null}
@@ -66,13 +58,14 @@ export default function JourneyDetails( { babyData, momData }: Props){
             <div className={css.interestingWeekFact}>
               <div className={css.factHeader}>
                 <svg className={css.iconStar} width="24" height="24">
-                  <use href="/icons.svg#id-star"></use>
+                  <use href="/icons.svg#star"></use>
                 </svg>
                 <h3 className={css.titleFact}>Цікавий факт тижня</h3>
               </div>
               {babyData.interestingFact ? (
                 <p className={css.descriptionFact}>{babyData.interestingFact}</p>
               ) : null}
+            </div>
             </div>
           </div>
         )}
@@ -97,7 +90,7 @@ export default function JourneyDetails( { babyData, momData }: Props){
 
                   <li className={css.tipItem}>
                     <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#id-cutlery"></use>
+                      <use href="/icons.svg#cutlery"></use>
                     </svg>
                     <div className={css.tipText}>
                       <p className={css.tipTitle}>Харчування</p>
@@ -107,7 +100,7 @@ export default function JourneyDetails( { babyData, momData }: Props){
 
                   <li className={css.tipItem}>
                     <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#id-dumbbell"></use>
+                      <use href="/icons.svg#dumbbell"></use>
                     </svg>
                     <div className={css.tipText}>
                       <p className={css.tipTitle}>Активність</p>
@@ -117,13 +110,14 @@ export default function JourneyDetails( { babyData, momData }: Props){
 
                   <li className={css.tipItem}>
                     <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#id-sofa"></use>
+                      <use href="/icons.svg#sofa"></use>
                     </svg>
                     <div className={css.tipText}>
                       <p className={css.tipTitle}>Відпочинок</p>
                       <p className={css.tipDescription}>{momData?.comfortTips?.[2]?.tip}</p>
                     </div>
                   </li>
+
                 </ul>
               </div>
               <TasksReminderCard />
