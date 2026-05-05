@@ -1,12 +1,35 @@
+
 @media (min-width: 320px) {
-  .weeks-scroll-container {
+  .sectionWeeks {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .weeksScrollContainer {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin-top: 24px;
     display: flex;
     gap: 16px;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     white-space: nowrap;
+     scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
   }
-  .button-week {
+
+  .weeksScrollContainer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .buttonWeek {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,18 +41,23 @@
     background: #fff4f6;
     flex-shrink: 0;
   }
-  .button-week:active {
+ .buttonWeek:hover {
+  border:  4px solid #FFDAE0;
+ }
+
+  .buttonWeekActive {
     border: 4px solid #d9adb3;
     background: #ffcbd3;
   }
-
-  .button-week:disabled {
+  .buttonWeekDisabled {
     border: none;
     background: #f2f2f2;
     opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
   }
-  .week-number {
-    font-family: var(--second-family);
+  .weekNumber {
+    font-family: var(--font-comfortaa);
     font-weight: 700;
     font-size: 24px;
     line-height: 140%;
@@ -37,25 +65,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: var(--color-scheme-text);
   }
-  .week-name {
+  .weekName {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: var(--font-family);
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
     text-align: center;
-    color: var(--color-scheme-text);
   }
 }
 @media (min-width: 768px) {
 }
 @media (min-width: 1024px) {
-  .button-week {
+  .weeksScrollContainer {
+    gap: 20px;
+    margin-top: 32px;
+  }
+  .buttonWeek {
+    width: 110px;
     height: 101px;
+  }
+  .weekNumber {
+    font-size: 32px;
+  }
+  .weekName {
+    font-size: 14px;
   }
 }
