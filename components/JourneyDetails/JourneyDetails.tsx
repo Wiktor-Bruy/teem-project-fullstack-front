@@ -76,11 +76,11 @@ export default function JourneyDetails( { babyData, momData }: Props){
               <div className={css.motherFeelingCard}>
                 <h3 className={css.cardTitle}>Як ви можете почуватись</h3>
                 <div className={css.tags}>
-                  {momData?.feelings?.states?.map((emotion: Emotion) => (
-                    <span key={emotion._id} className={css.tag}>
-                      {emotion.title}
-                    </span>
-                  ))}
+                {momData?.feelings?.states?.map((emotion, index) => (
+  <span key={index} className={css.tag}>
+    {emotion}
+  </span>
+))}
                 </div>
                 <p className={css.feelingDescription}>{momData?.feelings?.sensationDescr}</p>
               </div>

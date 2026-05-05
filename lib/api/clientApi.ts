@@ -13,18 +13,18 @@ import type {
   MomState,
 } from '../../types/types';
 
-export async function getBabyState(): Promise<BabyState> {
+export async function getBabyState(week?: number): Promise<BabyState> {
   try {
-    const res = await nextServer.get<BabyState>('/home/baby');
+    const res = await nextServer.get<BabyState>(`/home/baby${week ? `?week=${week}` : ''}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching baby state:', error);
     throw error;
   }
 }
-export async function getMomState(): Promise<MomState> {
+export async function getMomState(week?: number): Promise<MomState> {
   try {
-    const res = await nextServer.get<MomState>('/home/mom');
+    const res = await nextServer.get<MomState>(`/home/mom${week ? `?week=${week}` : ''}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching mom state:', error);

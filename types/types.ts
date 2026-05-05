@@ -96,7 +96,7 @@ export interface MomState {
   week: number;
   note?: string;
   comfortTips: ComfortTip[];
-  feelings: { states: Emotion[]; sensationDescr: string };
+feelings: { states: string[]; sensationDescr: string };
 }
 
 interface homeBaby {
