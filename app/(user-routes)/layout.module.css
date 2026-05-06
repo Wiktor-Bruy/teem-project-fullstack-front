@@ -3,6 +3,9 @@
 }
 
 @media (min-width: 1440px) {
+  .pageBox {
+    width: 1128px;
+  }
   .box {
     min-height: 100%;
     display: flex;
