@@ -1,7 +1,7 @@
 'use client';
 
 import css from './WeekSelector.module.css';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 interface Props {
   selectedWeek: number;
@@ -10,8 +10,16 @@ interface Props {
 }
 
 export default function WeekSelector({ selectedWeek, currentWeek, onWeekChange }: Props) {
-  const router = useRouter();
-  const allWeeks = Array.from({ length: 39 }, (_, i) => i + 1);
+  const allWeeks = Array.from({ length: 40 }, (_, i) => i + 1);
+  const currentWeekRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(() => {
+    currentWeekRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  }, []);
 
   return (
     <section className={css.sectionWeeks}>
@@ -19,26 +27,36 @@ export default function WeekSelector({ selectedWeek, currentWeek, onWeekChange }
         {allWeeks.map((week) => {
           const isActive = week <= currentWeek;
           const isSelected = week === selectedWeek;
+          const isCurrent = week === currentWeek;
+          const isHighlighted = isSelected || isCurrent;
 
           return (
             <button
               key={week}
+              ref={(element) => {
+    if (isCurrent) {
+      currentWeekRef.current = element;
+    }
+  }}
+              // ref={isCurrent ? currentWeekRef : null}
               disabled={!isActive}
               type="button"
               tabIndex={!isActive ? -1 : 0}
-              onClick={(e) => {
+              aria-pressed={isSelected}
+              onClick={() => {
                 if (!isActive) {
                   return;
                 }
                 onWeekChange(week);
-                router.push(`/journey/${week}`);
               }}
-              className={`${css.buttonWeek} ${isSelected ? css.buttonWeekActive : ''} ${
-                !isActive ? css.buttonWeekDisabled : ''
-              }`}
+              className={`
+              ${css.buttonWeek}
+              ${isHighlighted ? css.buttonWeekActive : ''}
+              ${!isActive ? css.buttonWeekDisabled : ''}
+              `}
             >
-              <p className={css.weekNumber}>{week}</p>
-              <p className={css.weekName}>Тиждень</p>
+              <span className={css.weekNumber}>{week}</span>
+              <span className={css.weekName}>Тиждень</span>
             </button>
           );
         })}
