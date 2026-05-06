@@ -4,7 +4,7 @@ import axios from 'axios';
 export const nextServer = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BACKEND_URL}`,
   //  Поверни на true коли бекенд буде налаштований з правильним CORS (credentials: true)
-  withCredentials: true,
+  withCredentials: false,
 });
 
 // nextServer.interceptors.response.use(

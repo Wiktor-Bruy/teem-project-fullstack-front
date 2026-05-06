@@ -63,13 +63,25 @@ export default function RegisterForm() {
             } catch (error: unknown) {
               console.error('Registration error:', error);
               if (isAxiosError(error)) {
-                const errorMessage = error.response?.data?.message || 'Помилка реєстрації';
+                let errorMessage =
+                  error.response?.data?.message || 'Помилка реєстрації';
                 console.error('Axios error:', errorMessage);
-                toast.error(errorMessage);
+                const errorTranslations: Record<string, string> = {
+                  'email in use': 'Користувач з такою поштою вже існує',
+                  'user already exists': 'Користувач з такою поштою вже існує',
+                  'invalid email': 'Некоректна пошта',
+                };
 
-                if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('існує')) {
+                const translatedMessage =
+                  errorTranslations[errorMessage.toLowerCase()] || errorMessage;
+                toast.error(translatedMessage);
+
+                if (
+                  errorMessage.toLowerCase().includes('email') ||
+                  errorMessage.toLowerCase().includes('існує')
+                ) {
                   setErrors({
-                    email: errorMessage,
+                    email: translatedMessage,
                   });
                 }
               } else {

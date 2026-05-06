@@ -40,7 +40,7 @@ export async function logout() {
 //------------------------------------------------Повертає-користувача
 
 export async function getMe(): Promise<User | null> {
-  const res = await nextServer.get<User>('/user/me');
+  const res = await nextServer.get<User>('/users/me');
   return res.data;
 }
 
