@@ -1,50 +1,30 @@
 'use client';
 
 import Modal from '../Modal/Modal';
-
-import { useEffect } from 'react';
 import styles from './AddDiaryEntryModal.module.css';
 import AddDiaryEntryForm from '../AddDiaryEntryForm/AddDiaryEntryForm';
+import type { InitialData } from '@/components/AddDiaryEntryForm/AddDiaryEntryForm';
 
-type Props = {
-  isOpen: boolean;
+
+interface AddDiaryEntryModalProps {
   onClose: () => void;
-  onSuccess: () => void;
-  initialData?: any;
-};
+  initialData?: InitialData;
+}
 
-export default function AddDiaryEntryModal({
-  isOpen,
-  onClose,
-  onSuccess,
-  initialData,
-}: Props) {
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
-
-  if (!isOpen) return null;
-
-  const handleSuccess = () => {
-    onSuccess();
-    onClose();
-  };
+export default function AddDiaryEntryModal({ onClose, initialData }: AddDiaryEntryModalProps) {
 
   return (
-    <Modal>
-      <h2>{initialData ? 'Редагувати запис' : 'Новий запис'}</h2>
-
+    <Modal onClose={onClose}>
+      <h2 className={styles.header}>
+          {initialData ? 'Редагувати запис' : 'Новий запис'}
+      </h2>
       <div className={styles.content}>
         <AddDiaryEntryForm
+          onSuccess={onClose}
           initialData={initialData}
-          onSuccess={handleSuccess}
         />
       </div>
     </Modal>
   );
 }
+

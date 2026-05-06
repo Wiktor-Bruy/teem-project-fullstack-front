@@ -133,24 +133,15 @@ margin-bottom: 16px;
 
 .createBtn {
   padding: 10px 24px;
-  border-radius: 100px;
-  background-color: #FFCBD3;
   color: var(--color-scheme-text);
   font-weight: 500;
   cursor: pointer;
-  transition: 0.3s;
   font-size: 16px;
-  border: none;
-  box-shadow: 0 4px 4px rgba(255, 203, 211, 0.25);
   cursor:pointer;
   font-family: inherit;
+  border-bottom: 4px solid #ffcbd3;
+  border-radius: 100px;
+  background: #ffdae0;
 }
 
-.createBtn :hover {
-  background: #FFFFFF;
-}
-
-.createBtn:active {
-  background-color: #FFFFFF;
-}
 
