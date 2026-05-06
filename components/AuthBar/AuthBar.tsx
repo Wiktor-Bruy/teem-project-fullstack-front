@@ -4,12 +4,12 @@ import styles from './AuthBar.module.css';
 export default function AuthBar() {
   return (
     <div className={styles.wrapper}>
-      <a href="/register" className={styles.primary}>
+      <Link href="/register" className={styles.primary}>
         Зареєструватись
-      </a>
-      <a href="/login" className={styles.secondary}>
+      </Link>
+      <Link href="/login" className={styles.secondary}>
         Увійти
-      </a>
+      </Link>
     </div>
   );
 }

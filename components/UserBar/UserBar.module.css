@@ -1,69 +1,66 @@
-.wrapper {
+.cont {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
+  padding: 15px 0;
   width: 100%;
-  max-width: 280px; 
-  border-top: 1px solid #f0f0f0;
-  box-sizing: border-box; 
+  max-width: 280px;
+  box-sizing: border-box;
   background-color: #fff;
   overflow: hidden;
 }
-.user {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar {
-  width: 40px; 
-  height: 40px; 
-  background-color: #fce4ec;
+.imageBox {
+  position: relative;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  overflow: hidden; 
-  flex-shrink: 0;  
-  display: block;  
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 12px;
 }
-
-.info {
-  display: flex;
-  flex-direction: column;
+.image {
+  object-fit: cover;
+  object-position: center;
 }
-
 .name {
   font-weight: 600;
   font-size: 14px;
   margin: 0;
 }
-
 .email {
   font-size: 12px;
   color: #777;
   margin: 0;
 }
-
 .logout {
-  background: none;
+  position: absolute;
+  right: 0;
+  background: transparent;
   border: none;
   cursor: pointer;
   padding: 5px;
   display: flex;
   align-items: center;
-  color: #333;
+}
+.logout:active {
+  opacity: 0.7;
 }
 
 /* ===== TABLET ===== */
- @media (max-width: 1024px) {
-  .wrapper { padding: 12px 16px; }
-} 
+@media (max-width: 1024px) {
+  .wrapper {
+    padding: 12px 16px;
+  }
+}
 
 /* ===== MOBILE ===== */
- @media (max-width: 768px) { 
+@media (max-width: 768px) {
   .wrapper {
     padding: 10px 12px;
-    border-top: none; 
+    border-top: none;
   }
-  
-  .email { display: none; } 
+
+  .email {
+    display: none;
+  }
 }
