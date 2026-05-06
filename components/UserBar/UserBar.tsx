@@ -1,30 +1,45 @@
-import styles from './UserBar.module.css';
+'use client';
 
-export default function UserBar() {
+import css from './UserBar.module.css';
+
+import Image from 'next/image';
+import { Toaster, toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
+import type { User } from '@/types/types';
+import { logout } from '@/lib/api/clientApi';
+
+interface UserBarProps {
+  user: User;
+}
+
+export default function UserBar({ user }: UserBarProps) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      await logout();
+      router.push('/login');
+    } catch {
+      toast.error('Сталась помилка при виході');
+    }
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.user}>
-        <div className={styles.avatar}>
-          <img
-            src="/image/ganna.png"
-            alt="Ганна"
-            className={styles.photo}
-          />
-        </div>
-
-        <div className={styles.info}>
-          <p className={styles.name}>Ганна</p>
-          <p className={styles.email}>hanna@gmail.com</p>
-        </div>
+    <div className={css.cont}>
+      <Toaster />
+      <div className={css.imageBox}>
+        <Image className={css.image} src={user.avatar} alt="avatar" fill />
       </div>
-
-      <a href="/login" className={styles.logout} aria-label="Вийти">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-          <polyline points="16 17 21 12 16 7" />
-          <line x1="21" y1="12" x2="9" y2="12" />
+      <div className={css.nameBox}>
+        <p className={css.name}>{user.name}</p>
+        <p className={css.email}>{user.email}</p>
+      </div>
+      <button className={css.logout} type="button" onClick={handleLogout}>
+        <svg width={18} height={18}>
+          <use href="/icons.svg#logout"></use>
         </svg>
-      </a>
+      </button>
     </div>
   );
 }
