@@ -1,0 +1,14 @@
+.gretBox {
+  padding-top: 16px;
+}
+
+@media (min-width: 1440px) {
+  .gretBox {
+    padding-left: 32px;
+  }
+  .diaryBox {
+    display: flex;
+    gap: 32px;
+    padding: 32px;
+  }
+}

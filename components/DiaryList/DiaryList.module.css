@@ -54,11 +54,12 @@
   overflow-y: auto;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1440px) {
   .container {
     width: 400px;
     flex-shrink: 0;
-    height: 600px;
+    height: 727px;
+    border-radius: 32px;
   }
 
   .list {
