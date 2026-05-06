@@ -11,7 +11,7 @@ import type {
 
 export async function checkSession() {
   const cookieStore = await cookies();
-  const res = await nextServer.post('/auth/refresh', {
+  const res = await nextServer.post('/auth/refresh', null, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -22,6 +22,7 @@ export async function checkSession() {
 //------------------------------------------------Повертає-користувача
 export async function getMe(): Promise<User> {
   const cookieStore = await cookies();
+
   const res = await nextServer.get<User>(`/user/me`, {
     headers: {
       Cookie: cookieStore.toString(),
