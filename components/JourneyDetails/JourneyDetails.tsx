@@ -4,34 +4,60 @@
 import css from './JourneyDetails.module.css';
 import Image from 'next/image';
 import { useState } from 'react';
-import TasksReminderCard from '@/components/TasksReminderCard/TasksReminderCard'; 
-import type { BabyState, MomState, Emotion } from '@/types/types';
+import TasksReminderCard from '@/components/TasksReminderCard/TasksReminderCard';
+import type { BabyState, MomState } from '@/types/types';
 
-interface Props {
-  babyData: BabyState;
+interface JourneyDetailsProps {
+  babyData: BabyState | undefined;
   momData: MomState | undefined;
+  isLoading?: boolean;
 }
 
-export default function JourneyDetails( { babyData, momData }: Props){
+const iconsMap: Record<string, string> = {
+  nutrition: 'cutlery',
+  activity: 'dumbbell',
+  rest: 'sofa',
+};
+
+const categoryTitles: Record<string, string> = {
+  nutrition: 'Харчування',
+  activity: 'Активність',
+  rest: 'Відпочинок',
+};
+
+export default function JourneyDetails( { babyData, momData, isLoading = false }: JourneyDetailsProps) {
   const [activeTab, setActiveTab] = useState<'baby' | 'mom'>('baby');
 
+    if (isLoading) {
+    return (
+      <section className={css.loaderWrapper}>
+        <div className={css.loader}></div>
+      </section>
+    );
+    }
+
+    if (!babyData || !momData) {
+    return null;
+  }
+
   return (
-    <>
       <section className={css.journeyInfo}>
         <div className={css.tab}>
           <div className={css.tabsNav}>
-            <button
+          <button
+              type="button"
               className={`${css.babyContent} ${activeTab === 'baby' ? css.activeTab : ''}`}
               onClick={() => setActiveTab('baby')}
             >
-              <p className={css.babyButton}>Розвиток малюка</p>
+              <span className={css.babyButton}>Розвиток малюка</span>
             </button>
 
             <button
+              type="button"
               className={`${css.motherBodyContent} ${activeTab === 'mom' ? css.activeTab : ''}`}
               onClick={() => setActiveTab('mom')}
             >
-              <p className={css.motherBodyButton}>Тіло мами</p>
+              <span className={css.motherBodyButton}>Тіло мами</span>
             </button>
           </div>
         </div>
@@ -41,26 +67,34 @@ export default function JourneyDetails( { babyData, momData }: Props){
             {babyData.image ? (
               <Image
                 src={babyData.image}
-                alt="baby size picture"
+                alt={`Розвиток малюка ${babyData.weekNumber} тиждень`}
                 className={css.babyPhotoSize}
                 width={200}
                 height={200}
               />
             ) : null}
+
             {babyData.analogy ? (
-              <p className={css.sizePhotoDescription}>{babyData.analogy}</p>
+              <p className={css.sizePhotoDescription}>
+                {babyData.analogy}
+              </p>
             ) : null}
+
               <div className={css.babyRightColumn}>
             {babyData.babyDevelopment ? (
-              <p className={css.babySizeInformation}>{babyData.babyDevelopment}</p>
+                <p className={css.babySizeInformation}>{babyData.babyDevelopment}
+                </p>
             ) : null}
 
             <div className={css.interestingWeekFact}>
               <div className={css.factHeader}>
                 <svg className={css.iconStar} width="24" height="24">
                   <use href="/icons.svg#star"></use>
-                </svg>
-                <h3 className={css.titleFact}>Цікавий факт тижня</h3>
+                  </svg>
+
+                  <h3 className={css.titleFact}>
+                    Цікавий факт тижня
+                </h3>
               </div>
               {babyData.interestingFact ? (
                 <p className={css.descriptionFact}>{babyData.interestingFact}</p>
@@ -75,48 +109,43 @@ export default function JourneyDetails( { babyData, momData }: Props){
             <div className={css.motherFeelingsTips}>
               <div className={css.motherFeelingCard}>
                 <h3 className={css.cardTitle}>Як ви можете почуватись</h3>
+
                 <div className={css.tags}>
-                {momData?.feelings?.states?.map((emotion, index) => (
-  <span key={index} className={css.tag}>
-    {emotion}
-  </span>
-))}
+                  {momData?.feelings?.states?.map((emotion, index) =>
+                  (<span key={index} className={css.tag}>
+                    {emotion}
+                  </span>
+                ))}
                 </div>
-                <p className={css.feelingDescription}>{momData?.feelings?.sensationDescr}</p>
+
+                              {momData.feelings?.sensationDescr ? (
+                <p className={css.feelingDescription}>
+                  {momData.feelings.sensationDescr}
+                </p>
+                ) : null}
               </div>
+
               <div className={css.motherTipsCard}>
                 <h3 className={css.tipsHeader}>Поради для вашого комфорту</h3>
+
                 <ul className={css.tipItems}>
-
-                  <li className={css.tipItem}>
+                  {momData.comfortTips?.map((tip) => {
+                    const icon =
+                      iconsMap[tip.category] || 'heart';
+                    const title =
+                      categoryTitles[tip.category] || tip.category;
+                    return (
+                      <li key={tip._id} className={css.tipItem}>
                     <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#cutlery"></use>
+                      <use href={`/icons.svg#${icon}`}></use>
                     </svg>
                     <div className={css.tipText}>
-                      <p className={css.tipTitle}>Харчування</p>
-                      <p className={css.tipDescription}>{momData?.comfortTips?.[0]?.tip}</p>
+                      <p className={css.tipTitle}>{title}</p>
+                      <p className={css.tipDescription}>{tip.tip}</p>
                     </div>
                   </li>
-
-                  <li className={css.tipItem}>
-                    <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#dumbbell"></use>
-                    </svg>
-                    <div className={css.tipText}>
-                      <p className={css.tipTitle}>Активність</p>
-                      <p className={css.tipDescription}>{momData?.comfortTips?.[1]?.tip}</p>
-                    </div>
-                  </li>
-
-                  <li className={css.tipItem}>
-                    <svg className={css.icon} width="24" height="24">
-                      <use href="/icons.svg#sofa"></use>
-                    </svg>
-                    <div className={css.tipText}>
-                      <p className={css.tipTitle}>Відпочинок</p>
-                      <p className={css.tipDescription}>{momData?.comfortTips?.[2]?.tip}</p>
-                    </div>
-                  </li>
+                    );
+                  })}
 
                 </ul>
               </div>
@@ -125,6 +154,5 @@ export default function JourneyDetails( { babyData, momData }: Props){
           </div>
         )}
       </section>
-    </>
   );
 }
