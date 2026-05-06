@@ -1,0 +1,5 @@
+@media (min-width: 1440px) {
+  .diaryBox {
+    display: flex;
+  }
+}

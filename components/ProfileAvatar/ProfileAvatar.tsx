@@ -64,6 +64,7 @@ export default function ProfileAvatar({
           width={140}
           height={140}
           className={styles.image}
+          loading="eager"
         />
       </div>
       <input

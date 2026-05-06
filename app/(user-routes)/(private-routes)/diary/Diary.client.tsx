@@ -1,0 +1,54 @@
+'use client';
+
+import css from './page.module.css';
+
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+
+import { type Note } from '@/types/types';
+import { getNotes } from '@/lib/api/clientApi';
+import GreetingBlock from '@/components/GreetingBlock/GreetingBlock';
+import DiaryList from '@/components/DiaryList/DiaryList';
+import DiaryEntryDetails from '@/components/DiaryEntryDetails/DiaryEntryDetails';
+import AddDiaryEntryModal from '@/components/AddDiaryEntryModal/AddDiaryEntryModal';
+
+export default function Diary() {
+  const [isModalUpdate, setIsModalUpdate] = useState(false);
+  const [isModalCreate, setIsModalCreate] = useState(false);
+  const { data } = useQuery({
+    queryKey: ['notes'],
+    queryFn: () => getNotes(),
+    refetchOnMount: false,
+    throwOnError: true,
+  });
+  const [selectedEntry, setSelectedEntry] = useState<Note | null>(
+    data && data.length > 0 ? data[0] : null
+  );
+
+  return (
+    <>
+      <GreetingBlock />
+      <div className={css.diaryBox}>
+        {data ? (
+          <DiaryList
+            entries={data}
+            onEntrySelect={setSelectedEntry}
+            onEntryCreate={() => setIsModalCreate(true)}
+          />
+        ) : (
+          <p>Сталась помилка при завантаженні</p>
+        )}
+        <DiaryEntryDetails entry={selectedEntry} />
+        {isModalCreate && (
+          <AddDiaryEntryModal onClose={() => setIsModalCreate(false)} />
+        )}
+        {isModalUpdate && (
+          <AddDiaryEntryModal
+            initialData={selectedEntry}
+            onClose={() => setIsModalUpdate(false)}
+          />
+        )}
+      </div>
+    </>
+  );
+}

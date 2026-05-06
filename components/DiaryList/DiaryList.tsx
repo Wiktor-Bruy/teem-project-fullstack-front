@@ -1,23 +1,41 @@
 'use client';
 
-import { useState } from 'react';
 import DiaryEntryCard from '../DiaryEntryCard/DiaryEntryCard';
-import AddDiaryEntryModal from '@/components/AddDiaryEntryModal/AddDiaryEntryModal';
 import { Note } from '@/types/types';
 import styles from './DiaryList.module.css';
 
 interface DiaryListProps {
   entries: Note[];
   onEntrySelect?: (entry: Note) => void;
+  onEntryCreate?: () => void;
   selectedEntryId?: string;
 }
 
 export default function DiaryList({
   entries,
   onEntrySelect,
+  onEntryCreate,
   selectedEntryId,
 }: DiaryListProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  if (entries.length === 0) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.listHeader}>
+          <h2 className={styles.listTitle}>Ваші записи</h2>
+          <button
+            className={styles.newEntryButton}
+            onClick={onEntryCreate}
+            aria-label="Додати новий запис"
+          >
+            Новий запис
+            <span className={styles.plusIcon} aria-hidden="true">
+              ⊕
+            </span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -25,7 +43,7 @@ export default function DiaryList({
         <h2 className={styles.listTitle}>Ваші записи</h2>
         <button
           className={styles.newEntryButton}
-          onClick={() => setIsModalOpen(true)}
+          onClick={onEntryCreate}
           aria-label="Додати новий запис"
         >
           Новий запис
@@ -46,9 +64,6 @@ export default function DiaryList({
           </li>
         ))}
       </ul>
-      {isModalOpen && (
-        <AddDiaryEntryModal onClose={() => setIsModalOpen(false)} />
-      )}
     </div>
   );
 }
