@@ -1,0 +1,97 @@
+.container {
+  padding: 24px;
+  min-height: 70vh;
+  border-radius: 32px;
+  background-color: #fff4f6;
+}
+.topBox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.titleBox {
+  padding: 8px 0;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-family: var(--font-comfortaa);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+.editButton,
+.deleteButton {
+  background-color: transparent;
+}
+.editButton:hover,
+.editButton:focus,
+.deleteButton:hover,
+.deleteButton:focus {
+  opacity: 0.8;
+}
+.editButton:active,
+.deleteButton:hover,
+.deleteButton:focus {
+  opacity: 0.6;
+}
+.dateBox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.date {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.text {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.emotions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.emotion {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 100px;
+  padding: 4px 10px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (min-width: 768px) {
+  .topBox {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .titleBox {
+    justify-content: flex-start;
+  }
+}
+@media (min-width: 1440px) {
+  .container {
+    width: 643px;
+    height: 727px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .date {
+    font-size: 14px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .emotion {
+    font-size: 14px;
+  }
+}
