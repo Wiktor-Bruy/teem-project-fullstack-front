@@ -32,11 +32,13 @@ if (isError) return <div>Помилка</div>;
   return (
     <>
       <GreetingBlock />
-      <WeekSelector
+      <div style={{ width: '1128px', overflow: 'hidden' }}>
+            <WeekSelector 
         selectedWeek={selectedWeek?? babyData.weekNumber}
         currentWeek={babyData.weekNumber}
         onWeekChange={(week) =>  console.log(week)}
       />
+      </div>
       <JourneyDetails babyData={babyData} momData={momData} />
     </>
   );
