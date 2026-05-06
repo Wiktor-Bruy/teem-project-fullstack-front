@@ -1,6 +1,5 @@
 import { getNote } from '@/lib/api/serverApi';
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
-import DiaryEntryDetails from '@/components/DiaryEntryDetails/DiaryEntryDetails';
+import DiaryEntryClient from './DiaryEntry.client';
 
 interface Props {
   params: Promise<{ entryId: string }>;
@@ -12,8 +11,7 @@ export default async function DiaryDetails({ params }: Props) {
 
   return (
     <>
-      <Breadcrumbs lastLabel={note.title} />
-      <DiaryEntryDetails />
+      <DiaryEntryClient note={note} />
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import styles from './GreetingBlock.module.css';
 import { useEffect, useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
 
 type Props = {
   name?: string;
@@ -15,11 +16,15 @@ function getGreetingByHour(hour: number) {
 }
 
 export default function GreetingBlock({ name = 'гість' }: Props) {
+  const user = useAuthStore(state => state.user);
   const [greeting, setGreeting] = useState('');
+  if (user?.name) {
+    name = user.name;
+  }
 
   useEffect(() => {
     const hour = new Date().getHours();
-    setGreeting(getGreetingByHour(hour));
+    setTimeout(() => setGreeting(getGreetingByHour(hour)));
   }, []);
 
   return (
