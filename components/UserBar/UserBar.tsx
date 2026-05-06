@@ -5,10 +5,10 @@ export default function UserBar() {
     <div className={styles.wrapper}>
       <div className={styles.user}>
         <div className={styles.avatar}>
-          <img 
+          <img
             src="/image/ganna.png"
-            alt="Ганна" 
-            className={styles.photo} 
+            alt="Ганна"
+            className={styles.photo}
           />
         </div>
 
@@ -18,7 +18,7 @@ export default function UserBar() {
         </div>
       </div>
 
-      <a href="/auth/login" className={styles.logout} aria-label="Вийти">
+      <a href="/login" className={styles.logout} aria-label="Вийти">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
           <polyline points="16 17 21 12 16 7" />

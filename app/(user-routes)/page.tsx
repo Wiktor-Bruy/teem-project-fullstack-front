@@ -1,5 +1,7 @@
 'use client';
-import { useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import GreetingBlock from '@/components/GreetingBlock/GreetingBlock';
 import StatusBlock from '@/components/StatusBlock/StatusBlock';
 import BabyTodayCard from '@/components/BabyTodayCard/BabyTodayCard';
@@ -8,13 +10,12 @@ import TasksReminderCard from '@/components/TasksReminderCard/TasksReminderCard'
 import FeelingCheckCard from '@/components/FeelingCheckCard/FeelingCheckCard';
 import { useAuthStore } from '@/lib/store/authStore';
 import { homePrivate, homePublic } from "@/lib/api/clientApi";
-import css  from "./page.module.css";
+import css from "./page.module.css";
+import AddDiaryEntryModal from '@/components/AddDiaryEntryModal/AddDiaryEntryModal';
 
-
-
-import { logout } from '@/lib/api/clientApi';
 
 export default function Home() {
+  const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
   const { data, isLoading } = useQuery({
     queryKey: ['home', isAuthenticated],
@@ -23,10 +24,23 @@ export default function Home() {
   enabled: isAuthenticated !== undefined, // або !!user
   });
 
-  const baby = data?.babyState;
-  if (!baby) return null;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddClick = () => {
+      if (isAuthenticated) {
+        setIsModalOpen(true);
+      } else {
+        router.push('/register');
+      }
+    };
+
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
 
   if (isLoading) return <p>Loading...</p>;
+  const baby = data?.babyState;
+  if (!baby) return null;
 
   return (
     <div className={css.container}>
@@ -49,13 +63,15 @@ export default function Home() {
       <MomTipCard tip={baby.momDailyTips} />
         </div>
         <div className={css.right}>
-      <TasksReminderCard />
-      <FeelingCheckCard />
+          <TasksReminderCard />
+
+          <FeelingCheckCard recommendation={baby.momDailyTips} onAction={handleAddClick}/>
+          {isModalOpen && (
+             <AddDiaryEntryModal onClose={handleCloseModal}></AddDiaryEntryModal>
+          )}
+
     </div>
       </div>
-            {/* <button type="button" onClick={logout}>
-        Logout test
-      </button> */}
 </div>
   );
 }

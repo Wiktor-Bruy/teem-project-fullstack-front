@@ -1,8 +1,6 @@
 'use client';
 
 import css from './AddTaskModal.module.css';
-
-
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
 import Modal from '../Modal/Modal';
 
