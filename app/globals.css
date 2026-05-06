@@ -384,6 +384,25 @@ button {
   cursor: pointer;
 }
 
+:root {
+  --color-scheme-text: #000000;
+  --color-scheme-border: rgba(0, 0, 0, 0.15);
+
+  --color-scheme-foreground: #fff4f6;
+  --color-scheme-foreground-alt: #ffdae0;
+  --color-scheme-accent: #ffcbd3;
+  --color-scheme-red: #c60000;
+  --opacity-neutral-darkest-5: rgba(0, 0, 0, 0.05);
+  --color-neutral-lightest: rgba(242, 242, 242, 1);
+  --opacity-transparent: #ffffff;
+  --opacity-neutral-darkest-60: rgba(0, 0, 0, 0.6);
+  --color-pastel-pink-light: #ffdae0;
+  --color-pastel-pink-lighter: #fff4f6;
+  --color-neutral-light: #b2b2b2;
+  --font-family: var(--font-lato), sans-serif;
+  --second-family: var(--font-comfortaa), sans-serif;
+}
+
 .container {
   min-width: 320px;
   max-width: 375px;

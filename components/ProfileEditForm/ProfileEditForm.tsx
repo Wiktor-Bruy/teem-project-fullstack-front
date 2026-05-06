@@ -108,8 +108,8 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
       oldUser.dueDate != undefined ? new Date(oldUser.dueDate) : null;
     formik.setFieldValue('name', oldUser.name);
     formik.setFieldValue('email', oldUser.email);
+    formik.setFieldValue('gender', oldUser.gender || 'unknown');
     formik.setFieldValue('dueDate', oldDate);
-    formik.setFieldValue('gender', oldUser.gender);
     setSubmitBtn(true);
     setIsdateErr(false);
     setNameErr(false);
@@ -199,21 +199,15 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
               formik.handleChange(data);
               setSubmitBtn(false);
             }}
-            className={clsx(styles.input)}
+            className={styles.select}
           >
-            <option className={styles.select} value="unknown">
-              Не вибрано
-            </option>
-            <option className={styles.select} value="girl">
-              Дівчинка
-            </option>
-            <option className={styles.select} value="boy">
-              Хлопчик
-            </option>
+            <option value="unknown">Оберіть стать</option>
+            <option value="girl">Дівчинка</option>
+            <option value="boy">Хлопчик</option>
           </select>
         </div>
 
-        <div className={clsx(styles.formGroup, styles.dataBox)}>
+        <div className={clsx(styles.formGroup)}>
           <label className={styles.label}>Планова дата пологів</label>
           <DatePicker
             selected={formik.values.dueDate}
@@ -224,7 +218,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
                 formik.setFieldValue('dueDate', date);
               }
             }}
-            wrapperClassName={clsx(styles.input, styles.datepicker)}
+            wrapperClassName={clsx(styles.datepicker)}
             className={clsx(styles.datainput, isDateErr && styles.inputError)}
             dateFormat="dd.MM.yyyy"
             autoComplete="off"

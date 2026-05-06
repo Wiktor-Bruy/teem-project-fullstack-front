@@ -16,6 +16,7 @@
   flex-direction: column;
   gap: 12px;
   padding-top: 16px;
+  width: 335px;
 }
 .name {
   font-weight: 700;
@@ -56,6 +57,7 @@
   .avatarSection {
     flex-direction: row;
     gap: 12px;
+    width: 704px;
   }
   .avatarCircle {
     margin: 0;
@@ -69,6 +71,7 @@
   }
   .uploadBtn {
     width: 218px;
+    height: 38px;
   }
 }
 @media (min-width: 1440px) {
