@@ -28,9 +28,9 @@ export default function DiaryList({
             aria-label="Додати новий запис"
           >
             Новий запис
-            <span className={styles.plusIcon} aria-hidden="true">
-              ⊕
-            </span>
+            <svg width={18} height={18}>
+              <use href="/icons.svg#plus"></use>
+            </svg>
           </button>
         </div>
       </div>
@@ -48,7 +48,9 @@ export default function DiaryList({
         >
           Новий запис
           <span className={styles.plusIcon} aria-hidden="true">
-            ⊕
+            <svg width={18} height={18}>
+              <use href="/icons.svg#plus"></use>
+            </svg>
           </span>
         </button>
       </div>

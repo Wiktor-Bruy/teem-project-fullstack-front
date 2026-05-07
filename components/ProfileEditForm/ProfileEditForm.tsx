@@ -13,6 +13,7 @@ import styles from './ProfileEditForm.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { User, BabyGender } from '@/types/types';
 import { updateUser } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
 
 interface ProfileEditFormProps {
   user: User;
@@ -26,6 +27,7 @@ interface UpdateUser {
 }
 
 export default function ProfileEditForm({ user }: ProfileEditFormProps) {
+  const setUserStore = useAuthStore(s => s.setUser);
   const oldUser = user;
   const [isDateErr, setIsdateErr] = useState(false);
   const [submitBtn, setSubmitBtn] = useState(true);
@@ -44,8 +46,9 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
       setSubmitBtn(true);
       return res;
     },
-    onSuccess: () => {
+    onSuccess: res => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      setUserStore(res);
       toast.success('Дані оновлено');
     },
     onError: () => {
@@ -220,7 +223,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
               }
             }}
             styles={{
-              control: (base) => ({
+              control: base => ({
                 ...base,
                 backgroundColor: 'var(--opacity-neutral-darkest-5)',
                 borderColor: 'transparent',
@@ -236,27 +239,27 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
                 cursor: 'pointer',
                 outline: 'none',
               }),
-              valueContainer: (base) => ({
+              valueContainer: base => ({
                 ...base,
                 padding: '8px 12px',
                 backgroundColor: 'transparent',
               }),
-              input: (base) => ({
+              input: base => ({
                 ...base,
                 color: 'var(--opacity-neutral-darkest-60)',
                 fontFamily: 'var(--font-family)',
                 margin: '0',
                 padding: '0',
               }),
-              singleValue: (base) => ({
+              singleValue: base => ({
                 ...base,
                 color: 'var(--opacity-neutral-darkest-60)',
               }),
-              placeholder: (base) => ({
+              placeholder: base => ({
                 ...base,
                 color: 'var(--opacity-neutral-darkest-60)',
               }),
-              menu: (base) => ({
+              menu: base => ({
                 ...base,
                 backgroundColor: 'white',
                 border: '1px solid #e0e0e0',
@@ -272,12 +275,14 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
                   : isFocused
                     ? '#f5f5f5'
                     : 'white',
-                color: isSelected ? 'white' : 'var(--opacity-neutral-darkest-60)',
+                color: isSelected
+                  ? 'white'
+                  : 'var(--opacity-neutral-darkest-60)',
                 padding: '8px 12px',
                 cursor: 'pointer',
                 fontFamily: 'var(--font-family)',
               }),
-              dropdownIndicator: (base) => ({
+              dropdownIndicator: base => ({
                 ...base,
                 padding: '0 8px',
                 color: 'var(--opacity-neutral-darkest-60)',
