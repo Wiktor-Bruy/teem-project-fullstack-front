@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function SideBar() {
-  // const  user  = useAuthStore(state => state.user);
+  const user = useAuthStore(state => state.user);
   const [myDay, setMyday] = useState(false);
   const [journey, setJourney] = useState(false);
   const [diary, setDiary] = useState(false);
@@ -112,7 +112,9 @@ export default function SideBar() {
         </nav>
       </div>
 
-      <div className={css.footer}>{isAuth ? <UserBar /> : <AuthBar />}</div>
+      <div className={css.footer}>
+        {isAuth && user ? <UserBar user={user} /> : <AuthBar />}
+      </div>
     </div>
   );
 }

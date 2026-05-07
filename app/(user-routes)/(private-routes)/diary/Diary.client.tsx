@@ -3,7 +3,7 @@
 import css from './page.module.css';
 
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { type Note } from '@/types/types';
 import { getNotes } from '@/lib/api/clientApi';
@@ -24,10 +24,20 @@ export default function Diary() {
   const [selectedEntry, setSelectedEntry] = useState<Note | null>(
     data && data.length > 0 ? data[0] : null
   );
+  useEffect(() => {
+    setTimeout(() => {
+      if (data) {
+        setSelectedEntry(data[0]);
+      }
+    }, 0);
+  }, [data]);
+  const isDesctop = window.innerWidth >= 1440;
 
   return (
     <>
-      <GreetingBlock />
+      <div className={css.gretBox}>
+        <GreetingBlock />
+      </div>
       <div className={css.diaryBox}>
         {data ? (
           <DiaryList
@@ -38,7 +48,12 @@ export default function Diary() {
         ) : (
           <p>Сталась помилка при завантаженні</p>
         )}
-        <DiaryEntryDetails entry={selectedEntry} />
+        {isDesctop && (
+          <DiaryEntryDetails
+            entry={selectedEntry}
+            onEdit={() => setIsModalUpdate(true)}
+          />
+        )}
         {isModalCreate && (
           <AddDiaryEntryModal onClose={() => setIsModalCreate(false)} />
         )}

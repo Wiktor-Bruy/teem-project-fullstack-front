@@ -37,7 +37,7 @@ export interface UpdateUserRequest {
 }
 
 export interface Note {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   emotions: Emotions;
@@ -98,7 +98,7 @@ export interface MomState {
   weekNumber: number;
   note?: string;
   comfortTips: ComfortTip[];
-feelings: { states: string[]; sensationDescr: string };
+  feelings: { states: string[]; sensationDescr: string };
 }
 
 interface homeBaby {
