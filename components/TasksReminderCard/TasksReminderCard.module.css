@@ -17,14 +17,17 @@
 }
 
 .card {
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
   background: var(--color-background);
   border-radius:32px;
   padding: 24px;
+  overflow: hidden;
 
 }
 
 .header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -33,7 +36,7 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: 20px;
   font-family: var(--second-family);
   font-weight: 700;
   color: var(--color-scheme-text);
@@ -52,6 +55,8 @@
   flex-direction: column;
   gap: 16px;
   padding: 0px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .item {
@@ -107,11 +112,7 @@
 }
 
 .hiddenCheckbox:checked + .customCheckbox svg {
-  opacity: 1; /* 👈 показує галочку */
-}
-
-.emptyState {
-  margin-top: 16px;
+  opacity: 1;
 }
 
 .emptyTitle {
@@ -136,7 +137,7 @@ margin-bottom: 16px;
   color: var(--color-scheme-text);
   font-weight: 500;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   cursor:pointer;
   font-family: inherit;
   border-bottom: 4px solid #ffcbd3;
@@ -144,4 +145,28 @@ margin-bottom: 16px;
   background: #ffdae0;
 }
 
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1440px) {
+  .card {
+    height: 499px;
+    overflow: hidden;
+  }
+
+  .title {
+  font-size: 24px;
+}
+
+.emptyText
+.emptyTitle {
+  font-size: 16px;
+}
+
+.createBtn {
+  font-size: 16px;
+}
+
+}
 

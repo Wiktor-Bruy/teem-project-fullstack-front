@@ -35,11 +35,17 @@
 
 .button {
     border-bottom: 4px solid #ffcbd3;
-        border-radius: 100px;
-        width: 225px;
-        height: 42px;
+    border-radius: 100px;
+    width: 225px;
+    height: 42px;
     background: #ffdae0;
     margin-top: 20px;
+    font-size: 14px;
+}
+
+.advice {
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 
@@ -49,7 +55,7 @@
     }
 
     .title {
-        font-size: 22px;
+        font-size: 20px;
     }
 
     .subtitle {
@@ -73,7 +79,7 @@
     }
 
     .title {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .subtitle {
@@ -96,7 +102,13 @@
         padding: 32px;
     }
 
+    .title {
+        font-size: 24px;
+    }
+
     .button {
         width: 250px;
+        font-size: 16px;
     }
+
 }

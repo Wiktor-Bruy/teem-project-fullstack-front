@@ -20,15 +20,18 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    font-size: 14px;
 }
 
 .label {
     font-weight: 700;
     padding-right: 5px;
+    font-size: 14px;
 }
 
 .value {
     font-weight: 400;
+    font-size: 14px;
 }
 
 .babyImage {
@@ -66,7 +69,7 @@
     font-family: "Lato", sans-serif;
     font-weight: 400;
     font-size: 14px;
-    line-height: 150%;
+    line-height: 1.5;
     color: #000;
     padding-top: 20px;
 
@@ -75,6 +78,11 @@
 
 .bodyAdvice {
         padding: 24px 0 0;
+}
+
+.advice {
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 
@@ -116,7 +124,7 @@
     }
 
     .babycard__advice {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
@@ -125,9 +133,7 @@
     .babycard {
         padding: 48px;
         max-width: 642px;
-        border-radius: 32px;
-        width: 642px;
-        height: 421px;
+        border-radius: 24px;
     }
 
     .titleBaby {
@@ -135,7 +141,7 @@
     }
 
     .babycard__advice {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .babycard__list {
@@ -154,12 +160,16 @@
         .label {
             font-weight: 700;
             padding-right: 5px;
+            font-size: 16px;
         }
 
         .value {
             font-weight: 400;
+            font-size: 16px;
         }
     .advice {
         font-weight: 400;
-    }
+        font-size: 16px;
 }
+    }
+
