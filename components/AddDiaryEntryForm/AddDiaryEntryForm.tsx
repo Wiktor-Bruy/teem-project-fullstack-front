@@ -120,7 +120,7 @@ export default function AddDiaryEntryForm({
             <label>Категорії</label>
             <Select
               isMulti
-              className={styles.input}
+              className={`${styles.input} ${styles.select}`}
               options={emotionOptions}
               value={emotionOptions.filter(o =>
                 values.emotions.includes(o.value)
@@ -134,6 +134,23 @@ export default function AddDiaryEntryForm({
                 );
               }}
               placeholder="Оберіть емоції"
+              styles={{
+                container: base => ({
+                  ...base,
+                  borderColor: 'transparent',
+                }),
+                control: (base, state) => ({
+                  ...base,
+                  backgroundColor: '#fafafa',
+                  width: '100%',
+                  borderRadius: '12px',
+                  borderColor: state.isFocused ? '#eee' : 'transparent',
+                }),
+                menu: base => ({
+                  ...base,
+                  backgroundColor: '#fafafa',
+                }),
+              }}
             />
             <ErrorMessage
               name="emotions"
