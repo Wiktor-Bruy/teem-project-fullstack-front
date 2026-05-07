@@ -25,5 +25,6 @@ export const OnboardingSchema = Yup.object().shape({
     .nullable()
     .typeError('Оберіть коректну дату')
     .min(today, 'Дата не може бути ближче ніж через тиждень')
-    .max(maxDeliveryDate, 'Дата не може бути пізніше ніж через 42 тижні'),
+    .max(maxDeliveryDate, 'Дата не може бути пізніше ніж через 42 тижні')
+    .required("Дата обов'язкове поле."),
 });

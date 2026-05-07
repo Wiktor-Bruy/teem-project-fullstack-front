@@ -18,14 +18,6 @@ import { updateAvatar, updateUser } from '@/lib/api/clientApi';
 
 registerLocale('uk', uk);
 
-// const genderMap = {
-//   boy: 'Хлопчик',
-//   girl: 'Дівчинка',
-//   unknown: 'Ще не знаю',
-// } as const;
-
-// type GenderKey = keyof typeof genderMap;
-
 export default function OnboardingForm() {
   const router = useRouter();
 
@@ -82,25 +74,6 @@ export default function OnboardingForm() {
 
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // if (values.avatar) {
-        //   const formData = new FormData();
-        //   formData.append('avatar', values.avatar);
-
-        //   await nextServer.patch('/users/avatar', formData);
-
-        // }
-
-        // const babyGender =
-        //   values.gender && (values.gender as GenderKey) in genderMap
-        //     ? genderMap[values.gender as GenderKey]
-        //     : undefined;
-
-        // await nextServer.patch('/users/current', {
-        //   ...(babyGender ? { babyGender } : {}),
-        //   birthDate: values.deliveryDate
-        //     ? values.deliveryDate.toISOString()
-        //     : null,
-        // });
         if (values.avatar) {
           await updateAvatar(values.avatar);
         }
@@ -173,11 +146,6 @@ export default function OnboardingForm() {
                   triggerFieldAnimation('gender');
                   formik.setFieldTouched('gender', true);
                 }
-
-                // if (!formik.values.deliveryDate) {
-                //   triggerFieldAnimation('deliveryDate');
-                //   formik.setFieldTouched('deliveryDate', true);
-                // }
               }}
             >
               <div className={styles.avatarSection}>

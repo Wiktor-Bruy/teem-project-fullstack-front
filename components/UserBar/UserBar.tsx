@@ -43,7 +43,13 @@ export default function UserBar({ user }: UserBarProps) {
         />
       )}
       <div className={css.imageBox}>
-        <Image className={css.image} src={user.avatar} alt="avatar" fill />
+        <Image
+          className={css.image}
+          src={user.avatar}
+          alt="avatar"
+          width={150}
+          height={150}
+        />
       </div>
       <div className={css.nameBox}>
         <p className={css.name}>{user.name}</p>

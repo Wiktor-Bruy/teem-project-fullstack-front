@@ -20,6 +20,7 @@ export default function Login() {
             className={css.image}
             sizes="(min-width: 1440px) 50vw, 0px"
             priority
+            loading="eager"
           />
         </div>
       </div>
