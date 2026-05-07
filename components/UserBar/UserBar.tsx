@@ -10,22 +10,29 @@ import { useState } from 'react';
 import type { User } from '@/types/types';
 import { logout } from '@/lib/api/clientApi';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import { useAuthStore } from '@/lib/store/authStore';
 
 interface UserBarProps {
   user: User;
 }
 
 export default function UserBar({ user }: UserBarProps) {
+  const clearUser = useAuthStore(state => state.clearIsAuthenticated);
   const [isModal, setIsModal] = useState(false);
+  const [isFetch, setisFetch] = useState(false);
   const router = useRouter();
 
   async function handleLogout() {
+    setisFetch(true);
     try {
       await logout();
       setIsModal(false);
+      setisFetch(false);
+      clearUser();
       router.push('/login');
     } catch {
       setIsModal(false);
+      setisFetch(false);
       toast.error('Сталась помилка при виході');
     }
   }
@@ -37,7 +44,7 @@ export default function UserBar({ user }: UserBarProps) {
         <ConfirmationModal
           title="Бажаєте вийти?"
           cancelButtonText="Залишитись"
-          confirmButtonText="Вийти"
+          confirmButtonText={isFetch ? 'Вихід...' : 'Вийти'}
           onCancel={() => setIsModal(false)}
           onConfirm={() => handleLogout()}
         />
@@ -47,8 +54,8 @@ export default function UserBar({ user }: UserBarProps) {
           className={css.image}
           src={user.avatar}
           alt="avatar"
-          width={150}
-          height={150}
+          fill
+          sizes="150px 150px"
         />
       </div>
       <div className={css.nameBox}>

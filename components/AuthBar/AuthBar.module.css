@@ -2,32 +2,33 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 20px 16px; 
+  padding: 20px 16px;
   width: 100%;
-  max-width: 280px;    
+  max-width: 280px;
   background-color: #fff;
-  border-top: 1px solid #f0f0f0; 
-  box-sizing: border-box; 
+  border-top: 1px solid #f0f0f0;
+  box-sizing: border-box;
 }
 
-.primary, .secondary {
+.primary,
+.secondary {
   text-decoration: none;
   text-align: center;
   padding: 14px;
-  border-radius: 30px; 
+  border-radius: 30px;
   font-weight: 500;
   font-size: 16px;
   transition: all 0.2s ease;
   display: block;
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   border: none;
 }
 
 .primary {
-  background-color: #ffdae0; 
+  background-color: #ffdae0;
   color: #000;
-  box-shadow: 0 4px 0px #ffcbd3; 
+  box-shadow: 0 4px 0px #ffcbd3;
   position: relative;
 }
 
@@ -38,37 +39,37 @@
   position: relative;
 }
 
-
 .primary:hover {
-  background-color: #ffe4e8; 
-  box-shadow: 0 4px 0px #ffcbd3;   
-  opacity: 1; 
+  background-color: #ffe4e8;
+  box-shadow: 0 4px 0px #ffcbd3;
+  opacity: 1;
 }
 
 .secondary:hover {
   background-color: #f9f9f9;
-  box-shadow: 0 4px 0px #d9d9d9; 
+  box-shadow: 0 4px 0px #d9d9d9;
   opacity: 1;
 }
 
-.primary:active, .secondary:active {
+.primary:active,
+.secondary:active {
   box-shadow: none;
-  transform: translateY(4px); 
+  transform: translateY(4px);
 }
 
 /* ===== TABLET ===== */
-@media (max-width: 1024px) {
+@media (max-width: 1439px) {
   .wrapper {
-    max-width: 240px; 
+    max-width: 240px;
     padding: 16px 12px;
   }
 }
 
 /* ===== MOBILE ===== */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .wrapper {
-    max-width: 100%;   
+    max-width: 100%;
     padding: 16px;
-    border-top: 1px solid #eee;
+    /* border-top: 1px solid #eee; */
   }
 }

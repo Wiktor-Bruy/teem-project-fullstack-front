@@ -3,10 +3,11 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './ProfileAvatar.module.css';
-
+import { getMe } from '@/lib/api/clientApi';
 import { updateAvatar } from '@/lib/api/clientApi';
 import { toast, Toaster } from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/lib/store/authStore';
 
 interface ProfileAvatarProps {
   avatar: string;
@@ -19,6 +20,7 @@ export default function ProfileAvatar({
   name,
   email,
 }: ProfileAvatarProps) {
+  const setUserStore = useAuthStore(s => s.setUser);
   const [avatarPreview, setAvatarPreview] = useState(avatar);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
@@ -27,6 +29,10 @@ export default function ProfileAvatar({
     mutationFn: async (data: File) => {
       const res = await updateAvatar(data);
       setAvatarPreview(res.url);
+      const user = await getMe();
+      if (user) {
+        setUserStore(user);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });

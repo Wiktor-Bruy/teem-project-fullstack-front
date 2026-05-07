@@ -82,7 +82,9 @@ export default function DiaryEntryDetails({
           <ConfirmationModal
             title="Бажаєте видалити запис?"
             onConfirm={handleDelete}
-            confirmButtonText="Видалити"
+            confirmButtonText={
+              createMutation.isPending ? 'Видалення...' : 'Видалити'
+            }
             cancelButtonText="Відмінити"
             onCancel={() => setIsModal(false)}
           />

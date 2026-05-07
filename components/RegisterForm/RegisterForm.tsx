@@ -13,9 +13,17 @@ import { useAuthStore } from '@/lib/store/authStore';
 import type { RegisterRequest, User } from '@/types/types';
 
 const RegisterFormSchema = Yup.object().shape({
-  name: Yup.string().required('Обовʼязкове поле'),
-  email: Yup.string().email('Некоректна пошта').required('Обовʼязкове поле'),
-  password: Yup.string().required('Обовʼязкове поле'),
+  name: Yup.string()
+    .required('Обовʼязкове поле')
+    .max(32, 'Максимум 32 символи'),
+  email: Yup.string()
+    .email('Некоректна пошта')
+    .required('Обовʼязкове поле')
+    .max(64, 'Максимум 64 символи'),
+  password: Yup.string()
+    .required('Обовʼязкове поле')
+    .min(8, 'Мінімум 8 символів')
+    .max(128, 'Максимум 128 символів'),
 });
 
 const initialValues: RegisterFormValues = {
@@ -34,14 +42,14 @@ export default function RegisterForm() {
   return (
     <div className={css.page}>
       <div className={css.logo}>
-        <Link  href='/'>
-        <svg className={css.logoIcon} width={30} height={30}>
-          <use href="/icons.svg#logo" />
-        </svg>
-        <svg className={css.logoLeleka} width={60} height={13}>
-          <use href="/icons.svg#icon-leleka" />
+        <Link href="/">
+          <svg className={css.logoIcon} width={30} height={30}>
+            <use href="/icons.svg#logo" />
           </svg>
-          </Link>
+          <svg className={css.logoLeleka} width={60} height={13}>
+            <use href="/icons.svg#icon-leleka" />
+          </svg>
+        </Link>
       </div>
       <div className={css.center}>
         <Formik
@@ -57,10 +65,13 @@ export default function RegisterForm() {
           ) => {
             try {
               const user: User = await register(values);
-
-              setUser(user);
-              resetForm();
-              router.push('/edit');
+              if (!user) {
+                toast.error('Щось пішло не так');
+              } else {
+                setUser(user);
+                resetForm();
+                router.push('/edit');
+              }
             } catch (error: unknown) {
               if (isAxiosError(error)) {
                 toast.error(
