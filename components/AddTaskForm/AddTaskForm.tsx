@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import clsx from 'clsx';
 import DatePicker from 'react-datepicker';
-import type { CreateTaskRequest, TaskResponse } from "@/types/types";
+import type { CreateTaskRequest, TaskResponse } from '@/types/types';
 import { createTask } from '@/lib/api/clientApi';
 
 interface AddTaskFormProps {
@@ -64,7 +64,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
     let isErr;
     if (myDate != null) {
       setInputDate(myDate);
-      isErr = myDate < new Date(today);
+      isErr = myDate.getDate() <= new Date(today).getDate();
     }
     if (isErr) {
       setIsDateErr(true);
@@ -90,7 +90,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
         setTitleErr('Максимально 96 символів.');
         setIsErrText(true);
         return;
-      } else if (new Date(values.date) < new Date(today)) {
+      } else if (new Date(values.date).getDate() <= new Date(today).getDate()) {
         setIsDateErr(true);
         return;
       }
@@ -127,7 +127,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
           autoComplete="off"
         />
         {isDateErr && (
-          <span className={css.errMess}>Ви вказали дату, що пройшла.</span>
+          <span className={css.errMess}>Дата має бути хочаб завтра</span>
         )}
       </div>
       <button className={css.btn} type="submit" disabled={isFetching}>

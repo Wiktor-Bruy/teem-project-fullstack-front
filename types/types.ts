@@ -88,12 +88,14 @@ export interface BabyState {
 }
 
 interface ComfortTip {
+  _id: string;
   category: string;
   tip: string;
 }
+
 export interface MomState {
   _id?: string;
-  week: number;
+  weekNumber: number;
   note?: string;
   comfortTips: ComfortTip[];
   feelings: { states: string[]; sensationDescr: string };

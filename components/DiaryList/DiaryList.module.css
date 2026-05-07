@@ -60,6 +60,7 @@
     flex-shrink: 0;
     height: 727px;
     border-radius: 32px;
+    overflow-y: auto;
   }
 
   .list {

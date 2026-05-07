@@ -75,7 +75,7 @@ export default function SideBar() {
 
             <li>
               <Link
-                href="/journey/1"
+                href="/journey"
                 className={clsx(css.navLink, journey && css.active)}
               >
                 <svg width="24" height="24">

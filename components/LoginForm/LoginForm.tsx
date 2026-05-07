@@ -56,7 +56,9 @@ export default function LoginForm() {
               const res = await login(data);
               if (res) {
                 const user = await getMe();
-                setUser(user);
+                if (user) {
+                  setUser(user);
+                }
                 router.push('/');
                 resetForm();
               }
