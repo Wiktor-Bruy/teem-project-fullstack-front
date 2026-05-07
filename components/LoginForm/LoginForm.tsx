@@ -30,12 +30,14 @@ export default function LoginForm() {
   return (
     <div className={css.loginPage}>
       <div className={css.logo}>
+        <Link href='/'>
         <svg className={css.logoIcon} width={30} height={30}>
           <use href="/icons.svg#logo" />
         </svg>
         <svg className={css.logoLeleka} width={60} height={13}>
           <use href="/icons.svg#icon-leleka" />
-        </svg>
+          </svg>
+          </Link>
       </div>
       <div className={css.center}>
         <Formik

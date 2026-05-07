@@ -69,7 +69,6 @@ export default function Home() {
           {isModalOpen && (
              <AddDiaryEntryModal onClose={handleCloseModal}></AddDiaryEntryModal>
           )}
-
     </div>
       </div>
 </div>
