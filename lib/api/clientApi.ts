@@ -124,18 +124,40 @@ export async function homePrivate() {
 }
 
 //------------------------------------------------Стан-мами
-export async function getMomState(week?: number): Promise<MomState> {
+export async function getMomState(
+  week?: number
+): Promise<MomState> {
+
   const res = await nextServer.get<MomState>(
-    `/home/mom${week ? `?week=${week}` : ''}`
+    '/home/mom',
+    {
+      params: {
+        week,
+      },
+
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    }
   );
+
   return res.data;
 }
 
 //------------------------------------------------Стан-дитини
-export async function getBabyState(week?: number): Promise<BabyState> {
+export async function getBabyState(
+  week?: number
+): Promise<BabyState> {
+
   const res = await nextServer.get<BabyState>(
-    `/home/baby${week ? `?week=${week}` : ''}`
+    '/home/baby',
+    {
+      params: {
+        week,
+      },
+    }
   );
+
   return res.data;
 }
 

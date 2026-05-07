@@ -1,5 +1,3 @@
-
-@media (min-width: 320px) {
   .sectionWeeks {
     width: 100%;
     max-width: 100%;
@@ -7,7 +5,7 @@
     box-sizing: border-box;
   }
 
-  .weeksScrollContainer {
+  /* .weeksScrollContainer {
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -18,13 +16,36 @@
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-     scrollbar-width: none;
-    -ms-overflow-style: none;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    box-sizing: border-box;
-  }
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
 
+  } */
+.weeksScrollContainer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 24px;
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  box-sizing: border-box;
+}
   .weeksScrollContainer::-webkit-scrollbar {
     display: none;
   }
@@ -41,14 +62,16 @@
     background: #fff4f6;
     flex-shrink: 0;
   }
+
  .buttonWeek:hover {
   border:  4px solid #FFDAE0;
  }
 
   .buttonWeekActive {
-    border: 4px solid #d9adb3;
+    border: 4px solid #00000026;
     background: #ffcbd3;
   }
+
   .buttonWeekDisabled {
     border: none;
     background: #f2f2f2;
@@ -76,22 +99,18 @@
     line-height: 150%;
     text-align: center;
   }
-}
+
 @media (min-width: 768px) {
-}
-@media (min-width: 1024px) {
-  .weeksScrollContainer {
-    gap: 20px;
-    margin-top: 32px;
-  }
+
   .buttonWeek {
     width: 110px;
     height: 101px;
   }
+}
+
+@media (min-width: 1440px)  {
   .weekNumber {
     font-size: 32px;
   }
-  .weekName {
-    font-size: 14px;
-  }
+
 }
