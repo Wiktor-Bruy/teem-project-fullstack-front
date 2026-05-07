@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Note } from '@/types/types';
 import styles from './DiaryEntryCard.module.css';
+import { useEntryStore } from '@/lib/store/entryStore';
 
 interface DiaryEntryCardProps {
   entry: Note;
@@ -26,11 +27,15 @@ export default function DiaryEntryCard({
   isSelected = false,
   onSelect,
 }: DiaryEntryCardProps) {
+  const setEntryTitle = useEntryStore(s => s.setTitle);
   const router = useRouter();
 
   const handleClick = () => {
     const width = typeof window !== 'undefined' ? window.innerWidth : 800;
     if (width < 1440) {
+      if (entry.title) {
+        setEntryTitle(entry.title);
+      }
       router.push(`/diary/${entry._id}`);
     } else {
       onSelect?.(entry);

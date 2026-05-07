@@ -19,11 +19,13 @@ export default function Header() {
 
   const openModalNavigation = () => {
     setIsModalNavigationOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModalNavigation = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
       setIsModalNavigationOpen(false);
+      document.body.style.overflow = '';
     }
     return;
   };

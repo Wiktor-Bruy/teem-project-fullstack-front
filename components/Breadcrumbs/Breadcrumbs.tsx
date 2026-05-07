@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Breadcrumbs.module.css';
+import { useEntryStore } from '@/lib/store/entryStore';
 
 const LABELS: Record<string, string> = {
   journey: 'Подорож',
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function Breadcrumb({ lastLabel }: Props) {
+  const entryTitle = useEntryStore(s => s.title);
   const pathname = usePathname();
 
   if (HIDDEN_PREFIXES.some(prefix => pathname.startsWith(prefix))) return null;
@@ -42,6 +44,10 @@ export default function Breadcrumb({ lastLabel }: Props) {
         isLast: i === segments.length - 1,
       })),
     ];
+  }
+  if (pathname.includes('diary') && crumbs.length > 2) {
+    const n = crumbs.length - 1;
+    crumbs[n].label = entryTitle;
   }
 
   return (
