@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { clsx } from 'clsx';
 import { useId } from 'react';
 import DatePicker from 'react-datepicker';
+import Select from 'react-select';
 
 import { useState } from 'react';
 import styles from './ProfileEditForm.module.css';
@@ -108,8 +109,8 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
       oldUser.dueDate != undefined ? new Date(oldUser.dueDate) : null;
     formik.setFieldValue('name', oldUser.name);
     formik.setFieldValue('email', oldUser.email);
+    formik.setFieldValue('gender', oldUser.gender || 'unknown');
     formik.setFieldValue('dueDate', oldDate);
-    formik.setFieldValue('gender', oldUser.gender);
     setSubmitBtn(true);
     setIsdateErr(false);
     setNameErr(false);
@@ -191,29 +192,104 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
           <label htmlFor={`${id}-gender`} className={styles.label}>
             Стать дитини
           </label>
-          <select
-            id={`${id}-gender`}
+          <Select
+            inputId={`${id}-gender`}
             name="gender"
-            value={formik.values.gender}
-            onChange={data => {
-              formik.handleChange(data);
-              setSubmitBtn(false);
+            options={[
+              { value: 'unknown', label: 'Оберіть стать' },
+              { value: 'girl', label: 'Дівчинка' },
+              { value: 'boy', label: 'Хлопчик' },
+            ]}
+            value={
+              formik.values.gender
+                ? {
+                    value: formik.values.gender,
+                    label:
+                      formik.values.gender === 'girl'
+                        ? 'Дівчинка'
+                        : formik.values.gender === 'boy'
+                          ? 'Хлопчик'
+                          : 'Оберіть стать',
+                  }
+                : null
+            }
+            onChange={option => {
+              if (option) {
+                formik.setFieldValue('gender', option.value);
+                setSubmitBtn(false);
+              }
             }}
-            className={clsx(styles.input)}
-          >
-            <option className={styles.select} value="unknown">
-              Не вибрано
-            </option>
-            <option className={styles.select} value="girl">
-              Дівчинка
-            </option>
-            <option className={styles.select} value="boy">
-              Хлопчик
-            </option>
-          </select>
+            styles={{
+              control: (base) => ({
+                ...base,
+                backgroundColor: 'var(--opacity-neutral-darkest-5)',
+                borderColor: 'transparent',
+                borderWidth: '2px',
+                borderRadius: '12px',
+                padding: '0',
+                minHeight: '40px',
+                height: '40px',
+                width: '100%',
+                boxSizing: 'border-box',
+                fontFamily: 'var(--font-family)',
+                color: 'var(--opacity-neutral-darkest-60)',
+                cursor: 'pointer',
+                outline: 'none',
+              }),
+              valueContainer: (base) => ({
+                ...base,
+                padding: '8px 12px',
+                backgroundColor: 'transparent',
+              }),
+              input: (base) => ({
+                ...base,
+                color: 'var(--opacity-neutral-darkest-60)',
+                fontFamily: 'var(--font-family)',
+                margin: '0',
+                padding: '0',
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: 'var(--opacity-neutral-darkest-60)',
+              }),
+              placeholder: (base) => ({
+                ...base,
+                color: 'var(--opacity-neutral-darkest-60)',
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: 'white',
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                zIndex: 1000,
+                marginTop: '4px',
+              }),
+              option: (base, { isSelected, isFocused }) => ({
+                ...base,
+                backgroundColor: isSelected
+                  ? 'var(--color-scheme-accent)'
+                  : isFocused
+                    ? '#f5f5f5'
+                    : 'white',
+                color: isSelected ? 'white' : 'var(--opacity-neutral-darkest-60)',
+                padding: '8px 12px',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-family)',
+              }),
+              dropdownIndicator: (base) => ({
+                ...base,
+                padding: '0 8px',
+                color: 'var(--opacity-neutral-darkest-60)',
+              }),
+              indicatorSeparator: () => ({
+                display: 'none',
+              }),
+            }}
+          />
         </div>
 
-        <div className={clsx(styles.formGroup, styles.dataBox)}>
+        <div className={clsx(styles.formGroup)}>
           <label className={styles.label}>Планова дата пологів</label>
           <DatePicker
             selected={formik.values.dueDate}
@@ -224,7 +300,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
                 formik.setFieldValue('dueDate', date);
               }
             }}
-            wrapperClassName={clsx(styles.input, styles.datepicker)}
+            wrapperClassName={clsx(styles.datepicker)}
             className={clsx(styles.datainput, isDateErr && styles.inputError)}
             dateFormat="dd.MM.yyyy"
             autoComplete="off"
