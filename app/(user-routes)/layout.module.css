@@ -16,3 +16,8 @@
     height: 900px;
   }
 }
+@media (min-height: 900px) {
+  .sidebar {
+    height: 100vh;
+  }
+}
