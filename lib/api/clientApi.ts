@@ -127,7 +127,6 @@ export async function homePrivate() {
 export async function getMomState(
   week?: number
 ): Promise<MomState> {
-  console.log('request mom week', week);
 
   const res = await nextServer.get<MomState>(
     '/home/mom',
@@ -149,7 +148,6 @@ export async function getMomState(
 export async function getBabyState(
   week?: number
 ): Promise<BabyState> {
-  console.log('request week', week);
 
   const res = await nextServer.get<BabyState>(
     '/home/baby',

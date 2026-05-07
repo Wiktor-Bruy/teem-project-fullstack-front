@@ -14,8 +14,6 @@ export async function GET(request: Request) {
 
     const week = searchParams.get('week');
 
-    console.log('week from mom route handler:', week);
-
     const res = await api.get('/weeks/mom', {
       params: {
         week,
@@ -26,8 +24,7 @@ export async function GET(request: Request) {
         'Cache-Control': 'no-cache',
       },
     });
-    console.log('mom route week param:', week);
-    console.log('mom backend returned week:', res.data.weekNumber);
+
 
     return NextResponse.json(res.data, {
       status: res.status,

@@ -12,8 +12,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const week = searchParams.get('week');
 
-    console.log('week from route handler', week);
-
     const res = await api.get('/weeks/baby', {
   params: {
     week,
@@ -24,9 +22,6 @@ export async function GET(request: Request) {
         },
       }
     );
-
-console.log('baby route week param:', week);
-    console.log('baby backend returned week:', res.data.weekNumber);
 
     return NextResponse.json(res.data, {
       status: res.status,

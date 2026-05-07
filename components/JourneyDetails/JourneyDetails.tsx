@@ -14,15 +14,15 @@ interface JourneyDetailsProps {
 }
 
 const iconsMap: Record<string, string> = {
-  nutrition: 'cutlery',
-  activity: 'dumbbell',
-  rest: 'sofa',
+  Харчування: 'cutlery',
+  Активність: 'dumbbell',
+  'Відпочинок та комфорт': 'sofa',
 };
 
 const categoryTitles: Record<string, string> = {
-  nutrition: 'Харчування',
-  activity: 'Активність',
-  rest: 'Відпочинок',
+  Харчування: 'Харчування',
+  Активність: 'Активність',
+'Відпочинок та комфорт': 'Відпочинок',
 };
 
 export default function JourneyDetails( { babyData, momData, isLoading = false }: JourneyDetailsProps) {
@@ -45,7 +45,7 @@ export default function JourneyDetails( { babyData, momData, isLoading = false }
         <div className={css.tab}>
           <div className={css.tabsNav}>
           <button
-              type="button"
+            type="button"
               className={`${css.babyContent} ${activeTab === 'baby' ? css.activeTab : ''}`}
               onClick={() => setActiveTab('baby')}
             >
@@ -105,53 +105,59 @@ export default function JourneyDetails( { babyData, momData, isLoading = false }
         )}
 
         {activeTab === 'mom' && (
+
+
           <div className={css.motherInformation}>
-            <div className={css.motherFeelingsTips}>
-              <div className={css.motherFeelingCard}>
-                <h3 className={css.cardTitle}>Як ви можете почуватись</h3>
+  <div className={css.motherFeelingsTips}>
+    <div className={css.motherLeftColumn}>
+      <div className={css.motherFeelingCard}>
+        <h3 className={css.cardTitle}>Як ви можете почуватись</h3>
 
-                <div className={css.tags}>
-                  {momData?.feelings?.states?.map((emotion, index) =>
-                  (<span key={index} className={css.tag}>
-                    {emotion}
-                  </span>
-                ))}
-                </div>
+        <div className={css.tags}>
+          {momData?.feelings?.states?.map((emotion, index) => (
+            <span key={index} className={css.tag}>
+              {emotion}
+            </span>
+          ))}
+        </div>
 
-                              {momData.feelings?.sensationDescr ? (
-                <p className={css.feelingDescription}>
-                  {momData.feelings.sensationDescr}
-                </p>
-                ) : null}
-              </div>
+        {momData.feelings?.sensationDescr ? (
+          <p className={css.feelingDescription}>
+            {momData.feelings.sensationDescr}
+          </p>
+        ) : null}
+      </div>
 
-              <div className={css.motherTipsCard}>
-                <h3 className={css.tipsHeader}>Поради для вашого комфорту</h3>
+      <div className={css.motherTipsCard}>
+        <h3 className={css.tipsHeader}>Поради для вашого комфорту</h3>
 
-                <ul className={css.tipItems}>
+        <ul className={css.tipItems}>
                   {momData.comfortTips?.map((tip) => {
-                    const icon =
-                      iconsMap[tip.category] || 'heart';
-                    const title =
-                      categoryTitles[tip.category] || tip.category;
-                    return (
-                      <li key={tip._id} className={css.tipItem}>
-                    <svg className={css.icon} width="24" height="24">
-                      <use href={`/icons.svg#${icon}`}></use>
-                    </svg>
-                    <div className={css.tipText}>
-                      <p className={css.tipTitle}>{title}</p>
-                      <p className={css.tipDescription}>{tip.tip}</p>
-                    </div>
-                  </li>
-                    );
-                  })}
+            const icon = iconsMap[tip.category] || 'heart';
+            const title = categoryTitles[tip.category] || tip.category;
 
-                </ul>
-              </div>
-              <TasksReminderCard />
-            </div>
-          </div>
+            return (
+              <li key={tip._id} className={css.tipItem}>
+                <svg className={css.icon} width="24" height="24" viewBox="0 0 24 24">
+                  <use href={`/icons.svg#${icon}`}></use>
+                </svg>
+
+                <div className={css.tipText}>
+                  <p className={css.tipTitle}>{title}</p>
+                  <p className={css.tipDescription}>{tip.tip}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+
+    <div className={css.tasksReminderWrapper}>
+      <TasksReminderCard />
+    </div>
+  </div>
+</div>
         )}
       </section>
   );
