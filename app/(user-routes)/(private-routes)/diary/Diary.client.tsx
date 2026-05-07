@@ -31,7 +31,8 @@ export default function Diary() {
       }
     }, 0);
   }, [data]);
-  const isDesctop = window.innerWidth >= 1440;
+  const width = typeof window !== 'undefined' ? window.innerWidth : 800;
+  const isDesctop = width >= 1440;
 
   return (
     <>

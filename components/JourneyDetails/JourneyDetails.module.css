@@ -1,167 +1,305 @@
-@media (min-width: 320px) {
-  .tabsNav {
-    border: none;
-    background: #fff4f6;
-    border-radius: 100px;
-    padding: 4px;
-    width: 335px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .tab {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .icon {
-  flex-shrink: 0; 
+.tabsNav {
+  border: none;
+  background: #fff4f6;
+  border-radius: 100px;
+  padding: 4px;
+  width: 335px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journeyInfo {
+  margin: 32px 20px 20px;
+}
+
+.icon,
+.iconStar {
+  flex-shrink: 0;
+}
+
+.icon {
   width: 24px;
   height: 24px;
 }
-  .motherBodyContent,
-  .babyContent {
-    font-family: var(--font-family);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-    background: none;
-    border: none;
-    border-radius: 100px;
-    padding: 10px 24px;
-    width: 151px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .babyContent:active,
-  .motherBodyContent:active {
-    background: #ffdae0;
-    font-weight: 500;
-    line-height: 160%;
-  }
-  .activeTab {
-    background: #ffcbd3;
-    font-weight: 500;
-    line-height: 160%;
-  }
-  .babyButton,
-  .motherBodyButton {
-    margin: 0;
-    padding: 0;
-  }
-  .babyContent {
-    width: 163px;
-  }
-  .babyInformation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 16px auto;
-    padding: 24px;
-    background: #fff4f6;
-    width: 335px;
-    border-radius: 32px;
-  }
-  .interestingWeekFact {
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
-    margin-top: 16px;
-    padding: 12px;
-    width: 287px;
-    background: #ffdae0;
-  }
-  .titleFact {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 150%;
-  }
-  .babyPhotoSize {
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 24px;
-    width: 287px;
-    overflow: hidden;
-  }
-  .sizePhotoDescription,
-  .descriptionFact,
-  .babySizeInformation {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-  }
-  .sizePhotoDescription {
-    margin-top: 16px;
-    display: block;
-    width: 100%;
-    text-align: left;
-    align-self: flex-start;
-  }
 
-  .babySizeInformation {
-    margin-top: 32px;
-  }
-  .journeyInfo {
-    margin: 32px 20px 20px 20px;
-  }
-  .factHeader {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .tipItem{
-    margin-top: 8px;
-  }
-  .iconStar {
-    flex-shrink: 0;
-  }
-  .tipDescription{
-    font-family: var(--font-family);
-font-weight: 400;
-font-size: 14px;
-line-height: 150%;
-
-  }
+.motherBodyContent,
+.babyContent {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  background: none;
+  border: none;
+  border-radius: 100px;
+  padding: 10px 24px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
 }
-@media (min-width: 768px) {
+
+.motherBodyContent {
+  width: 151px;
+}
+
+.babyContent {
+  width: 163px;
+}
+
+.babyContent:active,
+.motherBodyContent:active,
+.activeTab {
+  background: #ffcbd3;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.babyButton,
+.motherBodyButton {
+  margin: 0;
+  padding: 0;
+}
+
+/* Baby section */
+
+.babyInformation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px auto;
+  padding: 24px;
+  background: #fff4f6;
+  width: 335px;
+  border-radius: 32px;
+  box-sizing: border-box;
+
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.babyPhotoSize {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 24px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.sizePhotoDescription,
+.descriptionFact,
+.babySizeInformation {
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.sizePhotoDescription {
+  margin-top: 16px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.babySizeInformation {
+  margin-top: 32px;
+}
+
+.babyRightColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.interestingWeekFact {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  width: 287px;
+  background: #ffdae0;
+  box-sizing: border-box;
+}
+
+.factHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleFact {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+/* Mother section */
+
+.motherInformation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  width: 100%;
+
+
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.motherFeelingsTips {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.motherTasksCard,
+.motherTipsCard,
+.motherFeelingCard {
+  background: #fff4f6;
+  border-radius: 32px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.tipsHeader,
+.cardTitle {
+  font-family: var(--font-comfortaa);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0.01em;
+}
+
+.tags {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  border-radius: 100px;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.feelingDescription {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.tipItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.tipItem {
+  display: flex;
+  gap: 8px;
+}
+
+.tipTitle {
+  font-weight: 700;
+  margin: 0;
+}
+
+.tipDescription {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.taskItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tasksHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskContent {
+  display: flex;
+  gap: 8px;
+}
+
+.taskList {
+  margin-top: 16px;
+}
+
+.taskDate {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.addTaskBtn {
+  cursor: pointer;
+}
+
+.motherLeftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media screen and (min-width: 768px) {
   .tabsNav {
     width: 704px;
     display: inline-flex;
   }
+
   .motherBodyContent,
   .babyContent {
     font-weight: 500;
     line-height: 160%;
     width: 348px;
   }
+
+  .journeyInfo {
+    margin: 32px 32px 20px;
+  }
+
   .babyInformation {
     width: 704px;
-    box-sizing: border-box;
   }
+
   .interestingWeekFact {
     width: 656px;
   }
-  .babyPhotoSize {
-    width: 656px;
-    height: auto;
-  }
-  .journeyInfo {
-    margin: 32px 32px 20px 32px;
-  }
-  
+
 }
 
-  @media screen and (min-width: 1024px) {
-
-      .tabsNav {
+@media screen and (min-width: 1440px) {
+  .tabsNav {
     width: 572px;
     height: 54px;
-    padding: 4px;
   }
+
   .motherBodyContent,
   .babyContent {
     font-weight: 400;
@@ -169,6 +307,8 @@ line-height: 150%;
     width: 295px;
     height: 46px;
   }
+
+  /* Baby desktop */
 
   .babyInformation {
     display: grid;
@@ -179,186 +319,70 @@ line-height: 150%;
     margin: 16px auto;
     padding: 24px;
     align-items: start;
-     box-sizing: border-box;
   }
+
   .babyPhotoSize {
     grid-column: 1;
     grid-row: 1;
     width: 461px;
     height: 379px;
+    aspect-ratio: auto;
     object-fit: cover;
-    order: unset;
   }
 
   .sizePhotoDescription {
     grid-column: 1;
     grid-row: 2;
-    order: unset;
     margin-top: 0;
   }
 
-  .babySizeInformation {
+  .babyRightColumn {
     grid-column: 2;
-    grid-row: 1;
-    width: 523px;
-    height: auto;
-    margin-top: 0;
-    order: unset;
-  }
- .babyRightColumn {
-    grid-column: 2;
-    grid-row: 1 / 3; 
+    grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
     gap: 16px;
   }
+
+  .babySizeInformation {
+    width: 523px;
+    margin-top: 0;
+  }
+
   .interestingWeekFact {
     width: 523px;
-    height: auto;
     margin-top: 0;
-    order: unset;
   }
-}
 
+  /* Mother desktop */
 
-
-/* mama section */
-@media (min-width: 320px) {
   .motherInformation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin: 16px auto;
-  width: 100%;
-  box-sizing: border-box;
-  }
-  .motherTasksCard,
-  .motherTipsCard,
-  .motherFeelingCard {
-    background: #fff4f6;
-    border-radius: 32px;
-    width: 311px;
-    padding: 24px;
-      box-sizing: border-box;
-  }
-  .motherTasksCard,
-  .motherTipsCard {
-    margin-top: 24px;
-  }
-  .tipsHeader,
-  .cardTitle {
-    font-family: var(--font-comfortaa);
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 140%;
-    letter-spacing: 0.01em;
-  }
-  .tags {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .tag {
-    border-radius: 100px;
-    padding: 4px 10px;
-    background: rgba(0, 0, 0, 0.05);
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 14px;
-    line-height: 150%;
-  }
-  .feelingDescription {
-    margin-top: 8px;
-    font-size: 14px;
-  }
-  .tipItems {
-    display: flex;
-    flex-direction: column;
-    margin-top: 8px;
-    list-style: none;
     padding: 0;
-    margin: 8px 0 0 0;
+    background-color: transparent;
   }
-  .tipItem {
-    display: flex;
-    gap: 8px;
+
+  @media screen and (min-width: 1440px) {
+  .motherFeelingsTips {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+    width: 1064px;
   }
-  .tipTitle {
-    font-weight: 700;
-    margin: 0;
+
+  .motherLeftColumn {
+    flex: 0 0 650px;
   }
-  .taskItem {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+
+  .tasksReminderWrapper {
+    flex: 0 0 390px;
   }
-  .tasksHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .taskContent {
-    display: flex;
-    gap: 8px;
-  }
-  .taskList {
-    margin-top: 16px;
-  }
-  .taskDate {
-    font-weight: 700;
-    font-size: 12px;
-  }
-  .addTaskBtn {
-    cursor: pointer;
-  }
-}
-@media (min-width: 768px) {
-  .motherInformation {
-    align-items: center;
-  }
-  .motherFeelingsTips,
-  .motherTasksCard {
-    width: 704px;
-  }
+
   .motherFeelingCard,
   .motherTipsCard,
   .motherTasksCard {
-    width: 704px;
+    width: 100%;
   }
 }
-@media screen and (min-width: 1024px) {
-  .motherInformation {
-  display: grid;
-    grid-template-columns: 461px 1fr;
-    gap: 24px;
-    width: 1064px;
-    height: auto;
-    margin: 16px auto;
-    padding: 24px;
-    align-items: start;
-     box-sizing: border-box;
-     background-color: transparent;
-  }
-  .motherFeelingsTips {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    border-radius: 32px;
-    width: 100%;
-    max-width: 650px;
-    height: auto;
-  }
-  .motherFeelingCard {
-    width: 100%;
-  }
-  .motherTipsCard {
-    width: 100%;
-    margin-top: 0;
-  }
-  .motherTasksCard {
-    width: 100%;
-    max-width: 390px;
-    margin-top: 0;
-  }
+
 }
