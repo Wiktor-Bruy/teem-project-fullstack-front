@@ -29,7 +29,8 @@ export default function DiaryEntryCard({
   const router = useRouter();
 
   const handleClick = () => {
-    if (window.innerWidth < 1440) {
+    const width = typeof window !== 'undefined' ? window.innerWidth : 800;
+    if (width < 1440) {
       router.push(`/diary/${entry._id}`);
     } else {
       onSelect?.(entry);
