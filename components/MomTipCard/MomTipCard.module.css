@@ -37,4 +37,8 @@
   .card {
     height: 138px;
   }
+
+  .text {
+  font-size: 16px;
+  }
 }

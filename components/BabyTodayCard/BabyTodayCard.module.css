@@ -78,13 +78,6 @@
 }
 
 
-/* 🔹 TABLET (375px+) */
-@media (min-width: 375px) {
-    .titleBaby {
-        font-size: 20px;
-    }
-}
-
 
 /* 🔹 TABLET LARGE (768px+) */
 @media (min-width: 768px) {
@@ -96,6 +89,7 @@
 
     .titleBaby {
         font-size: 20px;
+        font-weight: 700;
     }
 
     .babycard__listitem {
@@ -161,7 +155,7 @@
             font-weight: 700;
             padding-right: 5px;
         }
-    
+
         .value {
             font-weight: 400;
         }
