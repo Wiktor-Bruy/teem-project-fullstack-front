@@ -81,6 +81,7 @@
   .container {
     width: 643px;
     height: 727px;
+    overflow-y: auto;
   }
   .title {
     font-size: 20px;

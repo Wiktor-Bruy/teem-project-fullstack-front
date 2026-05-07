@@ -3,9 +3,11 @@ import styles from './DiaryEntryDetails.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast, Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import type { Note } from '@/types/types';
 import { deleteNote } from '@/lib/api/clientApi';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 interface DiaryEntryDetailsProps {
   entry?: Note | null;
@@ -16,6 +18,7 @@ export default function DiaryEntryDetails({
   entry,
   onEdit,
 }: DiaryEntryDetailsProps) {
+  const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -26,6 +29,7 @@ export default function DiaryEntryDetails({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
+      setIsModal(false);
       toast.success('Запис щоденника видалено');
       if (window.innerWidth < 1440) {
         router.push('/diary');
@@ -34,9 +38,16 @@ export default function DiaryEntryDetails({
       }
     },
     onError: () => {
+      setIsModal(false);
       toast.error('Сталась помилка при видаленні');
     },
   });
+
+  function handleDelete() {
+    if (entry?._id) {
+      createMutation.mutate(entry?._id);
+    }
+  }
 
   if (!entry) {
     return (
@@ -67,6 +78,15 @@ export default function DiaryEntryDetails({
     return (
       <div className={styles.container}>
         <Toaster position="top-right" />
+        {isModal && (
+          <ConfirmationModal
+            title="Бажаєте видалити запис?"
+            onConfirm={handleDelete}
+            confirmButtonText="Видалити"
+            cancelButtonText="Відмінити"
+            onCancel={() => setIsModal(false)}
+          />
+        )}
         <div className={styles.topBox}>
           <div className={styles.titleBox}>
             <h2 className={styles.title}>{entry && entry.title}</h2>
@@ -81,9 +101,10 @@ export default function DiaryEntryDetails({
             <button
               className={styles.deleteButton}
               onClick={() => {
-                if (entry._id) {
-                  createMutation.mutate(entry._id);
-                }
+                // if (entry._id) {
+                //   handleDelete(entry._id);
+                // }
+                setIsModal(true);
               }}
             >
               <svg width={24} height={24}>
