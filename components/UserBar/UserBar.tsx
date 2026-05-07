@@ -5,22 +5,27 @@ import css from './UserBar.module.css';
 import Image from 'next/image';
 import { Toaster, toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import type { User } from '@/types/types';
 import { logout } from '@/lib/api/clientApi';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 interface UserBarProps {
   user: User;
 }
 
 export default function UserBar({ user }: UserBarProps) {
+  const [isModal, setIsModal] = useState(false);
   const router = useRouter();
 
   async function handleLogout() {
     try {
       await logout();
+      setIsModal(false);
       router.push('/login');
     } catch {
+      setIsModal(false);
       toast.error('Сталась помилка при виході');
     }
   }
@@ -28,6 +33,15 @@ export default function UserBar({ user }: UserBarProps) {
   return (
     <div className={css.cont}>
       <Toaster />
+      {isModal && (
+        <ConfirmationModal
+          title="Бажаєте вийти?"
+          cancelButtonText="Залишитись"
+          confirmButtonText="Вийти"
+          onCancel={() => setIsModal(false)}
+          onConfirm={() => handleLogout()}
+        />
+      )}
       <div className={css.imageBox}>
         <Image className={css.image} src={user.avatar} alt="avatar" fill />
       </div>
@@ -35,7 +49,11 @@ export default function UserBar({ user }: UserBarProps) {
         <p className={css.name}>{user.name}</p>
         <p className={css.email}>{user.email}</p>
       </div>
-      <button className={css.logout} type="button" onClick={handleLogout}>
+      <button
+        className={css.logout}
+        type="button"
+        onClick={() => setIsModal(true)}
+      >
         <svg width={18} height={18}>
           <use href="/icons.svg#logout"></use>
         </svg>
