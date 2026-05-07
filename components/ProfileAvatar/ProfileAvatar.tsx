@@ -5,7 +5,6 @@ import Image from 'next/image';
 import styles from './ProfileAvatar.module.css';
 import { getMe } from '@/lib/api/clientApi';
 import { updateAvatar } from '@/lib/api/clientApi';
-import { toast, Toaster } from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
 
@@ -13,12 +12,14 @@ interface ProfileAvatarProps {
   avatar: string;
   name: string;
   email: string;
+  message: (mes: string, err: boolean) => void;
 }
 
 export default function ProfileAvatar({
   avatar,
   name,
   email,
+  message,
 }: ProfileAvatarProps) {
   const setUserStore = useAuthStore(s => s.setUser);
   const [avatarPreview, setAvatarPreview] = useState(avatar);
@@ -36,10 +37,10 @@ export default function ProfileAvatar({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      toast.success('Аватар успішно оновлено');
+      message('Аватар успішно оновлено', false);
     },
     onError: () => {
-      toast.error('Сталась помилка при завантаженні аватара');
+      message('Сталась помилка при завантаженні аватара', true);
     },
   });
 
@@ -59,7 +60,6 @@ export default function ProfileAvatar({
 
   return (
     <div className={styles.avatarSection}>
-      <Toaster position="top-right" />
       <div
         className={styles.avatarCircle}
         onClick={() => fileInputRef.current?.click()}

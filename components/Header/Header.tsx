@@ -14,7 +14,10 @@ export default function Header() {
   const path = usePathname();
 
   useEffect(() => {
-    setTimeout(() => setIsModalNavigationOpen(false));
+    setTimeout(() => {
+      setIsModalNavigationOpen(false);
+      document.body.style.overflow = '';
+    });
   }, [path]);
 
   const openModalNavigation = () => {
