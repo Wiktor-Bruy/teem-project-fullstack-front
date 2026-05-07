@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast, Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { clsx } from 'clsx';
 import { useId } from 'react';
@@ -16,6 +15,8 @@ import { updateUser } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 
 interface ProfileEditFormProps {
+  message: (mes: string, err: boolean) => void;
+
   user: User;
 }
 
@@ -26,10 +27,14 @@ interface UpdateUser {
   email: string;
 }
 
-export default function ProfileEditForm({ user }: ProfileEditFormProps) {
+export default function ProfileEditForm({
+  user,
+  message,
+}: ProfileEditFormProps) {
   const setUserStore = useAuthStore(s => s.setUser);
   const oldUser = user;
   const [isDateErr, setIsdateErr] = useState(false);
+  const [isResBtn, setResBtn] = useState(true);
   const [submitBtn, setSubmitBtn] = useState(true);
   const [nameErr, setNameErr] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -43,16 +48,18 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
   const createMutation = useMutation({
     mutationFn: async (data: UpdateUser) => {
       const res = await updateUser(data);
-      setSubmitBtn(true);
+
       return res;
     },
     onSuccess: res => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      setSubmitBtn(true);
+      setResBtn(true);
       setUserStore(res);
-      toast.success('Дані оновлено');
+      message('Дані оновлено', false);
     },
     onError: () => {
-      toast.error('Сталась помилка при збереженні даних');
+      message('Сталась помилка при збереженні даних', true);
       setSubmitBtn(false);
       handleReset();
     },
@@ -118,6 +125,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
     setIsdateErr(false);
     setNameErr(false);
     setEmailError(false);
+    setResBtn(true);
   }
 
   function handleChangeName(event: React.ChangeEvent) {
@@ -142,8 +150,6 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
 
   return (
     <form onSubmit={formik.handleSubmit} className={styles.formBox}>
-      <Toaster position="top-right" />
-
       <div className={styles.inputGroup}>
         <div className={styles.formGroup}>
           <label htmlFor={`${id}-name`} className={styles.label}>
@@ -157,6 +163,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
             onChange={data => {
               formik.handleChange(data);
               setSubmitBtn(false);
+              setResBtn(false);
               handleChangeName(data);
             }}
             className={clsx(styles.input, nameErr && styles.inputError)}
@@ -181,6 +188,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
             onChange={data => {
               formik.handleChange(data);
               setSubmitBtn(false);
+              setResBtn(false);
               handleChangeEmail(data);
             }}
             className={`${styles.input} ${emailError ? styles.inputError : ''}`}
@@ -220,6 +228,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
               if (option) {
                 formik.setFieldValue('gender', option.value);
                 setSubmitBtn(false);
+                setResBtn(false);
               }
             }}
             styles={{
@@ -301,6 +310,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
             onChange={(date: Date | null) => {
               const isValid = validDate(date);
               setSubmitBtn(false);
+              setResBtn(false);
               if (isValid) {
                 formik.setFieldValue('dueDate', date);
               }
@@ -321,7 +331,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
           type="button"
           onClick={handleReset}
           className={clsx(styles.btn, styles.btnReset)}
-          disabled={createMutation.isPending}
+          disabled={isResBtn}
         >
           Відмінити зміни
         </button>
