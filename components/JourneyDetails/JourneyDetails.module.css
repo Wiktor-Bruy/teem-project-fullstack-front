@@ -79,7 +79,7 @@
   margin: 16px auto;
   padding: 24px;
   background: #fff4f6;
-  width: 335px;
+  width: 295px;
   border-radius: 32px;
   box-sizing: border-box;
 
@@ -128,7 +128,7 @@
   border-radius: 12px;
   margin-top: 16px;
   padding: 12px;
-  width: 287px;
+  width: 245px;
   background: #ffdae0;
   box-sizing: border-box;
 }
@@ -153,7 +153,6 @@
   align-items: center;
   margin-top: 16px;
   width: 100%;
-
 
   height: auto;
   max-height: none;
@@ -285,13 +284,12 @@
   }
 
   .babyInformation {
-    width: 704px;
+    width: 640px;
   }
 
   .interestingWeekFact {
-    width: 656px;
+    width: 592px;
   }
-
 }
 
 @media screen and (min-width: 1440px) {
@@ -363,26 +361,25 @@
   }
 
   @media screen and (min-width: 1440px) {
-  .motherFeelingsTips {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 24px;
-    width: 1064px;
-  }
+    .motherFeelingsTips {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 24px;
+      width: 1064px;
+    }
 
-  .motherLeftColumn {
-    flex: 0 0 650px;
-  }
+    .motherLeftColumn {
+      flex: 0 0 650px;
+    }
 
-  .tasksReminderWrapper {
-    flex: 0 0 390px;
-  }
+    .tasksReminderWrapper {
+      flex: 0 0 390px;
+    }
 
-  .motherFeelingCard,
-  .motherTipsCard,
-  .motherTasksCard {
-    width: 100%;
+    .motherFeelingCard,
+    .motherTipsCard,
+    .motherTasksCard {
+      width: 100%;
+    }
   }
-}
-
 }

@@ -7,7 +7,7 @@ import css from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import { login, getMe } from '@/lib/api/clientApi';
 import * as Yup from 'yup';
-import toast from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import { useAuthStore } from '@/lib/store/authStore';
 import { isAxiosError } from 'axios';
 import { type LoginRequest as LoginFormValues } from '@/types/types';
@@ -29,15 +29,16 @@ export default function LoginForm() {
 
   return (
     <div className={css.loginPage}>
+      <Toaster position="top-right" />
       <div className={css.logo}>
-        <Link href='/'>
-        <svg className={css.logoIcon} width={30} height={30}>
-          <use href="/icons.svg#logo" />
-        </svg>
-        <svg className={css.logoLeleka} width={60} height={13}>
-          <use href="/icons.svg#icon-leleka" />
+        <Link href="/">
+          <svg className={css.logoIcon} width={30} height={30}>
+            <use href="/icons.svg#logo" />
           </svg>
-          </Link>
+          <svg className={css.logoLeleka} width={60} height={13}>
+            <use href="/icons.svg#icon-leleka" />
+          </svg>
+        </Link>
       </div>
       <div className={css.center}>
         <Formik
@@ -48,7 +49,7 @@ export default function LoginForm() {
             {
               setSubmitting,
               resetForm,
-              setErrors,
+              // setErrors,
             }: FormikHelpers<LoginFormValues>
           ) => {
             try {
@@ -64,13 +65,13 @@ export default function LoginForm() {
               }
             } catch (error: unknown) {
               if (isAxiosError(error)) {
-                toast.error(error.response?.data?.message || 'Помилка входу');
+                toast.error('Невірний email або пароль');
               } else {
                 toast.error('Щось пішло не так');
               }
-              setErrors({
-                password: 'Невірний email або пароль',
-              });
+              // setErrors({
+              //   password: 'Невірний email або пароль',
+              // });
             } finally {
               setSubmitting(false);
             }

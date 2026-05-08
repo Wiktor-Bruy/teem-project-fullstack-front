@@ -31,8 +31,6 @@ export default function Diary() {
       }
     }, 0);
   }, [data]);
-  const width = typeof window !== 'undefined' ? window.innerWidth : 800;
-  const isDesctop = width >= 1440;
 
   return (
     <>
@@ -49,12 +47,14 @@ export default function Diary() {
         ) : (
           <p>Сталась помилка при завантаженні</p>
         )}
-        {isDesctop && (
+
+        <div className={css.entryDetails}>
           <DiaryEntryDetails
             entry={selectedEntry}
             onEdit={() => setIsModalUpdate(true)}
           />
-        )}
+        </div>
+
         {isModalCreate && (
           <AddDiaryEntryModal onClose={() => setIsModalCreate(false)} />
         )}

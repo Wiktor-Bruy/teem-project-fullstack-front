@@ -9,6 +9,7 @@ import Select, { components, type OptionProps } from 'react-select';
 import styles from './AddDiaryEntryForm.module.css';
 import { createNote, updateNote, getEmotions } from '@/lib/api/clientApi';
 import type { Emotion, Note } from '@/types/types';
+import { useRouter } from 'next/navigation';
 
 interface AddDiaryEntryFormProps {
   onSuccess: () => void;
@@ -73,6 +74,7 @@ export default function AddDiaryEntryForm({
   initialData,
   onSuccess,
 }: AddDiaryEntryFormProps) {
+  const router = useRouter();
   const [emotions, setEmotions] = useState<Emotion[]>([]);
 
   useEffect(() => {
@@ -132,6 +134,7 @@ export default function AddDiaryEntryForm({
             toast.success(initialData ? 'Оновлено' : 'Створено');
             queryClient.invalidateQueries({ queryKey: ['notes'] });
             onSuccess();
+            router.refresh();
           } catch {
             toast.error('Помилка при збереженні запису');
           } finally {

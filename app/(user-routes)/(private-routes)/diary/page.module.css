@@ -1,6 +1,9 @@
 .gretBox {
   padding-top: 16px;
 }
+.entryDetails {
+  display: none;
+}
 
 @media (min-width: 1440px) {
   .gretBox {
@@ -10,5 +13,8 @@
     display: flex;
     gap: 32px;
     padding: 32px;
+  }
+  .entryDetails {
+    display: block;
   }
 }
