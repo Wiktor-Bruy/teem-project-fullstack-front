@@ -1,10 +1,6 @@
 
 .wrapperGreet {
   margin-top: 16px;
-}
-
-@media (min-width: 768px)  {
-  .weekNumber {
-    margin-left: 32px;
-  }
+  padding-left: 32px;
+  padding-right: 32px;
 }
