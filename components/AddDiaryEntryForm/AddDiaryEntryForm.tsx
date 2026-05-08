@@ -5,7 +5,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useEffect, useMemo, useState } from 'react';
-import Select from 'react-select';
+import Select, { components, type OptionProps } from 'react-select';
 import styles from './AddDiaryEntryForm.module.css';
 import { createNote, updateNote, getEmotions } from '@/lib/api/clientApi';
 import type { Emotion, Note } from '@/types/types';
@@ -29,6 +29,45 @@ const schema = Yup.object({
     .min(1, 'Оберіть емоцію')
     .required('Оберіть емоцію'),
 });
+
+type OptionType = {
+  value: string;
+  label: string;
+};
+
+const CheckboxOption = (props: OptionProps<OptionType, true>) => {
+  return (
+    <components.Option {...props}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ width: 18, height: 18 }}>
+          {props.isSelected ? (
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <rect width="24" height="24" rx="4" fill="#000" />
+              <path
+                d="M6 12l4 4 8-8"
+                stroke="white"
+                strokeWidth="3"
+                fill="none"
+              />
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <rect
+                width="24"
+                height="24"
+                rx="4"
+                fill="rgba(0, 0, 0, 0.05)"
+                stroke="rgba(255, 255, 255, 0)"
+              />
+            </svg>
+          )}
+        </div>
+
+        {props.label}
+      </div>
+    </components.Option>
+  );
+};
 
 export default function AddDiaryEntryForm({
   initialData,
@@ -120,7 +159,11 @@ export default function AddDiaryEntryForm({
             <label>Категорії</label>
             <Select
               isMulti
-              className={styles.input}
+              components={{
+                IndicatorSeparator: () => null,
+                Option: CheckboxOption,
+              }}
+              isClearable={false}
               options={emotionOptions}
               value={emotionOptions.filter(o =>
                 values.emotions.includes(o.value)
@@ -134,6 +177,91 @@ export default function AddDiaryEntryForm({
                 );
               }}
               placeholder="Оберіть емоції"
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  minHeight: '48px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  width: '100%',
+                  borderRadius: state.menuIsOpen ? '12px 12px 0 0' : '12px',
+                  boxShadow: 'none',
+                  border: state.menuIsOpen
+                    ? '1px solid rgba(0, 0, 0, 0.15)'
+                    : '1px solid rgba(255, 255, 255, 0)',
+                  '&:hover': {
+                    border: '1px solid rgba(0, 0, 0, 0.15)',
+                  },
+                }),
+                menu: base => ({
+                  ...base,
+                  backgroundColor: '#f2f2f2',
+                  borderRadius: '0 0 12px 12px',
+                  marginTop: '0',
+                  overflow: 'hidden',
+                  boxShadow: 'none',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  borderTop: 'none',
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  color: '#000',
+                  backgroundColor: state.isFocused
+                    ? 'rgba(0, 0, 0, 0.05)'
+                    : '#f2f2f2',
+                  borderRadius: '8px',
+                }),
+                valueContainer: base => ({
+                  ...base,
+                  padding: '8px 12px',
+                }),
+                menuList: base => ({
+                  ...base,
+                  backgroundColor: '#f2f2f2',
+                  maxHeight: '180px',
+                  padding: '0',
+                  scrollbarGutter: 'stable',
+
+                  '::-webkit-scrollbar': {
+                    margin: '8px 0',
+                    width: '10px',
+                  },
+
+                  '::-webkit-scrollbar-track': {
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    borderRadius: '4px',
+                    margin: '8px 0',
+                    borderLeft: '2px solid transparent',
+                    borderRight: '2px solid transparent',
+                    backgroundClip: 'padding-box',
+                  },
+
+                  '::-webkit-scrollbar-thumb': {
+                    background: '#ffcbd3',
+                    borderRadius: '4px',
+                    height: '56px',
+                  },
+                }),
+                multiValueRemove: () => ({
+                  display: 'none',
+                }),
+                multiValueLabel: base => ({
+                  ...base,
+
+                  color: '#000',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                }),
+                multiValue: base => ({
+                  ...base,
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  borderRadius: '100px',
+                  padding: '4px 10px',
+                  marginRight: '10px',
+                  height: '32px',
+                }),
+              }}
             />
             <ErrorMessage
               name="emotions"

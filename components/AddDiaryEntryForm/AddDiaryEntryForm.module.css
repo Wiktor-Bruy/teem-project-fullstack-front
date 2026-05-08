@@ -1,9 +1,8 @@
-
 .form {
   display: flex;
   flex-direction: column;
   padding: 20px 20px;
-  gap: 8px; 
+  gap: 8px;
 }
 
 .label {
@@ -17,17 +16,25 @@
   width: 100%;
   padding: 12px 12px;
   border-radius: 12px;
-  border: 1px solid #eee;
-  background: #fafafa;
+  border: 1px solid rgba(255, 255, 255, 0);
+  background: rgba(0, 0, 0, 0.05);
   font-size: 14px;
   transition: 0.2s;
+}
+.select {
+  padding: 0;
+}
+
+.input:hover,
+.textarea:hover {
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .input:focus,
 .textarea:focus {
   outline: none;
   border-color: #ffb3c1;
-  background: #fff;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .textarea {
@@ -94,7 +101,7 @@
   color: var(--color-scheme-text);
   cursor: pointer;
   font-size: 16px;
-  cursor:pointer;
+  cursor: pointer;
   font-family: inherit;
   border-bottom: 4px solid #ffcbd3;
   border-radius: 100px;
@@ -111,6 +118,9 @@
   .textarea {
     padding: 14px 16px;
     font-size: 15px;
+  }
+  .select {
+    padding: 0;
   }
 
   .textarea {
@@ -133,6 +143,9 @@
   .input,
   .textarea {
     font-size: 16px;
+  }
+  .select {
+    padding: 0;
   }
 
   .textarea {
